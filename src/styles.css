@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ===========================================================================
+   Kora — cores e definições (Kora.dc.html · 01 Fundações)
+   =========================================================================== */
+
+:root {
+  /* base */
+  --kora-canvas: #080908;
+  --kora-bg: #101310;
+  --kora-surface: #171b17;
+  --kora-surface-2: #1e231e;
+  --kora-muted: #8e968c;
+  --kora-text: #ecf2ea;
+  --kora-text-soft: #c9d1c6;
+  --kora-text-dim: #6b7370;
+
+  /* bordas */
+  --kora-border: #262c26;
+  --kora-border-soft: #1f251f;
+  --kora-border-strong: #2e352e;
+  --kora-divider: #1c211c;
+
+  /* acento lime */
+  --kora-lime-200: #d6fa8e;
+  --kora-lime-400: #b8f24b;
+  --kora-lime-600: #7fb02f;
+  --kora-lime-border: #4a6320;
+  --kora-lime-bg: #151c0e;
+  --kora-lime-glow: rgba(184, 242, 75, 0.12);
+  --kora-on-lime: #0a0c0a;
+
+  /* status */
+  --status-pending: #f2c14e;
+  --status-detected: #7be07a;
+  --status-confirmed: #b8f24b;
+  --status-expired: #6b7370;
+  --status-partial: #f2934e;
+  --status-failed: #f2564e;
+
+  /* espaçamento 4 · 8 · 12 · 16 · 24 · 32 · 48 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* raio 6 · 10 · 14 · pill */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
+
+  /* elevação */
+  --elev-1: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --elev-2: 0 18px 44px rgba(0, 0, 0, 0.65);
+
+  /* aliases consumidos por Header.tsx / Footer.tsx / ThemeToggle.tsx */
+  --sea-ink: var(--kora-text);
+  --sea-ink-soft: var(--kora-text-soft);
+  --line: var(--kora-border);
+  --header-bg: rgba(8, 9, 8, 0.94);
+  --chip-bg: var(--kora-surface-2);
+  --chip-line: var(--kora-border-strong);
+  --link-bg-hover: var(--kora-surface-2);
+
+  color-scheme: dark;
+}
+
+/* modo claro derivado (o Kora é dark-only; isto mantém o ThemeToggle utilizável) */
+:root[data-theme='light'] {
+  --kora-canvas: #f4f7f1;
+  --kora-bg: #ffffff;
+  --kora-surface: #fbfdf8;
+  --kora-surface-2: #f1f5ec;
+  --kora-muted: #5c6459;
+  --kora-text: #0e110e;
+  --kora-text-soft: #2e352e;
+  --kora-text-dim: #6b7370;
+
+  --kora-border: #dbe2d5;
+  --kora-border-soft: #e6ebe1;
+  --kora-border-strong: #c8d2c1;
+  --kora-divider: #e6ebe1;
+
+  --kora-lime-200: #7fb02f;
+  --kora-lime-400: #6ea024;
+  --kora-lime-600: #4a6320;
+  --kora-lime-border: #b8d97a;
+  --kora-lime-bg: #eef7d9;
+  --kora-lime-glow: rgba(184, 242, 75, 0.28);
+
+  --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
+  --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);
+
+  --header-bg: rgba(251, 253, 248, 0.88);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --kora-canvas: #f4f7f1;
+    --kora-bg: #ffffff;
+    --kora-surface: #fbfdf8;
+    --kora-surface-2: #f1f5ec;
+    --kora-muted: #5c6459;
+    --kora-text: #0e110e;
+    --kora-text-soft: #2e352e;
+    --kora-text-dim: #6b7370;
+
+    --kora-border: #dbe2d5;
+    --kora-border-soft: #e6ebe1;
+    --kora-border-strong: #c8d2c1;
+    --kora-divider: #e6ebe1;
+
+    --kora-lime-200: #7fb02f;
+    --kora-lime-400: #6ea024;
+    --kora-lime-600: #4a6320;
+    --kora-lime-border: #b8d97a;
+    --kora-lime-bg: #eef7d9;
+    --kora-lime-glow: rgba(184, 242, 75, 0.28);
+
+    --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
+    --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);
+
+    --header-bg: rgba(251, 253, 248, 0.88);
+
+    color-scheme: light;
+  }
+}
+
+/* ===========================================================================
+   Base
+   =========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--kora-canvas);
+  color: var(--kora-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--kora-lime-400);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--kora-lime-200);
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+/* ===========================================================================
+   Identidade Kora
+   =========================================================================== */
+
+.page-wrap {
+  width: min(1080px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+/* display: Space Grotesk 600 · tracking -2% */
+h1,
+h2,
+h3,
+.display-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* label: JetBrains Mono 500 · uppercase · +8% */
+.island-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kora-muted);
+}
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: var(--kora-muted);
+  text-decoration: none;
+  transition: color 170ms ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background: var(--kora-lime-400);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 170ms ease;
+}
+
+.nav-link:hover,
+.nav-link.is-active {
+  color: var(--kora-text);
+}
+
+.nav-link:hover::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 640px) {
+  .nav-link::after {
+    bottom: -4px;
+  }
+}
