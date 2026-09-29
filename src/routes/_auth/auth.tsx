@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_auth/auth')({
 function LoginPage() {
   return (
     <main className="bg-canvas text-ink flex min-h-screen w-full flex-col lg:flex-row">
-      <section className="border-line-soft relative flex min-h-80 flex-1 flex-col justify-between gap-10 overflow-hidden p-8 sm:p-12 lg:min-h-screen lg:border-r lg:p-14">
+      <section className="border-line-soft relative min-h-80 flex-1 flex-col justify-between gap-10 overflow-hidden p-8 sm:p-12 hidden lg:flex lg:min-h-screen lg:border-r lg:p-14">
         <ShaderBackground />
 
         <p className="font-display text-on-lime relative z-10 text-xl font-bold tracking-tight lg:text-[22px]">
@@ -32,7 +32,7 @@ function LoginPage() {
         </p>
       </section>
 
-      <section className="bg-panel flex w-full flex-none items-center justify-center p-8 sm:p-12 lg:w-[452px]">
+      <section className="bg-panel flex w-full h-screen flex-none items-center justify-center p-8 sm:p-12 lg:w-[452px]">
         <div className="flex w-full max-w-100 flex-col gap-[22px]">
           <div className="flex flex-col gap-2">
             <h2 className="font-display text-[28px] font-semibold tracking-tight">
