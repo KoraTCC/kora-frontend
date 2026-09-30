@@ -149,6 +149,29 @@ que seja consistente no projeto inteiro — decida uma vez e documente aqui.
 
 ---
 
+## Regra 5 — telas e componentes sempre responsivos
+
+Toda tela e todo componente funcionam de 360px até desktop. Não existe "depois eu
+adapto": a versão responsiva nasce junto com a tela, não numa passada posterior.
+
+- **Mobile primeiro.** A classe sem prefixo é a do celular; `sm:`, `md:`, `lg:` só
+  adicionam a partir dali. Nunca o contrário.
+- **Nada de largura fixa em layout.** `w-[600px]` vira `w-full lg:w-[600px]`;
+  `w-[70%]` vira `flex-1`. Largura fixa só em elemento que realmente tem tamanho
+  fixo (ícone, avatar, checkbox).
+- **Toda linha quebra ou empilha.** `flex-row` sem `flex-col` antes só se couber em
+  360px. O padrão é `flex-col lg:flex-row`.
+- **Nunca rolagem horizontal.** Só tabela, gráfico e bloco de código podem passar da
+  largura, cada um no seu contêiner com `overflow-x-auto`.
+- **Tipografia e espaçamento escalam** — `text-3xl lg:text-5xl`, `p-6 lg:p-20`, ou
+  `clamp()` quando a variação for contínua.
+- **Alvo de toque de 44px** no mínimo para qualquer controle clicável no mobile.
+- **Componente não impõe largura nem altura de página.** Ele preenche o que o pai
+  der. `h-screen` e `w-[…]` pertencem à tela, não ao componente de `components/ui`.
+- Antes de considerar pronto: conferir em **360px, 768px e 1280px**.
+
+---
+
 ## Boas práticas
 
 ### TypeScript
@@ -238,6 +261,7 @@ Não adicionar pacote sem justificar. Preferir o que já existe no ecossistema T
 3. Tirar a lógica do JSX; early return para loading, erro e vazio.
 4. Respeitar as camadas: rota → componente → hook → service → lib.
 5. Código em inglês; só a copy da tela em português.
-6. Cores e espaçamentos só pelos tokens Kora.
-7. Não tocar em `src/routeTree.gen.ts`.
-8. Terminar com `npm run lint` e `npm run build` passando.
+6. Responsivo desde o primeiro commit: conferir em 360px, 768px e 1280px.
+7. Cores e espaçamentos só pelos tokens Kora.
+8. Não tocar em `src/routeTree.gen.ts`.
+9. Terminar com `npm run lint` e `npm run build` passando.

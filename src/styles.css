@@ -6,6 +6,29 @@
   --font-display:
     'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Tokens Kora como utilitários Tailwind: bg-surface, text-muted, border-line… */
+  --color-canvas: var(--kora-canvas);
+  --color-bg: var(--kora-bg);
+  --color-surface: var(--kora-surface);
+  --color-surface-2: var(--kora-surface-2);
+  --color-ink: var(--kora-text);
+  --color-ink-soft: var(--kora-text-soft);
+  --color-muted: var(--kora-muted);
+  --color-dim: var(--kora-text-dim);
+  --color-line: var(--kora-border);
+  --color-line-strong: var(--kora-border-strong);
+  --color-lime: var(--kora-lime-400);
+  --color-lime-soft: var(--kora-lime-200);
+  --color-lime-deep: var(--kora-lime-600);
+  --color-on-lime: var(--kora-on-lime);
+  --color-on-lime-soft: var(--kora-on-lime-soft);
+  --color-on-lime-dim: var(--kora-on-lime-dim);
+  --color-panel: var(--kora-panel);
+  --color-faint: var(--kora-text-faint);
+  --color-lime-line: var(--kora-lime-border);
+  --color-line-soft: var(--kora-border-soft);
+  --color-danger: var(--status-failed);
 }
 
 /* ===========================================================================
@@ -15,7 +38,7 @@
 :root {
   /* base */
   --kora-canvas: #080908;
-  --kora-bg: #101310;
+  --kora-bg: #0e110e;
   --kora-surface: #171b17;
   --kora-surface-2: #1e231e;
   --kora-muted: #8e968c;
@@ -37,6 +60,10 @@
   --kora-lime-bg: #151c0e;
   --kora-lime-glow: rgba(184, 242, 75, 0.12);
   --kora-on-lime: #0a0c0a;
+  --kora-on-lime-soft: #1f3308;
+  --kora-on-lime-dim: #2a4310;
+  --kora-panel: #0e110e;
+  --kora-text-faint: #5c6459;
 
   /* status */
   --status-pending: #f2c14e;
