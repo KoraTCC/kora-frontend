@@ -52,7 +52,7 @@ export function LoginForm({ onSubmit, isSubmitting, error, onSignupClick }: Logi
       <p className="text-muted text-center text-[13px]">
         Não tem conta? {' '}
         <Link
-          to="/"
+          to="/register"
           className="text-lime font-semibold hover:underline"
           onClick={onSignupClick}
         >
