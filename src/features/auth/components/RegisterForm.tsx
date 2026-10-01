@@ -77,7 +77,7 @@ export function RegisterForm({ onSubmit, isSubmitting, error, onSignupClick }: R
       <p className="text-muted text-center text-[13px]">
         Já tem conta? {' '}
         <Link
-          to="/"
+          to="/auth"
           className="text-lime font-semibold hover:underline"
           onClick={onSignupClick}
         >
