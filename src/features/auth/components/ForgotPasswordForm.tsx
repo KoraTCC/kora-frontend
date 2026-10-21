@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { useState, type FormEvent } from 'react'
+import type { FormEvent } from 'react'
 import { Button } from '#/components/ui/Button'
 import { Input } from '#/components/ui/Input'
 
