@@ -1,6 +1,11 @@
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import {
+  getFormError,
+  toFieldErrors,
+  zodIssuesToApiIssues,
+} from '#/lib/formErrors'
 import { ApiError } from '#/lib/http'
 import { registerFormSchema } from '../schemas'
 import type { RegisterField, RegisterFieldErrors } from '../types'
@@ -31,14 +36,8 @@ export function useRegisterForm() {
     })
 
     if (!parsed.success) {
-      setFieldErrors(
-        toFieldErrors(
-          parsed.error.issues.map((issue) => ({
-            path: issue.path.join('.'),
-            message: issue.message,
-          })),
-        ),
-      )
+      const issues = zodIssuesToApiIssues(parsed.error.issues)
+      setFieldErrors(toFieldErrors(issues, REGISTER_FIELDS))
       return
     }
 
@@ -50,7 +49,7 @@ export function useRegisterForm() {
         onSuccess: () => navigate({ to: '/' }),
         onError: (error) => {
           if (error instanceof ApiError)
-            setFieldErrors(toFieldErrors(error.issues))
+            setFieldErrors(toFieldErrors(error.issues, REGISTER_FIELDS))
         },
       },
     )
@@ -59,31 +58,7 @@ export function useRegisterForm() {
   return {
     handleSubmit,
     fieldErrors,
-    formError: getFormError(mutation.error),
+    formError: getFormError(mutation.error, REGISTER_FIELDS),
     isSubmitting: mutation.isPending,
   }
-}
-
-function toFieldErrors(
-  issues: ReadonlyArray<{ path: string; message: string }>,
-): RegisterFieldErrors {
-  const errors: RegisterFieldErrors = {}
-  for (const { path, message } of issues) {
-    if (!isRegisterField(path) || errors[path]) continue
-    errors[path] = message
-  }
-  return errors
-}
-
-function isRegisterField(path: string): path is RegisterField {
-  return (REGISTER_FIELDS as ReadonlyArray<string>).includes(path)
-}
-
-/** Erros de campo já aparecem no próprio campo; aqui só o que sobra. */
-function getFormError(error: Error | null): string | undefined {
-  if (!error) return undefined
-  if (!(error instanceof ApiError)) return 'Algo deu errado. Tente novamente.'
-  if (error.issues.some((issue) => isRegisterField(issue.path)))
-    return undefined
-  return error.message
 }

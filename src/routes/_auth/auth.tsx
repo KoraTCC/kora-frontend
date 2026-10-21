@@ -1,12 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { ShaderBackground } from '#/components/ui/ShaderBackground'
 import { LoginForm } from '#/features/auth/components/LoginForm'
+import { useLoginForm } from '#/features/auth/hooks/useLoginForm'
 
 export const Route = createFileRoute('/_auth/auth')({
   component: LoginPage,
 })
 
 function LoginPage() {
+  const { handleSubmit, fieldErrors, formError, isSubmitting } = useLoginForm()
+
   return (
     <main className="bg-canvas text-ink flex min-h-screen w-full flex-col lg:flex-row">
       <section className="border-line-soft relative min-h-80 flex-1 flex-col justify-between gap-10 overflow-hidden p-8 sm:p-12 hidden lg:flex lg:min-h-screen lg:border-r lg:p-14">
@@ -41,7 +44,12 @@ function LoginPage() {
             <p className="text-muted text-sm">Acesse o painel da sua loja.</p>
           </div>
 
-          <LoginForm />
+          <LoginForm
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+            fieldErrors={fieldErrors}
+            formError={formError}
+          />
         </div>
       </section>
     </main>
