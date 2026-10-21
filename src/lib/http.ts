@@ -33,6 +33,15 @@ const FALLBACK_MESSAGES: Record<number, string> = {
 }
 const DEFAULT_ERROR_MESSAGE = 'Algo deu errado. Tente novamente.'
 
+/** Rotas em que um 401 é a resposta final, não um access token vencido. */
+const NO_REFRESH_PATHS = new Set([
+  '/auth/login',
+  '/auth/register',
+  '/auth/refresh',
+])
+
+let pendingRefresh: Promise<void> | null = null
+
 /**
  * Tokens vivem em cookies httpOnly da API, então toda chamada vai com
  * `credentials: 'include'` e nada de autenticação passa pelo JavaScript.
@@ -41,7 +50,7 @@ export async function apiRequest<T>(
   path: string,
   { method = 'GET', body, schema }: RequestOptions<T>,
 ): Promise<T> {
-  const response = await sendRequest(path, method, body)
+  const response = await sendWithRefresh(path, method, body)
   const payload: unknown = await response.json().catch(() => null)
 
   if (!response.ok) throw toApiError(response.status, payload)
@@ -51,6 +60,33 @@ export async function apiRequest<T>(
     throw new ApiError(response.status, 'Resposta inesperada da API.')
   }
   return parsed.data
+}
+
+/**
+ * O access token dura poucos minutos. No primeiro 401, renova a sessão com o
+ * refresh token (outro cookie httpOnly) e repete a requisição uma vez.
+ */
+async function sendWithRefresh(path: string, method: string, body: unknown) {
+  const response = await sendRequest(path, method, body)
+  if (response.status !== 401 || NO_REFRESH_PATHS.has(path)) return response
+
+  await refreshSession()
+  return sendRequest(path, method, body)
+}
+
+/**
+ * Uma renovação por vez: requisições que falham juntas esperam a mesma.
+ * Renovar duas vezes com o mesmo token faria a API ver um reuso.
+ * O resultado não importa aqui: se falhou, a repetição devolve o 401.
+ */
+function refreshSession(): Promise<void> {
+  pendingRefresh ??= sendRequest('/auth/refresh', 'POST', undefined)
+    .then(() => undefined)
+    .catch(() => undefined)
+    .finally(() => {
+      pendingRefresh = null
+    })
+  return pendingRefresh
 }
 
 async function sendRequest(path: string, method: string, body: unknown) {
