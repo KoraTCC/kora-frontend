@@ -1,4 +1,7 @@
 import { calculatePasswordStrength } from '#/utils/passwordStrength'
+import { PASSWORD_MIN_LENGTH } from '../schemas'
+
+const HINT = `Mínimo de ${PASSWORD_MIN_LENGTH} caracteres. Frases longas são mais seguras.`
 
 type PasswordStrengthProps = {
   password: string
@@ -19,9 +22,7 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
           />
         ))}
       </div>
-      <p className="text-zinc-500 text-xs">
-        Mínimo de 10 caracteres, com número e símbolo
-      </p>
+      <p className="text-zinc-500 text-xs">{HINT}</p>
     </div>
   )
 }

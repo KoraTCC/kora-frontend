@@ -9,6 +9,24 @@ npm install
 npm run dev
 ```
 
+## Integração com a API (kora-backend)
+
+O front chama a API direto do navegador, com `credentials: 'include'` — a
+sessão fica em cookies httpOnly da API e nenhum token passa pelo JavaScript.
+
+1. Copie `.env.example` para `.env.local` e ajuste `VITE_API_URL` se preciso
+   (padrão: `http://localhost:3333`).
+2. No `apps/api/.env` do backend, como o front já usa a porta 3000:
+
+   ```
+   PORT=3333
+   FRONTEND_ORIGINS=http://localhost:3000
+   COOKIE_SECURE=false
+   ```
+
+Em produção, `VITE_API_URL` aponta para a URL pública da API e a URL do front
+precisa estar em `FRONTEND_ORIGINS`.
+
 # Building For Production
 
 To build this application for production:

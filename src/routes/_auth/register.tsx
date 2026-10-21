@@ -1,13 +1,16 @@
 import { ShaderBackground } from '#/components/ui/ShaderBackground'
 import { createFileRoute } from '@tanstack/react-router'
 import { RegisterForm } from '#/features/auth/components/RegisterForm'
+import { useRegisterForm } from '#/features/auth/hooks/useRegisterForm'
 
 export const Route = createFileRoute('/_auth/register')({
   component: RegisterPage,
 })
 
-// TODO: tela ainda não desenhada — existe para o link do login ter destino.
 function RegisterPage() {
+  const { handleSubmit, fieldErrors, formError, isSubmitting } =
+    useRegisterForm()
+
   return (
     <main className="bg-canvas text-ink flex min-h-screen w-full flex-col lg:flex-row">
       <section className="border-line-soft relative min-h-80 flex-1 flex-col justify-between gap-10 overflow-hidden p-8 sm:p-12 hidden lg:flex lg:min-h-screen lg:border-r lg:p-14">
@@ -22,7 +25,9 @@ function RegisterPage() {
             Aceite cripto no seu checkout, sem custódia.
           </h1>
           <p className="text-on-lime-soft max-w-115 leading-relaxed">
-            O Kora gera um endereço único por cobrança, detecta o pagamento na rede e avisa sua loja por webhook. O valor cai direto na sua carteira.
+            O Kora gera um endereço único por cobrança, detecta o pagamento na
+            rede e avisa sua loja por webhook. O valor cai direto na sua
+            carteira.
           </p>
         </div>
 
@@ -38,13 +43,19 @@ function RegisterPage() {
             <h2 className="font-display text-[28px] font-semibold tracking-tight">
               Criar conta
             </h2>
-            <p className="text-muted text-sm">Comece a aceitar cripto em poucos minutos.</p>
+            <p className="text-muted text-sm">
+              Comece a aceitar cripto em poucos minutos.
+            </p>
           </div>
 
-          <RegisterForm />
+          <RegisterForm
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+            fieldErrors={fieldErrors}
+            formError={formError}
+          />
         </div>
       </section>
     </main>
   )
 }
-
