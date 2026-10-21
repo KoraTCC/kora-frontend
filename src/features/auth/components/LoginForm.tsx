@@ -5,15 +5,25 @@ import { Checkbox } from '#/components/ui/Checkbox'
 import { Divider } from '#/components/ui/Divider'
 import { Input } from '#/components/ui/Input'
 import { PasswordInput } from '#/components/ui/PasswordInput'
+import type { LoginFieldErrors } from '../types'
 
 type LoginFormProps = {
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void
   isSubmitting?: boolean
-  error?: string  
+  fieldErrors?: LoginFieldErrors
+  formError?: string
   onSignupClick?: () => void
 }
 
-export function LoginForm({ onSubmit, isSubmitting, error, onSignupClick }: LoginFormProps) {
+export function LoginForm({
+  onSubmit,
+  isSubmitting,
+  fieldErrors = {},
+  formError,
+  onSignupClick,
+}: LoginFormProps) {
+  const submitLabel = isSubmitting ? 'Entrando…' : 'Entrar'
+
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-[22px]" noValidate>
       <Input
@@ -23,6 +33,7 @@ export function LoginForm({ onSubmit, isSubmitting, error, onSignupClick }: Logi
         autoComplete="email"
         placeholder="contato@lojaexemplo.com"
         required
+        error={fieldErrors.email}
       />
 
       <PasswordInput
@@ -30,7 +41,7 @@ export function LoginForm({ onSubmit, isSubmitting, error, onSignupClick }: Logi
         name="password"
         autoComplete="current-password"
         required
-        error={error}
+        error={fieldErrors.password}
         labelAction={
           <Link
             to="/forgot-password"
@@ -43,8 +54,14 @@ export function LoginForm({ onSubmit, isSubmitting, error, onSignupClick }: Logi
 
       <Checkbox label="Manter sessão" name="remember" defaultChecked />
 
-      <Button variant='primary' type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Entrando…' : 'Entrar'}
+      {formError ? (
+        <p role="alert" className="text-danger text-center text-[13px]">
+          {formError}
+        </p>
+      ) : null}
+
+      <Button variant="primary" type="submit" disabled={isSubmitting}>
+        {submitLabel}
       </Button>
 
       <Divider>ou</Divider>
