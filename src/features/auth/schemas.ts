@@ -33,6 +33,15 @@ export const registerSchema = z.object({
   password: passwordSchema,
 })
 
+// Espelha `loginSchema`: no login a senha só tem limite de tamanho.
+export const loginSchema = z.object({
+  email: emailSchema,
+  password: z
+    .string()
+    .min(1, 'Informe a senha')
+    .max(PASSWORD_MAX_LENGTH, 'Senha inválida'),
+})
+
 export const registerFormSchema = registerSchema
   .extend({
     confirmPassword: z.string(),
