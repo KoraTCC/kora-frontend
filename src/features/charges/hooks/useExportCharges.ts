@@ -1,5 +1,4 @@
-import { useFileDownload } from '#/hooks/useFileDownload'
-import { toCsv } from '#/lib/csv'
+import { useCsvExport } from '#/hooks/useCsvExport'
 import { NETWORK_META } from '#/features/networks/networks'
 import { CHARGE_STATUS_META } from '../chargeStatus'
 import type { Charge } from '../types'
@@ -18,7 +17,7 @@ const HEADER = [
 
 /** Exports the charges on screen as CSV. */
 export function useExportCharges() {
-  const download = useFileDownload()
+  const exportCsv = useCsvExport()
 
   return (charges: ReadonlyArray<Charge>) => {
     const rows = charges.map((charge) => [
@@ -32,6 +31,6 @@ export function useExportCharges() {
       CHARGE_STATUS_META[charge.status].label,
       charge.createdAt,
     ])
-    download('cobrancas.csv', toCsv(HEADER, rows), 'text/csv;charset=utf-8')
+    exportCsv('cobrancas.csv', HEADER, rows)
   }
 }

@@ -1,19 +1,22 @@
 import { Search } from 'lucide-react'
 import type { FormEvent } from 'react'
-import { Input } from '#/components/ui/Input'
+import { Input } from './Input'
 
-type ChargeSearchBoxProps = {
+type SearchBoxProps = {
+  /** Accessible name — "Buscar cobranças". */
+  label: string
   onSearch: (query: string) => void
   defaultValue?: string
   placeholder?: string
 }
 
 /** Search field that hands the query to its parent on submit (Enter). */
-export function ChargeSearchBox({
+export function SearchBox({
+  label,
   onSearch,
   defaultValue,
   placeholder = 'Buscar cobrança, pedido ou hash…',
-}: ChargeSearchBoxProps) {
+}: SearchBoxProps) {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const query = new FormData(event.currentTarget).get('q')
@@ -23,7 +26,7 @@ export function ChargeSearchBox({
   return (
     <form role="search" onSubmit={handleSubmit} className="w-full">
       <Input
-        label="Buscar cobranças"
+        label={label}
         isLabelHidden
         name="q"
         type="search"
