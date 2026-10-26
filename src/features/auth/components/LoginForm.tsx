@@ -6,6 +6,7 @@ import { Divider } from '#/components/ui/Divider'
 import { Input } from '#/components/ui/Input'
 import { PasswordInput } from '#/components/ui/PasswordInput'
 import type { LoginFieldErrors } from '../types'
+import { FormError } from './FormError'
 
 type LoginFormProps = {
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void
@@ -54,20 +55,16 @@ export function LoginForm({
 
       <Checkbox label="Manter sessão" name="remember" defaultChecked />
 
-      {formError ? (
-        <p role="alert" className="text-danger text-center text-[13px]">
-          {formError}
-        </p>
-      ) : null}
+      <FormError message={formError} />
 
-      <Button variant="primary" type="submit" disabled={isSubmitting}>
+      <Button type="submit" isBlock disabled={isSubmitting}>
         {submitLabel}
       </Button>
 
       <Divider>ou</Divider>
 
       <p className="text-muted text-center text-[13px]">
-        Não tem conta? {' '}
+        Não tem conta?{' '}
         <Link
           to="/register"
           className="text-lime font-semibold hover:underline"

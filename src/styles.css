@@ -29,6 +29,25 @@
   --color-lime-line: var(--kora-lime-border);
   --color-line-soft: var(--kora-border-soft);
   --color-danger: var(--status-failed);
+  --color-lime-bg: var(--kora-lime-bg);
+  --color-raised: var(--kora-raised);
+  --color-overlay: var(--kora-overlay);
+  --color-disabled: var(--kora-disabled);
+
+  --color-status-pending: var(--status-pending);
+  --color-status-detected: var(--status-detected);
+  --color-status-confirmed: var(--status-confirmed);
+  --color-status-expired: var(--status-expired);
+  --color-status-partial: var(--status-partial);
+  --color-status-failed: var(--status-failed);
+  --color-status-pending-border: var(--status-pending-border);
+  --color-status-detected-border: var(--status-detected-border);
+  --color-status-confirmed-border: var(--status-confirmed-border);
+  --color-status-expired-border: var(--status-expired-border);
+  --color-status-partial-border: var(--status-partial-border);
+  --color-status-failed-border: var(--status-failed-border);
+  --color-status-pending-bg: var(--status-pending-bg);
+  --color-status-pending-soft: var(--status-pending-soft);
 }
 
 /* ===========================================================================
@@ -64,6 +83,9 @@
   --kora-on-lime-dim: #2a4310;
   --kora-panel: #0e110e;
   --kora-text-faint: #5c6459;
+  --kora-raised: #101310;
+  --kora-overlay: rgba(6, 8, 6, 0.72);
+  --kora-disabled: #4b534a;
 
   /* status */
   --status-pending: #f2c14e;
@@ -72,6 +94,16 @@
   --status-expired: #6b7370;
   --status-partial: #f2934e;
   --status-failed: #f2564e;
+
+  /* status · badge border and callout background */
+  --status-pending-border: #4a3d18;
+  --status-detected-border: #2c4b22;
+  --status-confirmed-border: #35431f;
+  --status-expired-border: #2e352e;
+  --status-partial-border: #4a3117;
+  --status-failed-border: #46201e;
+  --status-pending-bg: #2a2314;
+  --status-pending-soft: #e8d9a8;
 
   /* espaçamento 4 · 8 · 12 · 16 · 24 · 32 · 48 */
   --space-1: 4px;
@@ -127,6 +159,11 @@
   --kora-lime-border: #b8d97a;
   --kora-lime-bg: #eef7d9;
   --kora-lime-glow: rgba(184, 242, 75, 0.28);
+  --kora-raised: #ffffff;
+  --kora-overlay: rgba(14, 17, 14, 0.4);
+  --kora-disabled: #a9b2a5;
+  --status-pending-bg: #fbf3dc;
+  --status-pending-soft: #6b5413;
 
   --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
   --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);
@@ -158,6 +195,11 @@
     --kora-lime-border: #b8d97a;
     --kora-lime-bg: #eef7d9;
     --kora-lime-glow: rgba(184, 242, 75, 0.28);
+    --kora-raised: #ffffff;
+    --kora-overlay: rgba(14, 17, 14, 0.4);
+    --kora-disabled: #a9b2a5;
+    --status-pending-bg: #fbf3dc;
+    --status-pending-soft: #6b5413;
 
     --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
     --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);
@@ -190,13 +232,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: var(--kora-lime-400);
-  text-decoration: none;
-}
+/* inside @layer base so utilities win (e.g. a router link styled as a button) */
+@layer base {
+  a {
+    color: var(--kora-lime-400);
+    text-decoration: none;
+  }
 
-a:hover {
-  color: var(--kora-lime-200);
+  a:hover {
+    color: var(--kora-lime-200);
+  }
 }
 
 code,

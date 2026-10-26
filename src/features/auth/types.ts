@@ -2,9 +2,13 @@ import type { z } from 'zod'
 import type { FieldErrors } from '#/lib/formErrors'
 import type {
   authResponseSchema,
+  emailVerificationSchema,
+  forgotPasswordSchema,
   loginSchema,
   registerFormSchema,
   registerSchema,
+  resetPasswordFormSchema,
+  twoFactorSchema,
   userSchema,
 } from './schemas'
 
@@ -19,3 +23,16 @@ export type RegisterFieldErrors = FieldErrors<RegisterField>
 
 export type LoginField = keyof LoginInput
 export type LoginFieldErrors = FieldErrors<LoginField>
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
+export type ForgotPasswordField = keyof ForgotPasswordInput
+export type ForgotPasswordFieldErrors = FieldErrors<ForgotPasswordField>
+
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordFormSchema>
+export type ResetPasswordInput = { token: string; password: string }
+export type ResetPasswordField = keyof ResetPasswordFormValues
+export type ResetPasswordFieldErrors = FieldErrors<ResetPasswordField>
+
+export type TwoFactorInput = z.infer<typeof twoFactorSchema>
+
+export type EmailVerification = z.infer<typeof emailVerificationSchema>

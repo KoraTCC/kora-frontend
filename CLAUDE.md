@@ -8,7 +8,7 @@ Toda contribuição — humana ou do Claude — segue estas regras.
 - **TanStack Start** + React 19, **TanStack Router** (file-based), **Tailwind 4**,
   TypeScript estrito, Vite 8.
 - ESLint (`@tanstack/eslint-config`) + Prettier (`semi: false`, `singleQuote: true`).
-- `npm run dev` (porta 3000) · `build` · `lint` · `format` · `check` · `generate-routes`.
+- `npm run dev` (porta 3000) · `build` · `lint` · `test` · `format` · `check` · `generate-routes`.
 
 Dois avisos do repo:
 
@@ -147,6 +147,18 @@ function StatusPagamento({ situacao }: { situacao: SituacaoPagamento }) { … }
 Um termo do domínio que não tem tradução estabelecida em inglês pode ficar como está, desde
 que seja consistente no projeto inteiro — decida uma vez e documente aqui.
 
+Glossário decidido:
+
+| Português    | Código                                                                  |
+| ------------ | ----------------------------------------------------------------------- |
+| cobrança     | `charge`                                                                |
+| lojista      | `merchant`                                                              |
+| carteira     | `wallet`                                                                |
+| rede         | `network`                                                               |
+| ativo        | `asset`                                                                 |
+| chave de API | `apiKey`                                                                |
+| status       | `pending` · `detected` · `confirmed` · `expired` · `partial` · `failed` |
+
 ---
 
 ## Regra 5 — telas e componentes sempre responsivos
@@ -193,6 +205,8 @@ adapto": a versão responsiva nasce junto com a tela, não numa passada posterio
 ### Contrato de API
 
 - **Zod** valida toda resposta de API antes de chegar na tela.
+- Endpoint que o kora-backend ainda não tem usa `mockRequest` (`src/lib/mock.ts`) no service:
+  mesma assinatura do `apiRequest` + `response`. Migrar = trocar a função e apagar `response`.
 - Os tipos do domínio são **derivados** do schema (`z.infer`), nunca escritos duas vezes.
 
 ### Estilo

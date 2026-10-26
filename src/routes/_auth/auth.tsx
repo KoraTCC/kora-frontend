@@ -1,57 +1,56 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ShaderBackground } from '#/components/ui/ShaderBackground'
+import { AuthHeading } from '#/features/auth/components/AuthHeading'
 import { LoginForm } from '#/features/auth/components/LoginForm'
+import { TwoFactorDialog } from '#/features/auth/components/TwoFactorDialog'
 import { useLoginForm } from '#/features/auth/hooks/useLoginForm'
+import { useTwoFactorForm } from '#/features/auth/hooks/useTwoFactorForm'
+import { loginSearchSchema } from '#/features/auth/schemas'
 
 export const Route = createFileRoute('/_auth/auth')({
+  validateSearch: loginSearchSchema,
   component: LoginPage,
 })
 
 function LoginPage() {
+  const { step } = Route.useSearch()
   const { handleSubmit, fieldErrors, formError, isSubmitting } = useLoginForm()
 
   return (
-    <main className="bg-canvas text-ink flex min-h-screen w-full flex-col lg:flex-row">
-      <section className="border-line-soft relative min-h-80 flex-1 flex-col justify-between gap-10 overflow-hidden p-8 sm:p-12 hidden lg:flex lg:min-h-screen lg:border-r lg:p-14">
-        <ShaderBackground />
+    <>
+      <AuthHeading title="Entrar" description="Acesse o painel da sua loja." />
+      <LoginForm
+        onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+        fieldErrors={fieldErrors}
+        formError={formError}
+      />
+      {step === 'two-factor' ? <TwoFactorStep /> : null}
+    </>
+  )
+}
 
-        <p className="font-display text-on-lime relative z-10 text-xl font-bold tracking-tight lg:text-[22px]">
-          Kora
-        </p>
+/** Mounted only while open, so the resend cooldown starts with the dialog. */
+function TwoFactorStep() {
+  const navigate = Route.useNavigate()
+  const twoFactor = useTwoFactorForm()
 
-        <div className="relative z-10 flex flex-col gap-4">
-          <h1 className="font-display text-on-lime max-w-135 text-3xl leading-[1.05] font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-            Receba em cripto sem custodiar nada.
-          </h1>
-          <p className="text-on-lime-soft max-w-115 leading-relaxed">
-            O Kora gera a cobrança, monitora a blockchain e avisa sua loja. As
-            chaves e os saldos continuam com o cliente.
-          </p>
-        </div>
+  function handleClose() {
+    void navigate({ search: {}, replace: true })
+  }
 
-        <p className="text-on-lime-dim relative z-10 hidden max-w-120 font-mono text-[11px] leading-relaxed lg:block">
-          Nenhuma chave privada passa pelo Kora. A loja recebe direto na
-          carteira que ela controla.
-        </p>
-      </section>
-
-      <section className="bg-panel flex w-full h-screen flex-none items-center justify-center p-8 sm:p-12 lg:w-[452px]">
-        <div className="flex w-full max-w-100 flex-col gap-[22px]">
-          <div className="flex flex-col gap-2">
-            <h2 className="font-display text-[28px] font-semibold tracking-tight">
-              Entrar
-            </h2>
-            <p className="text-muted text-sm">Acesse o painel da sua loja.</p>
-          </div>
-
-          <LoginForm
-            onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-            fieldErrors={fieldErrors}
-            formError={formError}
-          />
-        </div>
-      </section>
-    </main>
+  return (
+    <TwoFactorDialog
+      open
+      onClose={handleClose}
+      code={twoFactor.code}
+      onCodeChange={twoFactor.handleCodeChange}
+      codeError={twoFactor.codeError}
+      formError={twoFactor.formError}
+      onSubmit={twoFactor.handleSubmit}
+      isSubmitting={twoFactor.isSubmitting}
+      resendSecondsLeft={twoFactor.resendSecondsLeft}
+      onResend={twoFactor.handleResend}
+      isResending={twoFactor.isResending}
+    />
   )
 }
