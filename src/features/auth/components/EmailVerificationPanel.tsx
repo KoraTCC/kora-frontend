@@ -5,7 +5,7 @@ import { StatusBadge } from '#/components/ui/StatusBadge'
 import type { StatusTone } from '#/components/ui/StatusBadge'
 import type { EmailVerificationState } from '../hooks/useEmailVerification'
 import { AuthHeading } from './AuthHeading'
-import { FormError } from './FormError'
+import { FormError } from '#/components/ui/FormError'
 import { ResendHint } from './ResendHint'
 
 type EmailVerificationPanelProps = {

@@ -4,7 +4,7 @@ import { Button } from '#/components/ui/Button'
 import { Callout } from '#/components/ui/Callout'
 import { Input } from '#/components/ui/Input'
 import type { ForgotPasswordFieldErrors } from '../types'
-import { FormError } from './FormError'
+import { FormError } from '#/components/ui/FormError'
 
 type ForgotPasswordFormProps = {
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void

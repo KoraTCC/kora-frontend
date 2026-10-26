@@ -48,6 +48,9 @@
   --color-status-failed-border: var(--status-failed-border);
   --color-status-pending-bg: var(--status-pending-bg);
   --color-status-pending-soft: var(--status-pending-soft);
+  --color-status-failed-bg: var(--status-failed-bg);
+  --color-status-failed-soft: var(--status-failed-soft);
+  --color-sidebar: var(--kora-sidebar);
 }
 
 /* ===========================================================================
@@ -86,6 +89,7 @@
   --kora-raised: #101310;
   --kora-overlay: rgba(6, 8, 6, 0.72);
   --kora-disabled: #4b534a;
+  --kora-sidebar: #0c0f0b;
 
   /* status */
   --status-pending: #f2c14e;
@@ -104,6 +108,8 @@
   --status-failed-border: #46201e;
   --status-pending-bg: #2a2314;
   --status-pending-soft: #e8d9a8;
+  --status-failed-bg: #2a1514;
+  --status-failed-soft: #f0c4c1;
 
   /* espaçamento 4 · 8 · 12 · 16 · 24 · 32 · 48 */
   --space-1: 4px;
@@ -164,6 +170,9 @@
   --kora-disabled: #a9b2a5;
   --status-pending-bg: #fbf3dc;
   --status-pending-soft: #6b5413;
+  --status-failed-bg: #fbe4e2;
+  --status-failed-soft: #7a1f1a;
+  --kora-sidebar: #eef2ea;
 
   --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
   --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);
@@ -200,6 +209,9 @@
     --kora-disabled: #a9b2a5;
     --status-pending-bg: #fbf3dc;
     --status-pending-soft: #6b5413;
+    --status-failed-bg: #fbe4e2;
+    --status-failed-soft: #7a1f1a;
+    --kora-sidebar: #eef2ea;
 
     --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
     --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);

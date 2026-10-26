@@ -6,7 +6,7 @@ import { Checkbox } from '#/components/ui/Checkbox'
 import { Input } from '#/components/ui/Input'
 import { PasswordInput } from '#/components/ui/PasswordInput'
 import type { RegisterFieldErrors } from '../types'
-import { FormError } from './FormError'
+import { FormError } from '#/components/ui/FormError'
 import { PasswordStrength } from './PasswordStrength'
 
 type RegisterFormProps = {
