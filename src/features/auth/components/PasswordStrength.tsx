@@ -2,6 +2,7 @@ import { calculatePasswordStrength } from '#/utils/passwordStrength'
 import { PASSWORD_MIN_LENGTH } from '../schemas'
 
 const HINT = `Mínimo de ${PASSWORD_MIN_LENGTH} caracteres. Frases longas são mais seguras.`
+const SEGMENTS = [1, 2, 3, 4] as const
 
 type PasswordStrengthProps = {
   password: string
@@ -12,17 +13,17 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
 
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex gap-1.5 w-full">
-        {Array.from({ length: 4 }).map((_, index) => (
+      <div className="flex w-full gap-1.5" aria-hidden>
+        {SEGMENTS.map((segment) => (
           <div
-            key={index}
+            key={segment}
             className={`h-1.5 w-full rounded-full transition-all duration-300 ${
-              index < score ? 'bg-lime-400' : 'bg-zinc-800'
+              segment <= score ? 'bg-lime' : 'bg-line'
             }`}
           />
         ))}
       </div>
-      <p className="text-zinc-500 text-xs">{HINT}</p>
+      <p className="text-dim text-[11px]">{HINT}</p>
     </div>
   )
 }

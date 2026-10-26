@@ -6,6 +6,7 @@ import { Checkbox } from '#/components/ui/Checkbox'
 import { Input } from '#/components/ui/Input'
 import { PasswordInput } from '#/components/ui/PasswordInput'
 import type { RegisterFieldErrors } from '../types'
+import { FormError } from './FormError'
 import { PasswordStrength } from './PasswordStrength'
 
 type RegisterFormProps = {
@@ -87,15 +88,11 @@ export function RegisterForm({
         error={fieldErrors.acceptTerms}
       />
 
-      {formError ? (
-        <p role="alert" className="text-danger text-center text-[13px]">
-          {formError}
-        </p>
-      ) : null}
+      <FormError message={formError} />
 
       <Button
-        variant="primary"
         type="submit"
+        isBlock
         disabled={isSubmitting || passwordsMismatch}
       >
         {submitLabel}

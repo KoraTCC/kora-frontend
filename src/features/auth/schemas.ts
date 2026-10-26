@@ -62,3 +62,50 @@ export const userSchema = z.object({
 export const authResponseSchema = z.object({
   user: userSchema,
 })
+
+export const TWO_FACTOR_CODE_LENGTH = 6
+
+export const forgotPasswordSchema = z.object({
+  email: emailSchema,
+})
+
+export const resetPasswordFormSchema = z
+  .object({
+    password: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'As senhas não conferem',
+  })
+
+export const twoFactorSchema = z.object({
+  code: z
+    .string()
+    .regex(
+      new RegExp(`^\\d{${TWO_FACTOR_CODE_LENGTH}}$`),
+      `Digite os ${TWO_FACTOR_CODE_LENGTH} dígitos do código`,
+    ),
+})
+
+export const acknowledgementSchema = z.object({
+  ok: z.literal(true),
+})
+
+export const emailVerificationSchema = z.object({
+  status: z.enum(['pending', 'verified']),
+})
+
+// Search params: an invalid value falls back to "absent" instead of throwing.
+export const loginSearchSchema = z.object({
+  step: z.enum(['two-factor']).optional().catch(undefined),
+})
+
+export const resetPasswordSearchSchema = z.object({
+  token: z.string().min(1).optional().catch(undefined),
+  email: z.string().optional().catch(undefined),
+})
+
+export const verifyEmailSearchSchema = z.object({
+  email: z.string().optional().catch(undefined),
+})
