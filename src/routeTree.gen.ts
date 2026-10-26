@@ -21,6 +21,7 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-pa
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
+import { Route as PayChargeIdRouteImport } from './routes/pay.$chargeId'
 import { Route as AppChargesIndexRouteImport } from './routes/_app/charges/index'
 import { Route as AppChargesChargeIdRouteImport } from './routes/_app/charges/$chargeId'
 import { Route as AppChargesNewRouteImport } from './routes/_app/charges/new'
@@ -91,6 +92,11 @@ const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   path: '/verify-email',
   getParentRoute: () => AuthRoute,
 } as any)
+const PayChargeIdRoute = PayChargeIdRouteImport.update({
+  id: '/pay/$chargeId',
+  path: '/pay/$chargeId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppChargesIndexRoute = AppChargesIndexRouteImport.update({
   id: '/charges/',
   path: '/charges/',
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/pay/$chargeId': typeof PayChargeIdRoute
   '/charges/$chargeId': typeof AppChargesChargeIdRoute
   '/charges/new': typeof AppChargesNewRoute
   '/settings/billing': typeof AppSettingsBillingRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/pay/$chargeId': typeof PayChargeIdRoute
   '/charges/$chargeId': typeof AppChargesChargeIdRoute
   '/charges/new': typeof AppChargesNewRoute
   '/settings/billing': typeof AppSettingsBillingRoute
@@ -206,6 +214,7 @@ export interface FileRoutesById {
   '/_auth/register': typeof AuthRegisterRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
+  '/pay/$chargeId': typeof PayChargeIdRoute
   '/_app/': typeof AppIndexRoute
   '/_app/charges/$chargeId': typeof AppChargesChargeIdRoute
   '/_app/charges/new': typeof AppChargesNewRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/pay/$chargeId'
     | '/charges/$chargeId'
     | '/charges/new'
     | '/settings/billing'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/pay/$chargeId'
     | '/charges/$chargeId'
     | '/charges/new'
     | '/settings/billing'
@@ -279,6 +290,7 @@ export interface FileRouteTypes {
     | '/_auth/register'
     | '/_auth/reset-password'
     | '/_auth/verify-email'
+    | '/pay/$chargeId'
     | '/_app/'
     | '/_app/charges/$chargeId'
     | '/_app/charges/new'
@@ -296,6 +308,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  PayChargeIdRoute: typeof PayChargeIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -383,6 +396,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/verify-email'
       preLoaderRoute: typeof AuthVerifyEmailRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/pay/$chargeId': {
+      id: '/pay/$chargeId'
+      path: '/pay/$chargeId'
+      fullPath: '/pay/$chargeId'
+      preLoaderRoute: typeof PayChargeIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/charges/': {
       id: '/_app/charges/'
@@ -525,6 +545,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  PayChargeIdRoute: PayChargeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
