@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
@@ -22,6 +23,11 @@ import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as PayChargeIdRouteImport } from './routes/pay.$chargeId'
+import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin/index'
+import { Route as AdminAdminAuditRouteImport } from './routes/_admin/admin/audit'
+import { Route as AdminAdminChargesRouteImport } from './routes/_admin/admin/charges'
+import { Route as AdminAdminMerchantsRouteImport } from './routes/_admin/admin/merchants'
+import { Route as AdminAdminMonitoringRouteImport } from './routes/_admin/admin/monitoring'
 import { Route as AppChargesIndexRouteImport } from './routes/_app/charges/index'
 import { Route as AppChargesChargeIdRouteImport } from './routes/_app/charges/$chargeId'
 import { Route as AppChargesNewRouteImport } from './routes/_app/charges/new'
@@ -34,6 +40,10 @@ import { Route as AppSettingsWalletsRouteImport } from './routes/_app/settings/w
 import { Route as AppWebhooksIndexRouteImport } from './routes/_app/webhooks/index'
 import { Route as AppWebhooksLogsRouteImport } from './routes/_app/webhooks/logs'
 
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
@@ -96,6 +106,31 @@ const PayChargeIdRoute = PayChargeIdRouteImport.update({
   id: '/pay/$chargeId',
   path: '/pay/$chargeId',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminAuditRoute = AdminAdminAuditRouteImport.update({
+  id: '/admin/audit',
+  path: '/admin/audit',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminChargesRoute = AdminAdminChargesRouteImport.update({
+  id: '/admin/charges',
+  path: '/admin/charges',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminMerchantsRoute = AdminAdminMerchantsRouteImport.update({
+  id: '/admin/merchants',
+  path: '/admin/merchants',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminMonitoringRoute = AdminAdminMonitoringRouteImport.update({
+  id: '/admin/monitoring',
+  path: '/admin/monitoring',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AppChargesIndexRoute = AppChargesIndexRouteImport.update({
   id: '/charges/',
@@ -165,6 +200,10 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
   '/pay/$chargeId': typeof PayChargeIdRoute
+  '/admin/audit': typeof AdminAdminAuditRoute
+  '/admin/charges': typeof AdminAdminChargesRoute
+  '/admin/merchants': typeof AdminAdminMerchantsRoute
+  '/admin/monitoring': typeof AdminAdminMonitoringRoute
   '/charges/$chargeId': typeof AppChargesChargeIdRoute
   '/charges/new': typeof AppChargesNewRoute
   '/settings/billing': typeof AppSettingsBillingRoute
@@ -173,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/settings/team': typeof AppSettingsTeamRoute
   '/settings/wallets': typeof AppSettingsWalletsRoute
   '/webhooks/logs': typeof AppWebhooksLogsRoute
+  '/admin/': typeof AdminAdminIndexRoute
   '/charges/': typeof AppChargesIndexRoute
   '/settings/': typeof AppSettingsIndexRoute
   '/webhooks/': typeof AppWebhooksIndexRoute
@@ -189,6 +229,10 @@ export interface FileRoutesByTo {
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
   '/pay/$chargeId': typeof PayChargeIdRoute
+  '/admin/audit': typeof AdminAdminAuditRoute
+  '/admin/charges': typeof AdminAdminChargesRoute
+  '/admin/merchants': typeof AdminAdminMerchantsRoute
+  '/admin/monitoring': typeof AdminAdminMonitoringRoute
   '/charges/$chargeId': typeof AppChargesChargeIdRoute
   '/charges/new': typeof AppChargesNewRoute
   '/settings/billing': typeof AppSettingsBillingRoute
@@ -197,12 +241,14 @@ export interface FileRoutesByTo {
   '/settings/team': typeof AppSettingsTeamRoute
   '/settings/wallets': typeof AppSettingsWalletsRoute
   '/webhooks/logs': typeof AppWebhooksLogsRoute
+  '/admin': typeof AdminAdminIndexRoute
   '/charges': typeof AppChargesIndexRoute
   '/settings': typeof AppSettingsIndexRoute
   '/webhooks': typeof AppWebhooksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_admin': typeof AdminRouteWithChildren
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
   '/_app/api-keys': typeof AppApiKeysRoute
@@ -216,6 +262,10 @@ export interface FileRoutesById {
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/pay/$chargeId': typeof PayChargeIdRoute
   '/_app/': typeof AppIndexRoute
+  '/_admin/admin/audit': typeof AdminAdminAuditRoute
+  '/_admin/admin/charges': typeof AdminAdminChargesRoute
+  '/_admin/admin/merchants': typeof AdminAdminMerchantsRoute
+  '/_admin/admin/monitoring': typeof AdminAdminMonitoringRoute
   '/_app/charges/$chargeId': typeof AppChargesChargeIdRoute
   '/_app/charges/new': typeof AppChargesNewRoute
   '/_app/settings/billing': typeof AppSettingsBillingRoute
@@ -224,6 +274,7 @@ export interface FileRoutesById {
   '/_app/settings/team': typeof AppSettingsTeamRoute
   '/_app/settings/wallets': typeof AppSettingsWalletsRoute
   '/_app/webhooks/logs': typeof AppWebhooksLogsRoute
+  '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_app/charges/': typeof AppChargesIndexRoute
   '/_app/settings/': typeof AppSettingsIndexRoute
   '/_app/webhooks/': typeof AppWebhooksIndexRoute
@@ -242,6 +293,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/verify-email'
     | '/pay/$chargeId'
+    | '/admin/audit'
+    | '/admin/charges'
+    | '/admin/merchants'
+    | '/admin/monitoring'
     | '/charges/$chargeId'
     | '/charges/new'
     | '/settings/billing'
@@ -250,6 +305,7 @@ export interface FileRouteTypes {
     | '/settings/team'
     | '/settings/wallets'
     | '/webhooks/logs'
+    | '/admin/'
     | '/charges/'
     | '/settings/'
     | '/webhooks/'
@@ -266,6 +322,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/verify-email'
     | '/pay/$chargeId'
+    | '/admin/audit'
+    | '/admin/charges'
+    | '/admin/merchants'
+    | '/admin/monitoring'
     | '/charges/$chargeId'
     | '/charges/new'
     | '/settings/billing'
@@ -274,11 +334,13 @@ export interface FileRouteTypes {
     | '/settings/team'
     | '/settings/wallets'
     | '/webhooks/logs'
+    | '/admin'
     | '/charges'
     | '/settings'
     | '/webhooks'
   id:
     | '__root__'
+    | '/_admin'
     | '/_app'
     | '/_auth'
     | '/_app/api-keys'
@@ -292,6 +354,10 @@ export interface FileRouteTypes {
     | '/_auth/verify-email'
     | '/pay/$chargeId'
     | '/_app/'
+    | '/_admin/admin/audit'
+    | '/_admin/admin/charges'
+    | '/_admin/admin/merchants'
+    | '/_admin/admin/monitoring'
     | '/_app/charges/$chargeId'
     | '/_app/charges/new'
     | '/_app/settings/billing'
@@ -300,12 +366,14 @@ export interface FileRouteTypes {
     | '/_app/settings/team'
     | '/_app/settings/wallets'
     | '/_app/webhooks/logs'
+    | '/_admin/admin/'
     | '/_app/charges/'
     | '/_app/settings/'
     | '/_app/webhooks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   PayChargeIdRoute: typeof PayChargeIdRoute
@@ -313,6 +381,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app': {
       id: '/_app'
       path: ''
@@ -404,6 +479,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PayChargeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/admin/': {
+      id: '/_admin/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminAdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/audit': {
+      id: '/_admin/admin/audit'
+      path: '/admin/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAdminAuditRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/charges': {
+      id: '/_admin/admin/charges'
+      path: '/admin/charges'
+      fullPath: '/admin/charges'
+      preLoaderRoute: typeof AdminAdminChargesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/merchants': {
+      id: '/_admin/admin/merchants'
+      path: '/admin/merchants'
+      fullPath: '/admin/merchants'
+      preLoaderRoute: typeof AdminAdminMerchantsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/monitoring': {
+      id: '/_admin/admin/monitoring'
+      path: '/admin/monitoring'
+      fullPath: '/admin/monitoring'
+      preLoaderRoute: typeof AdminAdminMonitoringRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_app/charges/': {
       id: '/_app/charges/'
       path: '/charges'
@@ -484,6 +594,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminAdminAuditRoute: typeof AdminAdminAuditRoute
+  AdminAdminChargesRoute: typeof AdminAdminChargesRoute
+  AdminAdminMerchantsRoute: typeof AdminAdminMerchantsRoute
+  AdminAdminMonitoringRoute: typeof AdminAdminMonitoringRoute
+  AdminAdminIndexRoute: typeof AdminAdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAdminAuditRoute: AdminAdminAuditRoute,
+  AdminAdminChargesRoute: AdminAdminChargesRoute,
+  AdminAdminMerchantsRoute: AdminAdminMerchantsRoute,
+  AdminAdminMonitoringRoute: AdminAdminMonitoringRoute,
+  AdminAdminIndexRoute: AdminAdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface AppRouteChildren {
   AppApiKeysRoute: typeof AppApiKeysRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -543,6 +671,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  AdminRoute: AdminRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   PayChargeIdRoute: PayChargeIdRoute,

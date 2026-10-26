@@ -3,7 +3,7 @@ import { Button } from '#/components/ui/Button'
 import { Select } from '#/components/ui/Select'
 import { NETWORKS, NETWORK_META } from '#/features/networks/networks'
 import type { ChargeListSearch } from '../types'
-import { ChargeSearchBox } from './ChargeSearchBox'
+import { SearchBox } from '#/components/ui/SearchBox'
 
 const NETWORK_OPTIONS = [
   { value: '', label: 'Todas as redes' },
@@ -31,7 +31,8 @@ export function ChargeListToolbar({
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
       <div className="sm:w-72">
-        <ChargeSearchBox
+        <SearchBox
+          label="Buscar cobranças"
           key={search.q}
           defaultValue={search.q}
           onSearch={onQueryChange}

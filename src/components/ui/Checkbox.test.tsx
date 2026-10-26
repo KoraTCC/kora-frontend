@@ -18,4 +18,12 @@ describe('Checkbox', () => {
       screen.getByRole('checkbox', { name: 'Aceito' }),
     ).toHaveAccessibleDescription('Aceite os termos')
   })
+
+  it('can hide its label visually but keep the accessible name', () => {
+    render(<Checkbox label="Selecionar Mercado Vila" isLabelHidden />)
+    expect(
+      screen.getByRole('checkbox', { name: 'Selecionar Mercado Vila' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Selecionar Mercado Vila')).toHaveClass('sr-only')
+  })
 })

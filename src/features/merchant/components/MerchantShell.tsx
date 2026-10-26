@@ -7,6 +7,7 @@ import {
   LogOut,
   ReceiptText,
   Settings2,
+  ShieldCheck,
   Webhook,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -17,7 +18,7 @@ import { Avatar } from '#/components/ui/Avatar'
 import { useCurrentUser } from '#/features/auth/hooks/useCurrentUser'
 import { useLogout } from '#/features/auth/hooks/useLogout'
 import { getInitials } from '#/features/auth/initials'
-import { ChargeSearchBox } from '#/features/charges/components/ChargeSearchBox'
+import { SearchBox } from '#/components/ui/SearchBox'
 import { useChargeStats } from '#/features/charges/hooks/useCharges'
 import { useWebhookEndpoints } from '#/features/webhooks/hooks/useWebhooks'
 import { useMerchant } from '../hooks/useMerchant'
@@ -45,6 +46,7 @@ export function MerchantShell({ children }: MerchantShellProps) {
   const footerItems: Array<SidebarItem> = [
     { label: 'Configurações', icon: Settings2, to: '/settings' },
     { label: 'Documentação', icon: BookOpen, to: '/docs' },
+    { label: 'Painel administrativo', icon: ShieldCheck, to: '/admin' },
     { label: 'Sair', icon: LogOut, onClick: handleLogout },
   ]
   const initials = user ? getInitials(user.name) : '··'
@@ -63,7 +65,9 @@ export function MerchantShell({ children }: MerchantShellProps) {
           onNavigate={onNavigate}
         />
       )}
-      topbarStart={<ChargeSearchBox onSearch={handleSearch} />}
+      topbarStart={
+        <SearchBox label="Buscar cobranças" onSearch={handleSearch} />
+      }
       topbarEnd={
         <>
           {merchant ? (

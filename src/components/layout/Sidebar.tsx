@@ -11,6 +11,8 @@ export type SidebarItem = {
   onClick?: () => void
   /** Right-aligned extra: a count, a status dot. */
   indicator?: ReactNode
+  /** Active only on this exact path, not on its children (e.g. an index page). */
+  isExact?: boolean
 }
 
 export type SidebarSection = {
@@ -109,6 +111,7 @@ function SidebarLink({ item, onNavigate }: SidebarLinkProps) {
       onClick={onNavigate}
       className={ITEM_CLASSES}
       activeProps={ACTIVE_PROPS}
+      activeOptions={{ exact: item.isExact ?? false }}
     >
       {content}
     </Link>
