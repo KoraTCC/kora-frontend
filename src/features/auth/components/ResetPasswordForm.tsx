@@ -5,7 +5,7 @@ import { Button, buttonClasses } from '#/components/ui/Button'
 import { Callout } from '#/components/ui/Callout'
 import { PasswordInput } from '#/components/ui/PasswordInput'
 import type { ResetPasswordFieldErrors } from '../types'
-import { FormError } from './FormError'
+import { FormError } from '#/components/ui/FormError'
 import { PasswordStrength } from './PasswordStrength'
 
 type ResetPasswordFormProps = {

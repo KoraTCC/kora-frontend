@@ -4,7 +4,7 @@ import { Button } from '#/components/ui/Button'
 import { Modal } from '#/components/ui/Modal'
 import { OtpInput } from '#/components/ui/OtpInput'
 import { TWO_FACTOR_CODE_LENGTH } from '../schemas'
-import { FormError } from './FormError'
+import { FormError } from '#/components/ui/FormError'
 import { ResendHint } from './ResendHint'
 
 type TwoFactorDialogProps = {

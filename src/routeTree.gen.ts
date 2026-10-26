@@ -12,11 +12,26 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppApiKeysRouteImport } from './routes/_app/api-keys'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppDocsRouteImport } from './routes/_app/docs'
+import { Route as AppLogsRouteImport } from './routes/_app/logs'
 import { Route as AuthAuthRouteImport } from './routes/_auth/auth'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
+import { Route as AppChargesIndexRouteImport } from './routes/_app/charges/index'
+import { Route as AppChargesChargeIdRouteImport } from './routes/_app/charges/$chargeId'
+import { Route as AppChargesNewRouteImport } from './routes/_app/charges/new'
+import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
+import { Route as AppSettingsBillingRouteImport } from './routes/_app/settings/billing'
+import { Route as AppSettingsProfileRouteImport } from './routes/_app/settings/profile'
+import { Route as AppSettingsSecurityRouteImport } from './routes/_app/settings/security'
+import { Route as AppSettingsTeamRouteImport } from './routes/_app/settings/team'
+import { Route as AppSettingsWalletsRouteImport } from './routes/_app/settings/wallets'
+import { Route as AppWebhooksIndexRouteImport } from './routes/_app/webhooks/index'
+import { Route as AppWebhooksLogsRouteImport } from './routes/_app/webhooks/logs'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -29,6 +44,26 @@ const AuthRoute = AuthRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppApiKeysRoute = AppApiKeysRouteImport.update({
+  id: '/api-keys',
+  path: '/api-keys',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDocsRoute = AppDocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLogsRoute = AppLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
   getParentRoute: () => AppRoute,
 } as any)
 const AuthAuthRoute = AuthAuthRouteImport.update({
@@ -56,61 +91,206 @@ const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   path: '/verify-email',
   getParentRoute: () => AuthRoute,
 } as any)
+const AppChargesIndexRoute = AppChargesIndexRouteImport.update({
+  id: '/charges/',
+  path: '/charges/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChargesChargeIdRoute = AppChargesChargeIdRouteImport.update({
+  id: '/charges/$chargeId',
+  path: '/charges/$chargeId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChargesNewRoute = AppChargesNewRouteImport.update({
+  id: '/charges/new',
+  path: '/charges/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsBillingRoute = AppSettingsBillingRouteImport.update({
+  id: '/settings/billing',
+  path: '/settings/billing',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsProfileRoute = AppSettingsProfileRouteImport.update({
+  id: '/settings/profile',
+  path: '/settings/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsSecurityRoute = AppSettingsSecurityRouteImport.update({
+  id: '/settings/security',
+  path: '/settings/security',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsTeamRoute = AppSettingsTeamRouteImport.update({
+  id: '/settings/team',
+  path: '/settings/team',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsWalletsRoute = AppSettingsWalletsRouteImport.update({
+  id: '/settings/wallets',
+  path: '/settings/wallets',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWebhooksIndexRoute = AppWebhooksIndexRouteImport.update({
+  id: '/webhooks/',
+  path: '/webhooks/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWebhooksLogsRoute = AppWebhooksLogsRouteImport.update({
+  id: '/webhooks/logs',
+  path: '/webhooks/logs',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/api-keys': typeof AppApiKeysRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/docs': typeof AppDocsRoute
+  '/logs': typeof AppLogsRoute
   '/auth': typeof AuthAuthRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/charges/$chargeId': typeof AppChargesChargeIdRoute
+  '/charges/new': typeof AppChargesNewRoute
+  '/settings/billing': typeof AppSettingsBillingRoute
+  '/settings/profile': typeof AppSettingsProfileRoute
+  '/settings/security': typeof AppSettingsSecurityRoute
+  '/settings/team': typeof AppSettingsTeamRoute
+  '/settings/wallets': typeof AppSettingsWalletsRoute
+  '/webhooks/logs': typeof AppWebhooksLogsRoute
+  '/charges/': typeof AppChargesIndexRoute
+  '/settings/': typeof AppSettingsIndexRoute
+  '/webhooks/': typeof AppWebhooksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
+  '/api-keys': typeof AppApiKeysRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/docs': typeof AppDocsRoute
+  '/logs': typeof AppLogsRoute
   '/auth': typeof AuthAuthRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/charges/$chargeId': typeof AppChargesChargeIdRoute
+  '/charges/new': typeof AppChargesNewRoute
+  '/settings/billing': typeof AppSettingsBillingRoute
+  '/settings/profile': typeof AppSettingsProfileRoute
+  '/settings/security': typeof AppSettingsSecurityRoute
+  '/settings/team': typeof AppSettingsTeamRoute
+  '/settings/wallets': typeof AppSettingsWalletsRoute
+  '/webhooks/logs': typeof AppWebhooksLogsRoute
+  '/charges': typeof AppChargesIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
+  '/webhooks': typeof AppWebhooksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
+  '/_app/api-keys': typeof AppApiKeysRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/docs': typeof AppDocsRoute
+  '/_app/logs': typeof AppLogsRoute
   '/_auth/auth': typeof AuthAuthRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/charges/$chargeId': typeof AppChargesChargeIdRoute
+  '/_app/charges/new': typeof AppChargesNewRoute
+  '/_app/settings/billing': typeof AppSettingsBillingRoute
+  '/_app/settings/profile': typeof AppSettingsProfileRoute
+  '/_app/settings/security': typeof AppSettingsSecurityRoute
+  '/_app/settings/team': typeof AppSettingsTeamRoute
+  '/_app/settings/wallets': typeof AppSettingsWalletsRoute
+  '/_app/webhooks/logs': typeof AppWebhooksLogsRoute
+  '/_app/charges/': typeof AppChargesIndexRoute
+  '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_app/webhooks/': typeof AppWebhooksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api-keys'
+    | '/dashboard'
+    | '/docs'
+    | '/logs'
     | '/auth'
     | '/forgot-password'
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/charges/$chargeId'
+    | '/charges/new'
+    | '/settings/billing'
+    | '/settings/profile'
+    | '/settings/security'
+    | '/settings/team'
+    | '/settings/wallets'
+    | '/webhooks/logs'
+    | '/charges/'
+    | '/settings/'
+    | '/webhooks/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api-keys'
+    | '/dashboard'
+    | '/docs'
+    | '/logs'
     | '/auth'
     | '/forgot-password'
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/charges/$chargeId'
+    | '/charges/new'
+    | '/settings/billing'
+    | '/settings/profile'
+    | '/settings/security'
+    | '/settings/team'
+    | '/settings/wallets'
+    | '/webhooks/logs'
+    | '/charges'
+    | '/settings'
+    | '/webhooks'
   id:
     | '__root__'
     | '/_app'
     | '/_auth'
+    | '/_app/api-keys'
+    | '/_app/dashboard'
+    | '/_app/docs'
+    | '/_app/logs'
     | '/_auth/auth'
     | '/_auth/forgot-password'
     | '/_auth/register'
     | '/_auth/reset-password'
     | '/_auth/verify-email'
     | '/_app/'
+    | '/_app/charges/$chargeId'
+    | '/_app/charges/new'
+    | '/_app/settings/billing'
+    | '/_app/settings/profile'
+    | '/_app/settings/security'
+    | '/_app/settings/team'
+    | '/_app/settings/wallets'
+    | '/_app/webhooks/logs'
+    | '/_app/charges/'
+    | '/_app/settings/'
+    | '/_app/webhooks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -139,6 +319,34 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/api-keys': {
+      id: '/_app/api-keys'
+      path: '/api-keys'
+      fullPath: '/api-keys'
+      preLoaderRoute: typeof AppApiKeysRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/docs': {
+      id: '/_app/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof AppDocsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/logs': {
+      id: '/_app/logs'
+      path: '/logs'
+      fullPath: '/logs'
+      preLoaderRoute: typeof AppLogsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_auth/auth': {
@@ -176,15 +384,122 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyEmailRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_app/charges/': {
+      id: '/_app/charges/'
+      path: '/charges'
+      fullPath: '/charges/'
+      preLoaderRoute: typeof AppChargesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/charges/$chargeId': {
+      id: '/_app/charges/$chargeId'
+      path: '/charges/$chargeId'
+      fullPath: '/charges/$chargeId'
+      preLoaderRoute: typeof AppChargesChargeIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/charges/new': {
+      id: '/_app/charges/new'
+      path: '/charges/new'
+      fullPath: '/charges/new'
+      preLoaderRoute: typeof AppChargesNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/': {
+      id: '/_app/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AppSettingsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/billing': {
+      id: '/_app/settings/billing'
+      path: '/settings/billing'
+      fullPath: '/settings/billing'
+      preLoaderRoute: typeof AppSettingsBillingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/profile': {
+      id: '/_app/settings/profile'
+      path: '/settings/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof AppSettingsProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/security': {
+      id: '/_app/settings/security'
+      path: '/settings/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof AppSettingsSecurityRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/team': {
+      id: '/_app/settings/team'
+      path: '/settings/team'
+      fullPath: '/settings/team'
+      preLoaderRoute: typeof AppSettingsTeamRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/wallets': {
+      id: '/_app/settings/wallets'
+      path: '/settings/wallets'
+      fullPath: '/settings/wallets'
+      preLoaderRoute: typeof AppSettingsWalletsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/webhooks/': {
+      id: '/_app/webhooks/'
+      path: '/webhooks'
+      fullPath: '/webhooks/'
+      preLoaderRoute: typeof AppWebhooksIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/webhooks/logs': {
+      id: '/_app/webhooks/logs'
+      path: '/webhooks/logs'
+      fullPath: '/webhooks/logs'
+      preLoaderRoute: typeof AppWebhooksLogsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppApiKeysRoute: typeof AppApiKeysRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppDocsRoute: typeof AppDocsRoute
+  AppLogsRoute: typeof AppLogsRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppChargesChargeIdRoute: typeof AppChargesChargeIdRoute
+  AppChargesNewRoute: typeof AppChargesNewRoute
+  AppSettingsBillingRoute: typeof AppSettingsBillingRoute
+  AppSettingsProfileRoute: typeof AppSettingsProfileRoute
+  AppSettingsSecurityRoute: typeof AppSettingsSecurityRoute
+  AppSettingsTeamRoute: typeof AppSettingsTeamRoute
+  AppSettingsWalletsRoute: typeof AppSettingsWalletsRoute
+  AppWebhooksLogsRoute: typeof AppWebhooksLogsRoute
+  AppChargesIndexRoute: typeof AppChargesIndexRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+  AppWebhooksIndexRoute: typeof AppWebhooksIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppApiKeysRoute: AppApiKeysRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppDocsRoute: AppDocsRoute,
+  AppLogsRoute: AppLogsRoute,
   AppIndexRoute: AppIndexRoute,
+  AppChargesChargeIdRoute: AppChargesChargeIdRoute,
+  AppChargesNewRoute: AppChargesNewRoute,
+  AppSettingsBillingRoute: AppSettingsBillingRoute,
+  AppSettingsProfileRoute: AppSettingsProfileRoute,
+  AppSettingsSecurityRoute: AppSettingsSecurityRoute,
+  AppSettingsTeamRoute: AppSettingsTeamRoute,
+  AppSettingsWalletsRoute: AppSettingsWalletsRoute,
+  AppWebhooksLogsRoute: AppWebhooksLogsRoute,
+  AppChargesIndexRoute: AppChargesIndexRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
+  AppWebhooksIndexRoute: AppWebhooksIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

@@ -8,6 +8,9 @@ type InputProps = ComponentPropsWithoutRef<'input'> & {
   /** Conteúdo dentro do campo, encostado à direita — ex.: "Mostrar". */
   trailing?: ReactNode
   error?: string
+  hint?: string
+  /** Keeps the label for screen readers only — search boxes, filter bars. */
+  isLabelHidden?: boolean
 }
 
 export function Input({
@@ -15,6 +18,8 @@ export function Input({
   labelAction,
   trailing,
   error,
+  hint,
+  isLabelHidden = false,
   id,
   className = '',
   ...props
@@ -22,11 +27,16 @@ export function Input({
   const generatedId = useId()
   const inputId = id ?? generatedId
   const errorId = `${inputId}-error`
+  const helperText = error ?? hint
+  const helperClasses = error ? 'text-danger text-xs' : 'text-dim text-[11px]'
+  const labelClasses = isLabelHidden
+    ? 'sr-only'
+    : 'text-muted text-xs font-semibold'
 
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-3">
-        <label htmlFor={inputId} className="text-muted text-xs font-semibold">
+        <label htmlFor={inputId} className={labelClasses}>
           {label}
         </label>
         {labelAction}
@@ -37,15 +47,15 @@ export function Input({
           {...props}
           id={inputId}
           aria-invalid={Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
+          aria-describedby={helperText ? errorId : undefined}
           className={`text-ink placeholder:text-dim min-w-0 flex-1 bg-transparent text-sm outline-none ${className}`}
         />
         {trailing}
       </div>
 
-      {error ? (
-        <p id={errorId} className="text-danger text-xs">
-          {error}
+      {helperText ? (
+        <p id={errorId} className={helperClasses}>
+          {helperText}
         </p>
       ) : null}
     </div>

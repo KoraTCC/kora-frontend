@@ -6,6 +6,7 @@ import { IconButton } from './IconButton'
 
 type ModalSize = 'sm' | 'md' | 'lg'
 type ModalAlign = 'start' | 'center'
+type ModalVariant = 'dialog' | 'drawer'
 
 type ModalProps = {
   open: boolean
@@ -15,6 +16,8 @@ type ModalProps = {
   size?: ModalSize
   /** Header alignment. */
   align?: ModalAlign
+  /** `drawer` slides from the left edge, full height (mobile navigation); its title is visually hidden. */
+  variant?: ModalVariant
   footer?: ReactNode
   children?: ReactNode
 }
@@ -23,6 +26,23 @@ const SIZE_CLASSES: Record<ModalSize, string> = {
   sm: 'max-w-[400px]',
   md: 'max-w-[472px]',
   lg: 'max-w-[640px]',
+}
+
+const VARIANT_CLASSES: Record<
+  ModalVariant,
+  { dialog: string; body: string; header: string }
+> = {
+  dialog: {
+    dialog: 'm-auto w-[calc(100%-2rem)] rounded-[18px] border',
+    body: 'gap-6 px-5 pt-12 pb-6 sm:px-8 sm:pt-10 sm:pb-8',
+    header: 'flex flex-col gap-2',
+  },
+  drawer: {
+    dialog:
+      'my-0 mr-auto ml-0 h-dvh max-h-none w-[min(300px,86vw)] rounded-none border-r',
+    body: 'h-full',
+    header: 'sr-only',
+  },
 }
 
 const ALIGN_CLASSES: Record<ModalAlign, string> = {
@@ -43,12 +63,14 @@ export function Modal({
   description,
   size = 'md',
   align = 'start',
+  variant = 'dialog',
   footer,
   children,
 }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const titleId = useId()
   const descriptionId = useId()
+  const variantClasses = VARIANT_CLASSES[variant]
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -88,12 +110,13 @@ export function Modal({
       onCancel={handleCancel}
       onClick={handleBackdropClick}
       className={cn(
-        'bg-raised border-line-strong text-ink backdrop:bg-overlay m-auto w-[calc(100%-2rem)] rounded-[18px] border p-0 shadow-(--elev-2)',
-        SIZE_CLASSES[size],
+        'bg-raised border-line-strong text-ink backdrop:bg-overlay p-0 shadow-(--elev-2)',
+        variantClasses.dialog,
+        variant === 'dialog' && SIZE_CLASSES[size],
       )}
     >
       {open ? (
-        <div className="relative flex flex-col gap-6 px-5 pt-12 pb-6 sm:px-8 sm:pt-10 sm:pb-8">
+        <div className={cn('relative flex flex-col', variantClasses.body)}>
           <IconButton
             label="Fechar"
             icon={<X size={14} aria-hidden />}
@@ -101,7 +124,7 @@ export function Modal({
             className="absolute top-3 right-3 sm:top-[18px] sm:right-[18px]"
           />
 
-          <header className={cn('flex flex-col gap-2', ALIGN_CLASSES[align])}>
+          <header className={cn(variantClasses.header, ALIGN_CLASSES[align])}>
             <h2
               id={titleId}
               className="font-display text-xl font-semibold tracking-tight sm:text-2xl"

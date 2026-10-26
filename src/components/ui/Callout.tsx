@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-type CalloutTone = 'neutral' | 'warning'
+type CalloutTone = 'neutral' | 'warning' | 'danger'
 
 type CalloutProps = {
   tone?: CalloutTone
@@ -15,6 +15,10 @@ const TONE_CLASSES: Record<CalloutTone, { box: string; dot: string }> = {
   warning: {
     box: 'bg-status-pending-bg border-status-pending-border text-status-pending-soft',
     dot: 'bg-status-pending',
+  },
+  danger: {
+    box: 'bg-status-failed-bg border-status-failed-border text-status-failed-soft',
+    dot: 'bg-status-failed',
   },
 }
 

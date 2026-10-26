@@ -6,7 +6,7 @@ import { Divider } from '#/components/ui/Divider'
 import { Input } from '#/components/ui/Input'
 import { PasswordInput } from '#/components/ui/PasswordInput'
 import type { LoginFieldErrors } from '../types'
-import { FormError } from './FormError'
+import { FormError } from '#/components/ui/FormError'
 
 type LoginFormProps = {
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void

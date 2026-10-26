@@ -86,3 +86,11 @@ export function getEmailVerification(
     response: { status: 'pending' },
   })
 }
+
+export function logout(): Promise<Acknowledgement> {
+  return mockRequest('/auth/logout', {
+    method: 'POST',
+    schema: acknowledgementSchema,
+    response: OK,
+  })
+}
