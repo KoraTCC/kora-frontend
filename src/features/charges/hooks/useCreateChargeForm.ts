@@ -87,7 +87,11 @@ export function useCreateChargeForm() {
       { ...rest, amountCents: parseBRLAmount(amount) ?? 0 },
       {
         onSuccess: async ({ id }) => {
-          if (intent === 'copy') await copyCheckoutLink(id)
+          if (intent === 'open') {
+            await navigate({ to: '/pay/$chargeId', params: { chargeId: id } })
+            return
+          }
+          await copyCheckoutLink(id)
           await navigate({ to: '/charges/$chargeId', params: { chargeId: id } })
         },
         onError: (error) => {

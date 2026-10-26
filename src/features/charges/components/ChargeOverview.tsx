@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { Button, buttonClasses } from '#/components/ui/Button'
@@ -57,6 +58,15 @@ export function ChargeOverview({ charge }: ChargeOverviewProps) {
       </div>
 
       <div className="flex flex-wrap gap-2">
+        <Link
+          to="/pay/$chargeId"
+          params={{ chargeId: charge.id }}
+          target="_blank"
+          className={buttonClasses({ variant: 'secondary', size: 'sm' })}
+        >
+          Ver página de pagamento
+          <ExternalLink size={12} aria-hidden />
+        </Link>
         {explorerUrl ? (
           <a
             href={explorerUrl}

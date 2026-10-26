@@ -136,6 +136,13 @@ const STATUS_CYCLE: Array<ChargeStatus> = [
 ]
 const TOTAL_CHARGES = 148
 
+/** Sample receiving address per network — EVM chains share the format. */
+export const SAMPLE_ADDRESSES: Record<Network, string> = {
+  sepolia: '0x7a3f9b2c4e81d55a06f39b7710c8d419c21f',
+  amoy: '0x91be44ad0c7f2e6318bb59d0a4c7715e2f80d3ca',
+  'bitcoin-testnet': 'tb1q9x4fz0d8k2m7n3p5r6s8t0v2w4y6a8c7h2ka0',
+}
+
 const CONFIRMATION_PROGRESS: Record<ChargeStatus, number> = {
   pending: 0,
   detected: 0.25,
@@ -207,7 +214,7 @@ export function buildChargeDetail(charge: Charge): ChargeDetail {
 
   return {
     ...charge,
-    address: '0x7a3f9b2c4e81d55a06f39b7710c8d419c21f',
+    address: SAMPLE_ADDRESSES[charge.network],
     txHash: isPaid ? '0x91be44ad0c7f2e6318bb59d0a4c7715e2f80d3ca' : null,
     blockNumber: isConfirmed ? 6_482_119 : null,
     receivedCryptoAmount: isPaid ? charge.cryptoAmount : null,
@@ -226,7 +233,7 @@ export function buildChargeDetail(charge: Charge): ChargeDetail {
         id: 'address',
         title: 'Endereço gerado',
         at: at(0),
-        detail: `0x7a3f9b2c…d419c21f · ${NETWORK_META[charge.network].label}`,
+        detail: `${SAMPLE_ADDRESSES[charge.network].slice(0, 10)}… · ${NETWORK_META[charge.network].label}`,
         state: 'done',
       },
       {

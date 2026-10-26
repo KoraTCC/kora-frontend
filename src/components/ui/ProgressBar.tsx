@@ -1,6 +1,6 @@
 import { cn } from '#/lib/cn'
 
-export type ProgressTone = 'lime' | 'deep' | 'warning' | 'danger'
+export type ProgressTone = 'lime' | 'deep' | 'pending' | 'warning' | 'danger'
 
 type ProgressBarProps = {
   /** 0 to 1. */
@@ -14,6 +14,7 @@ type ProgressBarProps = {
 const TONE_CLASSES: Record<ProgressTone, string> = {
   lime: 'bg-lime',
   deep: 'bg-lime-deep',
+  pending: 'bg-status-pending',
   warning: 'bg-status-partial',
   danger: 'bg-status-failed',
 }

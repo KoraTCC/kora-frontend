@@ -64,7 +64,7 @@ export function CreateChargeForm({
   const walletHint = walletOptions.length
     ? `Carteira padrão da loja para ${network.label}.`
     : `Nenhuma carteira cadastrada para ${network.label}.`
-  const submitLabel = isSubmitting ? 'Criando…' : 'Criar e abrir cobrança'
+  const submitLabel = isSubmitting ? 'Criando…' : 'Criar e abrir checkout'
 
   function handleNetworkChange(value: string) {
     const parsed = networkSchema.safeParse(value)
