@@ -1,0 +1,12 @@
+node_modules
+dist
+coverage
+.git
+.github
+.tanstack
+.vscode
+.env
+.env.*
+*.local
+docker-compose.yml
+Dockerfile

@@ -1,8 +1,10 @@
 import type { ZodType } from 'zod'
+import { resolveApiUrl } from './config'
 
-const API_URL = (
-  import.meta.env.VITE_API_URL ?? 'http://localhost:3333'
-).replace(/\/$/, '')
+const API_URL = resolveApiUrl(
+  globalThis.__KORA_CONFIG__,
+  import.meta.env.VITE_API_URL,
+)
 
 export type ApiIssue = {
   path: string

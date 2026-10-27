@@ -35,6 +35,42 @@ To build this application for production:
 npm run build
 ```
 
+## Docker (produção)
+
+A imagem serve o build estático com nginx (não-root, porta `8080`). A URL da API
+**não** é fixada no build: o container escreve `/config.js` ao subir, a partir de
+`KORA_API_URL`. Uma imagem só serve qualquer ambiente.
+
+```bash
+docker build -t kora-frontend .
+docker run -e KORA_API_URL=https://api.example.com -p 8080:8080 kora-frontend
+```
+
+Ou, para testar localmente: `docker compose up --build` → http://localhost:8080.
+
+- Sem `KORA_API_URL`, o app usa o `VITE_API_URL` do build (padrão `http://localhost:3333`).
+- Um valor que não seja uma URL `http(s)://` simples faz o container recusar subir.
+- `/healthz` responde `200` (usado pelo `HEALTHCHECK`).
+- `/assets/*` tem cache imutável; `/_shell.html` e `/config.js`, `no-cache`.
+
+### Deploy na VPS (junto do kora-backend)
+
+No `infra/docker/docker-compose.prod.yml` do backend, adicione o serviço na rede `edge`
+(sem `ports`: quem expõe é o nginx de borda):
+
+```yaml
+frontend:
+  image: kora-frontend:${IMAGE_TAG:-latest}
+  restart: unless-stopped
+  environment:
+    KORA_API_URL: https://${API_DOMAIN}
+  networks: [edge]
+```
+
+E no template do nginx de borda, um `server` para o domínio do app apontando para
+`proxy_pass http://frontend:8080;`. Lembre de incluir esse domínio em
+`FRONTEND_ORIGINS` da API — o front envia cookies com `credentials: 'include'`.
+
 ## Styling
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.

@@ -43,6 +43,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        {/* Classic script: runs before the app modules, so the API URL is set. */}
+        <script src="/config.js" />
         <HeadContent />
       </head>
       <body className="font-sans antialiased  ">
