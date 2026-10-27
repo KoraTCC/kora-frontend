@@ -38,6 +38,7 @@ const NO_REFRESH_PATHS = new Set([
   '/auth/login',
   '/auth/register',
   '/auth/refresh',
+  '/auth/logout',
 ])
 
 let pendingRefresh: Promise<void> | null = null

@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { AUTH_USER_QUERY_KEY } from '../queries'
-import { logout } from '../services/account.service'
+import { logout } from '../services/auth.service'
 
 /**
- * TODO(api): kora-backend has no /auth/logout yet, so the httpOnly session
- * cookie survives. Locally we forget the user and drop cached data; the real
- * endpoint will clear the cookie.
+ * Ends the session on the API (it clears the httpOnly cookies), then forgets
+ * the user and every cached query locally. The local part runs even if the
+ * request fails, so the screen never keeps showing private data.
  */
 export function useLogout() {
   const queryClient = useQueryClient()

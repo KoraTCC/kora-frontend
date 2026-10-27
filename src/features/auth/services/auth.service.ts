@@ -1,5 +1,5 @@
 import { ApiError, apiRequest } from '#/lib/http'
-import { authResponseSchema } from '../schemas'
+import { authResponseSchema, noContentSchema } from '../schemas'
 import type { AuthResponse, LoginInput, RegisterInput, User } from '../types'
 
 export function register(input: RegisterInput): Promise<AuthResponse> {
@@ -16,6 +16,11 @@ export function login(input: LoginInput): Promise<AuthResponse> {
     body: input,
     schema: authResponseSchema,
   })
+}
+
+/** Revokes the refresh token and clears the session cookies (204). */
+export async function logout(): Promise<void> {
+  await apiRequest('/auth/logout', { method: 'POST', schema: noContentSchema })
 }
 
 export async function getCurrentUser(): Promise<User | null> {
