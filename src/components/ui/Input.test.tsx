@@ -31,4 +31,11 @@ describe('Input', () => {
     render(<Input label="E-mail" type="email" />)
     expect(screen.getByLabelText('E-mail')).toHaveAttribute('maxLength', '254')
   })
+
+  it('applies a mask on every change', () => {
+    render(<Input label="Valor" mask={(value) => value.toUpperCase()} />)
+    const input = screen.getByLabelText<HTMLInputElement>('Valor')
+    fireEvent.change(input, { target: { value: 'abc' } })
+    expect(input.value).toBe('ABC')
+  })
 })

@@ -19,6 +19,25 @@ export function formatBRL(cents: number): string {
   return brlFormatter.format(cents / 100)
 }
 
+/** Largest amount the money mask accepts: R$ 99.999.999,99. */
+const MONEY_MASK_MAX_DIGITS = 10
+
+/**
+ * Money mask for inputs, filled from the right like a banking app:
+ * `'2'` → `'0,02'`, `'24900'` → `'249,00'`, `'1234567'` → `'12.345,67'`.
+ * Anything that is not a digit is ignored; empty stays empty.
+ */
+export function maskMoney(value: string): string {
+  const digits = value
+    .replace(/\D/g, '')
+    .replace(/^0+/, '')
+    .slice(0, MONEY_MASK_MAX_DIGITS)
+  if (!digits) return ''
+  const cents = digits.padStart(3, '0')
+  const integer = cents.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+  return `${integer},${cents.slice(-2)}`
+}
+
 /** `48600000` (cents) → `R$ 486 mil`. */
 export function formatBRLCompact(cents: number): string {
   return brlCompactFormatter.format(cents / 100)

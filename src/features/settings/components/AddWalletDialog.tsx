@@ -6,12 +6,15 @@ import { INPUT_ALLOW, Input } from '#/components/ui/Input'
 import { Modal } from '#/components/ui/Modal'
 import { Select } from '#/components/ui/Select'
 import { NETWORKS, NETWORK_META } from '#/features/networks/networks'
+import type { Network } from '#/features/networks/networks'
 import { useAddWallet } from '../hooks/useSettingsQueries'
 import { newWalletFormSchema } from '../schemas'
 
 type AddWalletDialogProps = {
   open: boolean
   onClose: () => void
+  /** Network preselected when the dialog opens — e.g. the charge's network. */
+  defaultNetwork?: Network
 }
 
 const NETWORK_OPTIONS = NETWORKS.map((network) => ({
@@ -19,13 +22,16 @@ const NETWORK_OPTIONS = NETWORKS.map((network) => ({
   label: NETWORK_META[network].fullLabel,
 }))
 
-export function AddWalletDialog({ open, onClose }: AddWalletDialogProps) {
+export function AddWalletDialog({
+  open,
+  onClose,
+  defaultNetwork = 'sepolia',
+}: AddWalletDialogProps) {
   const add = useAddWallet()
   const [addressError, setAddressError] = useState<string>()
   const submitLabel = add.isPending ? 'Adicionando…' : 'Adicionar carteira'
-  const formError = add.isError
-    ? 'Não foi possível adicionar a carteira.'
-    : undefined
+  // The API explains the failure (e.g. "Essa carteira já está cadastrada.").
+  const formError = add.error?.message
 
   function handleClose() {
     setAddressError(undefined)
@@ -56,10 +62,11 @@ export function AddWalletDialog({ open, onClose }: AddWalletDialogProps) {
     >
       <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
         <Select
+          key={defaultNetwork}
           label="Rede"
           name="network"
           options={NETWORK_OPTIONS}
-          defaultValue="sepolia"
+          defaultValue={defaultNetwork}
         />
         <Input
           label="Endereço"

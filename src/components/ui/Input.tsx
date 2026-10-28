@@ -28,6 +28,8 @@ type InputProps = ComponentPropsWithoutRef<'input'> & {
   isLabelHidden?: boolean
   /** Allowed characters, one at a time — see `INPUT_ALLOW`. */
   allow?: RegExp
+  /** Reformats the whole value on every change — e.g. `maskMoney`. */
+  mask?: (value: string) => string
 }
 
 export function Input({
@@ -38,6 +40,7 @@ export function Input({
   hint,
   isLabelHidden = false,
   allow,
+  mask,
   maxLength,
   onChange,
   id,
@@ -49,15 +52,18 @@ export function Input({
   const errorId = `${inputId}-error`
   const helperText = error ?? hint
   const helperClasses = error ? 'text-danger text-xs' : 'text-dim text-[11px]'
-  // Filters typed and pasted text; works for controlled and uncontrolled fields.
+  // Filters and masks typed and pasted text; works for controlled and
+  // uncontrolled fields.
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const input = event.currentTarget
+    let next = input.value
     if (allow) {
-      const input = event.currentTarget
-      const filtered = Array.from(input.value)
+      next = Array.from(next)
         .filter((char) => allow.test(char))
         .join('')
-      if (filtered !== input.value) input.value = filtered
     }
+    if (mask) next = mask(next)
+    if (next !== input.value) input.value = next
     onChange?.(event)
   }
 
