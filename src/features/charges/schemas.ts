@@ -113,4 +113,7 @@ export const createChargeFormSchema = z.object({
 
 export const createdChargeSchema = z.object({ id: z.string() })
 
+// Test mode only: outcomes the API can simulate for a pending charge.
+export const SIMULATION_OUTCOMES = ['confirmed', 'partial', 'failed'] as const
+
 export const acknowledgementSchema = z.object({ ok: z.literal(true) })

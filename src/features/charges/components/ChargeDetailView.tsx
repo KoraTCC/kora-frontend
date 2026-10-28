@@ -10,6 +10,7 @@ import { ChargeConfirmationsCard } from './ChargeConfirmationsCard'
 import { ChargeOrderCard } from './ChargeOrderCard'
 import { ChargeOverview } from './ChargeOverview'
 import { ChargeReconciliationCard } from './ChargeReconciliationCard'
+import { ChargeSimulationCard } from './ChargeSimulationCard'
 import { ChargeSummaryCard } from './ChargeSummaryCard'
 import { ChargeTimelineCard } from './ChargeTimelineCard'
 import { ChargeTransactionCard } from './ChargeTransactionCard'
@@ -65,6 +66,7 @@ export function ChargeDetailView({ query }: ChargeDetailViewProps) {
           <ChargeWebhooksCard attempts={charge.webhookAttempts} />
         </div>
         <div className="flex min-w-0 flex-col gap-4">
+          <ChargeSimulationCard charge={charge} />
           <ChargeSummaryCard charge={charge} />
           <ChargeOrderCard charge={charge} />
           <ChargeReconciliationCard charge={charge} />

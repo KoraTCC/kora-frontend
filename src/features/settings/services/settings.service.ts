@@ -1,3 +1,4 @@
+import { apiRequest } from '#/lib/http'
 import { mockRequest } from '#/lib/mock'
 import {
   accessLogSchema,
@@ -263,16 +264,27 @@ export function closeAccount(): Promise<Ok> {
 export function updateNetworkSettings(input: {
   enabledNetworks: Array<string>
 }): Promise<Ok> {
-  return save('/networks', input)
+  return apiRequest('/networks', {
+    method: 'PATCH',
+    body: input,
+    schema: acknowledgementSchema,
+  })
 }
 
 export function addWallet(input: {
   address: string
   network: string
 }): Promise<Ok> {
-  return save('/wallets', input, 'POST')
+  return apiRequest('/wallets', {
+    method: 'POST',
+    body: input,
+    schema: acknowledgementSchema,
+  })
 }
 
 export function removeWallet(walletId: string): Promise<Ok> {
-  return save(`/wallets/${walletId}`, undefined, 'DELETE')
+  return apiRequest(`/wallets/${encodeURIComponent(walletId)}`, {
+    method: 'DELETE',
+    schema: acknowledgementSchema,
+  })
 }
