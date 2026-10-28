@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import { iconButtonClasses } from '#/components/ui/IconButton'
 import { AuthHeading } from '#/features/auth/components/AuthHeading'
 import { ForgotPasswordForm } from '#/features/auth/components/ForgotPasswordForm'
+import { ForgotPasswordSentPanel } from '#/features/auth/components/ForgotPasswordSentPanel'
 import { useForgotPasswordForm } from '#/features/auth/hooks/useForgotPasswordForm'
 
 export const Route = createFileRoute('/_auth/forgot-password')({
@@ -10,8 +11,21 @@ export const Route = createFileRoute('/_auth/forgot-password')({
 })
 
 function ForgotPasswordPage() {
-  const { handleSubmit, fieldErrors, formError, isSubmitting, isSent } =
-    useForgotPasswordForm()
+  const form = useForgotPasswordForm()
+
+  if (form.sentTo) {
+    return (
+      <ForgotPasswordSentPanel
+        email={form.sentTo}
+        resendSecondsLeft={form.resendSecondsLeft}
+        canResend={form.canResend}
+        onResend={form.resend}
+        onUseAnotherEmail={form.startOver}
+        isResending={form.isResending}
+        resendError={form.resendError}
+      />
+    )
+  }
 
   return (
     <>
@@ -27,11 +41,10 @@ function ForgotPasswordPage() {
         description="Informe o e-mail da conta. Enviaremos um link para você criar uma nova senha. O link vale por 30 minutos."
       />
       <ForgotPasswordForm
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-        isSent={isSent}
-        fieldErrors={fieldErrors}
-        formError={formError}
+        onSubmit={form.handleSubmit}
+        isSubmitting={form.isSubmitting}
+        fieldErrors={form.fieldErrors}
+        formError={form.formError}
       />
     </>
   )

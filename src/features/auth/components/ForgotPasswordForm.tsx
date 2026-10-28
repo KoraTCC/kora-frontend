@@ -9,7 +9,6 @@ import { FormError } from '#/components/ui/FormError'
 type ForgotPasswordFormProps = {
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void
   isSubmitting?: boolean
-  isSent?: boolean
   fieldErrors?: ForgotPasswordFieldErrors
   formError?: string
 }
@@ -17,14 +16,12 @@ type ForgotPasswordFormProps = {
 export function ForgotPasswordForm({
   onSubmit,
   isSubmitting,
-  isSent,
   fieldErrors = {},
   formError,
 }: ForgotPasswordFormProps) {
   const submitLabel = isSubmitting ? 'Enviando…' : 'Enviar link de recuperação'
-  const notice = isSent
-    ? 'Pronto. Se houver uma conta com esse e-mail, o link chega em instantes.'
-    : 'Por segurança, respondemos igual para e-mails cadastrados ou não.'
+  const notice =
+    'Por segurança, respondemos igual para e-mails cadastrados ou não.'
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-[22px]" noValidate>
