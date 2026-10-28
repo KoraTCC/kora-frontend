@@ -1,10 +1,12 @@
+import { Plus } from 'lucide-react'
+import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Button } from '#/components/ui/Button'
 import { Card } from '#/components/ui/Card'
-import { INPUT_ALLOW, Input } from '#/components/ui/Input'
+import { Input } from '#/components/ui/Input'
 import { PillGroup } from '#/components/ui/PillGroup'
 import { Select } from '#/components/ui/Select'
-import { formatBRL, formatCrypto } from '#/lib/money'
+import { formatBRL, formatCrypto, maskMoney } from '#/lib/money'
 import {
   NETWORKS,
   NETWORK_META,
@@ -13,6 +15,7 @@ import {
 } from '#/features/networks/networks'
 import type { Network } from '#/features/networks/networks'
 import type { Wallet } from '#/features/wallets/types'
+import { AddWalletDialog } from '#/features/settings/components/AddWalletDialog'
 import { FormError } from '#/components/ui/FormError'
 import { MOCK_RATES_CENTS, estimateCryptoAmount } from '../quote'
 import { TOLERANCE_OPTIONS } from '../chargeOptions'
@@ -65,6 +68,7 @@ export function CreateChargeForm({
     ? `Carteira padrão da loja para ${network.label}.`
     : `Nenhuma carteira cadastrada para ${network.label}.`
   const submitLabel = isSubmitting ? 'Criando…' : 'Criar e abrir checkout'
+  const [isAddWalletOpen, setIsAddWalletOpen] = useState(false)
 
   function handleNetworkChange(value: string) {
     const parsed = networkSchema.safeParse(value)
@@ -72,83 +76,110 @@ export function CreateChargeForm({
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
-      <Card title="Valor">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_160px]">
-          <Input
-            label="Valor a cobrar"
-            name="amount"
-            allow={INPUT_ALLOW.money}
-            maxLength={13}
-            inputMode="decimal"
-            placeholder="249,00"
-            value={values.amount}
-            onChange={(event) => onFieldChange('amount', event.target.value)}
-            error={fieldErrors.amount}
-            autoFocus
-          />
-          <Select label="Moeda" options={CURRENCY_OPTIONS} defaultValue="BRL" />
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Select
-            label="Receber em"
-            options={NETWORK_OPTIONS}
-            value={values.network}
-            onChange={(event) => handleNetworkChange(event.target.value)}
-            hint={quoteHint}
-          />
-          <Select
-            label="Carteira de recebimento"
-            options={walletSelectOptions}
-            value={values.walletId}
-            onChange={(event) => onFieldChange('walletId', event.target.value)}
-            hint={walletHint}
-            error={fieldErrors.walletId}
-          />
-        </div>
-        <fieldset className="flex flex-col gap-2">
-          <legend className="text-muted mb-2 text-xs font-semibold">
-            Tolerância de valor
-          </legend>
-          <PillGroup
-            label="Tolerância de valor"
-            options={TOLERANCE_OPTIONS}
-            value={values.tolerance}
-            onChange={(value) => onFieldChange('tolerance', value)}
-          />
-          <p className="text-dim text-[11px]">
-            Pagamentos fora da faixa entram como parciais e ficam para revisão.
-          </p>
-        </fieldset>
-      </Card>
+    <>
+      <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
+        <Card title="Valor">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_160px]">
+            <Input
+              label="Valor a cobrar"
+              name="amount"
+              mask={maskMoney}
+              maxLength={13}
+              inputMode="numeric"
+              placeholder="0,00"
+              value={values.amount}
+              onChange={(event) => onFieldChange('amount', event.target.value)}
+              error={fieldErrors.amount}
+              autoFocus
+            />
+            <Select
+              label="Moeda"
+              options={CURRENCY_OPTIONS}
+              defaultValue="BRL"
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Select
+              label="Receber em"
+              options={NETWORK_OPTIONS}
+              value={values.network}
+              onChange={(event) => handleNetworkChange(event.target.value)}
+              hint={quoteHint}
+            />
+            <div className="flex flex-col gap-2">
+              <Select
+                label="Carteira de recebimento"
+                options={walletSelectOptions}
+                value={values.walletId}
+                onChange={(event) =>
+                  onFieldChange('walletId', event.target.value)
+                }
+                hint={walletHint}
+                error={fieldErrors.walletId}
+              />
+              {walletOptions.length === 0 ? (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setIsAddWalletOpen(true)}
+                >
+                  <Plus size={14} aria-hidden />
+                  Cadastrar carteira
+                </Button>
+              ) : null}
+            </div>
+          </div>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="text-muted mb-2 text-xs font-semibold">
+              Tolerância de valor
+            </legend>
+            <PillGroup
+              label="Tolerância de valor"
+              options={TOLERANCE_OPTIONS}
+              value={values.tolerance}
+              onChange={(value) => onFieldChange('tolerance', value)}
+            />
+            <p className="text-dim text-[11px]">
+              Pagamentos fora da faixa entram como parciais e ficam para
+              revisão.
+            </p>
+          </fieldset>
+        </Card>
 
-      <ChargeOrderFields
-        values={values}
-        onFieldChange={onFieldChange}
-        fieldErrors={fieldErrors}
+        <ChargeOrderFields
+          values={values}
+          onFieldChange={onFieldChange}
+          fieldErrors={fieldErrors}
+        />
+
+        <FormError message={formError} />
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button
+            type="submit"
+            name="intent"
+            value="open"
+            disabled={isSubmitting}
+          >
+            {submitLabel}
+          </Button>
+          <Button
+            type="submit"
+            name="intent"
+            value="copy"
+            variant="secondary"
+            disabled={isSubmitting}
+          >
+            Criar e copiar link
+          </Button>
+        </div>
+      </form>
+      {/* Fora do <form>: o submit da modal não pode enviar a cobrança. */}
+      <AddWalletDialog
+        open={isAddWalletOpen}
+        onClose={() => setIsAddWalletOpen(false)}
+        defaultNetwork={values.network}
       />
-
-      <FormError message={formError} />
-
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <Button
-          type="submit"
-          name="intent"
-          value="open"
-          disabled={isSubmitting}
-        >
-          {submitLabel}
-        </Button>
-        <Button
-          type="submit"
-          name="intent"
-          value="copy"
-          variant="secondary"
-          disabled={isSubmitting}
-        >
-          Criar e copiar link
-        </Button>
-      </div>
-    </form>
+    </>
   )
 }
