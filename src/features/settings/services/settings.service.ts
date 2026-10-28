@@ -43,45 +43,21 @@ function save(
 }
 
 export function getBillingSettings(): Promise<BillingSettings> {
-  return mockRequest('/settings/billing', {
-    schema: billingSettingsSchema,
-    response: {
-      defaultTolerance: '0.01',
-      defaultWindowMinutes: '30',
-      referenceCurrency: 'BRL',
-      defaultNetwork: 'sepolia',
-      acceptOverpayment: true,
-      autoExpire: true,
-      sendReceipt: true,
-      notifyDetected: true,
-      remindBeforeExpiry: false,
-      senderEmail: 'Loja Exemplo <pagamentos@lojaexemplo.com>',
-      returnUrl: 'https://lojaexemplo.com/pedido/{referencia}',
-    },
-  })
+  return apiRequest('/settings/billing', { schema: billingSettingsSchema })
 }
 
 export function getBillingInsights(): Promise<BillingInsights> {
-  return mockRequest('/settings/billing/insights', {
+  return apiRequest('/settings/billing/insights', {
     schema: billingInsightsSchema,
-    response: {
-      total: 148,
-      withinTolerance: 145,
-      partial: 3,
-      expired: 19,
-      suggestion:
-        'Aumentar a tolerância para ± 2,0% teria evitado 2 das 3 parciais.',
-      expirationByWindow: [
-        { window: '15', share: 0.24 },
-        { window: '30', share: 0.13 },
-        { window: '60', share: 0.07 },
-      ],
-    },
   })
 }
 
 export function updateBillingSettings(input: BillingSettings): Promise<Ok> {
-  return save('/settings/billing', input)
+  return apiRequest('/settings/billing', {
+    method: 'PATCH',
+    body: input,
+    schema: acknowledgementSchema,
+  })
 }
 
 export function listTeamMembers(): Promise<Array<TeamMember>> {
@@ -196,65 +172,25 @@ export function updateSecuritySettings(input: SecuritySettings): Promise<Ok> {
 }
 
 export function listSessions(): Promise<Array<Session>> {
-  return mockRequest('/sessions', {
-    schema: sessionSchema.array(),
-    response: [
-      {
-        id: 'se_1',
-        device: 'Chrome · Windows',
-        location: 'São Paulo, BR',
-        ip: '201.17.44.8',
-        lastActiveAt: ago(0),
-        isCurrent: true,
-      },
-      {
-        id: 'se_2',
-        device: 'Safari · iPhone',
-        location: 'São Paulo, BR',
-        ip: '189.44.2.130',
-        lastActiveAt: ago(6 * HOUR_MS),
-        isCurrent: false,
-      },
-      {
-        id: 'se_3',
-        device: 'Firefox · Linux',
-        location: 'Campinas, BR',
-        ip: '177.92.10.4',
-        lastActiveAt: ago(2 * DAY_MS),
-        isCurrent: false,
-      },
-    ],
-  })
+  return apiRequest('/sessions', { schema: sessionSchema.array() })
 }
 
 export function endSession(sessionId: string): Promise<Ok> {
-  return save(`/sessions/${sessionId}`, undefined, 'DELETE')
+  return apiRequest(`/sessions/${encodeURIComponent(sessionId)}`, {
+    method: 'DELETE',
+    schema: acknowledgementSchema,
+  })
 }
 
 export function endOtherSessions(): Promise<Ok> {
-  return save('/sessions/others', undefined, 'DELETE')
+  return apiRequest('/sessions/others', {
+    method: 'DELETE',
+    schema: acknowledgementSchema,
+  })
 }
 
 export function listAccessLog(): Promise<Array<AccessLog>> {
-  return mockRequest('/security/access-log', {
-    schema: accessLogSchema.array(),
-    response: [
-      { id: 'al_1', at: ago(HOUR_MS), isSuccess: true, location: 'São Paulo' },
-      { id: 'al_2', at: ago(DAY_MS), isSuccess: true, location: 'São Paulo' },
-      {
-        id: 'al_3',
-        at: ago(2 * DAY_MS),
-        isSuccess: false,
-        location: 'Frankfurt',
-      },
-      {
-        id: 'al_4',
-        at: ago(3 * DAY_MS),
-        isSuccess: true,
-        location: 'São Paulo',
-      },
-    ],
-  })
+  return apiRequest('/security/access-log', { schema: accessLogSchema.array() })
 }
 
 export function closeAccount(): Promise<Ok> {
