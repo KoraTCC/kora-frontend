@@ -29,7 +29,11 @@ export function useRevokeApiKey() {
 }
 
 export function useRotateSecretKey() {
-  return useMutation({ mutationFn: rotateSecretKey })
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: rotateSecretKey,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: API_KEYS_KEY }),
+  })
 }
 
 export function useCreateApiKey() {
