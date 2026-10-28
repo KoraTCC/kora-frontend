@@ -14,6 +14,8 @@ export function PasswordInput(props: PasswordInputProps) {
 
   return (
     <Input
+      // Same limit as the API (PASSWORD_MAX_LENGTH in @kora/contracts).
+      maxLength={128}
       {...props}
       type={isVisible ? 'text' : 'password'}
       trailing={
