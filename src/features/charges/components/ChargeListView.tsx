@@ -2,7 +2,7 @@ import { Card } from '#/components/ui/Card'
 import { EmptyState } from '#/components/ui/EmptyState'
 import { ErrorState } from '#/components/ui/ErrorState'
 import { Pagination } from '#/components/ui/Pagination'
-import { Skeleton } from '#/components/ui/Skeleton'
+import { SkeletonRows } from '#/components/ui/Skeleton'
 import { networkSchema } from '#/features/networks/networks'
 import { formatNumber } from '#/lib/money'
 import { useChargeList } from '../hooks/useCharges'
@@ -98,7 +98,7 @@ function ChargeListBody({ query, onPageChange }: ChargeListBodyProps) {
   if (query.isPending) {
     return (
       <div className="p-4">
-        <Skeleton lines={8} label="Carregando cobranças…" />
+        <SkeletonRows rows={8} label="Carregando cobranças…" />
       </div>
     )
   }

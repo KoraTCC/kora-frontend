@@ -1,7 +1,7 @@
 import { Card } from '#/components/ui/Card'
 import { ErrorState } from '#/components/ui/ErrorState'
 import { PillGroup } from '#/components/ui/PillGroup'
-import { Skeleton } from '#/components/ui/Skeleton'
+import { SkeletonChart } from '#/components/ui/Skeleton'
 import { AreaChart } from '#/components/ui/charts/AreaChart'
 import { formatBRL, formatSignedPercent } from '#/lib/money'
 import { useDashboardOverview } from '../hooks/useDashboardOverview'
@@ -40,7 +40,7 @@ export function VolumeCard({ range, onRangeChange }: VolumeCardProps) {
 function VolumeBody({ range }: { range: DashboardRange }) {
   const { data, isPending, isError, refetch } = useDashboardOverview(range)
 
-  if (isPending) return <Skeleton lines={6} label="Carregando volume…" />
+  if (isPending) return <SkeletonChart label="Carregando volume…" />
   if (isError) return <ErrorState onRetry={() => void refetch()} />
 
   const { volume } = data
