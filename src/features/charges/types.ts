@@ -9,6 +9,7 @@ import type {
   chargeStatsSchema,
   chargeStatusSchema,
   createChargeFormSchema,
+  SIMULATION_OUTCOMES,
 } from './schemas'
 
 export type ChargeStatus = z.infer<typeof chargeStatusSchema>
@@ -33,3 +34,5 @@ export type CreateChargeFieldErrors = FieldErrors<CreateChargeField>
 export type CreateChargeInput = Omit<CreateChargeFormValues, 'amount'> & {
   amountCents: number
 }
+
+export type SimulationOutcome = (typeof SIMULATION_OUTCOMES)[number]

@@ -17,6 +17,9 @@ export function ChargeWebhooksCard({ attempts }: ChargeWebhooksCardProps) {
         </Link>
       }
     >
+      {attempts.length === 0 && (
+        <p className="text-muted text-xs">Nenhuma entrega registrada ainda.</p>
+      )}
       <ul className="flex flex-col gap-2.5">
         {attempts.map((attempt) => (
           <li
