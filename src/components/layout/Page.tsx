@@ -45,7 +45,7 @@ export function Page({ title, subtitle, actions, children }: PageProps) {
         </div>
       </header>
 
-      <main className="flex flex-col gap-4 p-4 sm:p-6 lg:p-[26px]">
+      <main className="stagger flex flex-col gap-4 p-4 sm:p-6 lg:p-[26px]">
         {children}
       </main>
     </>

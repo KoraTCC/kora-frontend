@@ -4,7 +4,7 @@ import { Card } from '#/components/ui/Card'
 import { EmptyState } from '#/components/ui/EmptyState'
 import { ErrorState } from '#/components/ui/ErrorState'
 import { Select } from '#/components/ui/Select'
-import { Skeleton } from '#/components/ui/Skeleton'
+import { SkeletonRows } from '#/components/ui/Skeleton'
 import { CHARGE_STATUS_META } from '#/features/charges/chargeStatus'
 import { ChargesTable } from '#/features/charges/components/ChargesTable'
 import { useChargeList } from '#/features/charges/hooks/useCharges'
@@ -68,7 +68,7 @@ function RecentChargesBody({
   if (query.isPending)
     return (
       <div className="p-4">
-        <Skeleton lines={5} />
+        <SkeletonRows rows={5} label="Carregando cobranças…" />
       </div>
     )
   if (query.isError)

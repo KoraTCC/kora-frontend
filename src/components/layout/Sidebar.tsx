@@ -1,7 +1,10 @@
 import { Link } from '@tanstack/react-router'
 import type { LinkProps } from '@tanstack/react-router'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { cn } from '#/lib/cn'
+import { useSidebarCollapse } from './AppShell'
 
 export type SidebarItem = {
   label: string
@@ -43,27 +46,67 @@ export function Sidebar({
   footerItems,
   onNavigate,
 }: SidebarProps) {
+  const collapse = useSidebarCollapse()
+  const isCollapsed = collapse?.isCollapsed ?? false
+
   return (
-    <div className="bg-sidebar border-line-soft flex h-full flex-col gap-5 overflow-y-auto border-r px-4 py-[22px]">
-      <div className="flex items-center gap-2 px-1.5">
+    <div
+      className={cn(
+        'bg-sidebar border-line-soft flex h-full flex-col gap-5 overflow-x-hidden overflow-y-auto border-r py-[22px]',
+        isCollapsed ? 'px-2.5' : 'px-4',
+      )}
+    >
+      <div
+        className={cn(
+          'flex items-center gap-2',
+          isCollapsed ? 'flex-col' : 'px-1.5',
+        )}
+      >
         <p className="font-display text-ink text-[17px] font-bold tracking-tight">
-          Kora
+          {isCollapsed ? 'K' : 'Kora'}
         </p>
-        {brandTag}
+        {isCollapsed ? null : brandTag}
+        {collapse ? (
+          <button
+            type="button"
+            onClick={collapse.toggle}
+            aria-label={isCollapsed ? 'Expandir menu' : 'Recolher menu'}
+            aria-expanded={!isCollapsed}
+            title={isCollapsed ? 'Expandir menu' : 'Recolher menu'}
+            className={cn(
+              'text-muted hover:text-ink focus-visible:ring-lime/25 flex size-8 flex-none items-center justify-center rounded-[8px] transition focus-visible:ring-3 focus-visible:outline-none',
+              !isCollapsed && 'ml-auto',
+            )}
+          >
+            {isCollapsed ? (
+              <PanelLeftOpen size={16} aria-hidden />
+            ) : (
+              <PanelLeftClose size={16} aria-hidden />
+            )}
+          </button>
+        ) : null}
       </div>
 
-      {account}
+      {isCollapsed ? null : account}
 
       <nav aria-label="Principal" className="flex flex-1 flex-col gap-5">
         {sections.map((section) => (
           <div key={section.label} className="flex flex-col gap-[3px]">
-            <p className="text-faint px-1.5 pb-1 font-mono text-[9px] font-medium tracking-[0.1em] uppercase">
-              {section.label}
-            </p>
+            {isCollapsed ? (
+              <span aria-hidden className="border-line-soft mx-2 border-t" />
+            ) : (
+              <p className="text-faint px-1.5 pb-1 font-mono text-[9px] font-medium tracking-[0.1em] uppercase">
+                {section.label}
+              </p>
+            )}
             <ul className="flex flex-col gap-[3px]">
               {section.items.map((item) => (
                 <li key={item.label}>
-                  <SidebarLink item={item} onNavigate={onNavigate} />
+                  <SidebarLink
+                    item={item}
+                    onNavigate={onNavigate}
+                    isCollapsed={isCollapsed}
+                  />
                 </li>
               ))}
             </ul>
@@ -74,7 +117,11 @@ export function Sidebar({
       <ul className="border-line-soft flex flex-col gap-[3px] border-t pt-2.5">
         {footerItems.map((item) => (
           <li key={item.label}>
-            <SidebarLink item={item} onNavigate={onNavigate} />
+            <SidebarLink
+              item={item}
+              onNavigate={onNavigate}
+              isCollapsed={isCollapsed}
+            />
           </li>
         ))}
       </ul>
@@ -85,21 +132,36 @@ export function Sidebar({
 type SidebarLinkProps = {
   item: SidebarItem
   onNavigate?: () => void
+  /** Icon only; the label stays available to screen readers and as a tooltip. */
+  isCollapsed?: boolean
 }
 
-function SidebarLink({ item, onNavigate }: SidebarLinkProps) {
+function SidebarLink({
+  item,
+  onNavigate,
+  isCollapsed = false,
+}: SidebarLinkProps) {
   const Icon = item.icon
+  const className = cn(ITEM_CLASSES, isCollapsed && 'justify-center px-0')
+  const title = isCollapsed ? item.label : undefined
   const content = (
     <>
       <Icon size={16} aria-hidden className="flex-none" />
-      <span className="flex-1 text-left">{item.label}</span>
-      {item.indicator}
+      <span className={isCollapsed ? 'sr-only' : 'flex-1 text-left'}>
+        {item.label}
+      </span>
+      {isCollapsed ? null : item.indicator}
     </>
   )
 
   if (!item.to) {
     return (
-      <button type="button" onClick={item.onClick} className={ITEM_CLASSES}>
+      <button
+        type="button"
+        onClick={item.onClick}
+        className={className}
+        title={title}
+      >
         {content}
       </button>
     )
@@ -109,7 +171,8 @@ function SidebarLink({ item, onNavigate }: SidebarLinkProps) {
     <Link
       to={item.to}
       onClick={onNavigate}
-      className={ITEM_CLASSES}
+      title={title}
+      className={className}
       activeProps={ACTIVE_PROPS}
       activeOptions={{ exact: item.isExact ?? false }}
     >

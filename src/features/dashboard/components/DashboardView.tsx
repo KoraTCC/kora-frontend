@@ -16,11 +16,11 @@ export function DashboardView({ range, onRangeChange }: DashboardViewProps) {
     <>
       <DashboardKpis />
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_330px]">
-        <div className="flex min-w-0 flex-col gap-4">
+        <div className="stagger flex min-w-0 flex-col gap-4">
           <VolumeCard range={range} onRangeChange={onRangeChange} />
           <RecentChargesCard />
         </div>
-        <div className="flex min-w-0 flex-col gap-4">
+        <div className="stagger flex min-w-0 flex-col gap-4">
           <IntegrationCard />
           <AssetDistributionCard />
           <RecentEventsCard />

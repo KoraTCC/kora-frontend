@@ -2,6 +2,19 @@
 @import 'tailwindcss';
 
 @theme {
+  --animate-fade-up: fade-up 380ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-display:
     'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
@@ -325,5 +338,29 @@ h3,
 @media (max-width: 640px) {
   .nav-link::after {
     bottom: -4px;
+  }
+}
+
+/* Entrada em cascata: cada filho direto aparece um pouco depois do anterior. */
+@utility stagger {
+  & > * {
+    animation: var(--animate-fade-up);
+  }
+  & > :nth-child(2) {
+    animation-delay: 60ms;
+  }
+  & > :nth-child(3) {
+    animation-delay: 120ms;
+  }
+  & > :nth-child(4) {
+    animation-delay: 180ms;
+  }
+  & > :nth-child(n + 5) {
+    animation-delay: 240ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & > * {
+      animation: none;
+    }
   }
 }

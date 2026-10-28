@@ -1,5 +1,5 @@
 import { ErrorState } from '#/components/ui/ErrorState'
-import { Skeleton } from '#/components/ui/Skeleton'
+import { SkeletonStats } from '#/components/ui/Skeleton'
 import { StatCard } from '#/components/ui/StatCard'
 import { useChargeStats } from '#/features/charges/hooks/useCharges'
 import { formatBRL, formatPercent, formatSignedPercent } from '#/lib/money'
@@ -8,10 +8,12 @@ import { formatBRL, formatPercent, formatSignedPercent } from '#/lib/money'
 export function DashboardKpis() {
   const { data: stats, isPending, isError, refetch } = useChargeStats()
 
-  if (isPending) return <Skeleton lines={2} label="Carregando indicadores…" />
+  if (isPending) return <SkeletonStats />
   if (isError) return <ErrorState onRetry={() => void refetch()} />
 
-  const expiredShare = stats.counts.expired / stats.total
+  // Conta nova ainda não tem cobranças: evita 0/0 = NaN.
+  const expiredShare =
+    stats.total === 0 ? 0 : stats.counts.expired / stats.total
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">

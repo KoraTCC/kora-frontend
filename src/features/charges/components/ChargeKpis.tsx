@@ -1,5 +1,5 @@
 import { ErrorState } from '#/components/ui/ErrorState'
-import { Skeleton } from '#/components/ui/Skeleton'
+import { SkeletonStats } from '#/components/ui/Skeleton'
 import { StatCard } from '#/components/ui/StatCard'
 import {
   formatBRL,
@@ -13,7 +13,7 @@ import { useChargeStats } from '../hooks/useCharges'
 export function ChargeKpis() {
   const { data: stats, isPending, isError, refetch } = useChargeStats()
 
-  if (isPending) return <Skeleton lines={2} label="Carregando indicadores…" />
+  if (isPending) return <SkeletonStats />
   if (isError) return <ErrorState onRetry={() => void refetch()} />
 
   const confirmed = stats.counts.confirmed
