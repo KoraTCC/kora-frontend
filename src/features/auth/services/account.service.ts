@@ -1,4 +1,4 @@
-import { ApiError } from '#/lib/http'
+import { ApiError, apiRequest } from '#/lib/http'
 import { mockRequest } from '#/lib/mock'
 import { acknowledgementSchema, emailVerificationSchema } from '../schemas'
 import type {
@@ -9,8 +9,8 @@ import type {
 } from '../types'
 
 /*
- * TODO(api): kora-backend does not expose these flows yet; the paths below are
- * the planned ones. Swapping `mockRequest` for `apiRequest` (and dropping
+ * Password reset is real. TODO(api): 2FA and e-mail verification are not in
+ * kora-backend yet; the paths below are the planned ones. Swapping `mockRequest` for `apiRequest` (and dropping
  * `response`) is the whole migration — hooks and screens stay untouched.
  */
 
@@ -24,22 +24,20 @@ const REJECTED_TWO_FACTOR_CODE = '000000'
 export function requestPasswordReset(
   input: ForgotPasswordInput,
 ): Promise<Acknowledgement> {
-  return mockRequest('/auth/password/forgot', {
+  return apiRequest('/auth/password/forgot', {
     method: 'POST',
     body: input,
     schema: acknowledgementSchema,
-    response: OK,
   })
 }
 
 export function resetPassword(
   input: ResetPasswordInput,
 ): Promise<Acknowledgement> {
-  return mockRequest('/auth/password/reset', {
+  return apiRequest('/auth/password/reset', {
     method: 'POST',
     body: input,
     schema: acknowledgementSchema,
-    response: OK,
   })
 }
 
