@@ -27,12 +27,18 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       {
         title: 'Kora',
       },
+      { name: 'theme-color', content: '#0e110e' },
     ],
     links: [
       {
         rel: 'stylesheet',
         href: appCss,
       },
+      // Gerados por scripts/generate-icons.mjs a partir do logo.
+      { rel: 'icon', href: '/favicon.ico', sizes: '32x32' },
+      { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+      { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+      { rel: 'manifest', href: '/site.webmanifest' },
     ],
   }),
   shellComponent: RootDocument,
