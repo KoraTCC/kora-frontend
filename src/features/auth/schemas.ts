@@ -63,6 +63,9 @@ export const authResponseSchema = z.object({
   user: userSchema,
 })
 
+/** `204 No Content`: `apiRequest` reads the missing body as `null`. */
+export const noContentSchema = z.null()
+
 export const TWO_FACTOR_CODE_LENGTH = 6
 
 export const forgotPasswordSchema = z.object({
