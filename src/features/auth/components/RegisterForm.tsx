@@ -37,6 +37,7 @@ export function RegisterForm({
       <Input
         label="Nome"
         name="name"
+        maxLength={100}
         autoComplete="name"
         placeholder="Seu nome completo"
         required
@@ -46,6 +47,7 @@ export function RegisterForm({
       <Input
         label="Nome da Loja"
         name="storeName"
+        maxLength={100}
         placeholder="Nome da sua loja"
       />
       <Input

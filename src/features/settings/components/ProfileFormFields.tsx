@@ -1,5 +1,5 @@
 import { Card } from '#/components/ui/Card'
-import { Input } from '#/components/ui/Input'
+import { INPUT_ALLOW, Input } from '#/components/ui/Input'
 import { Select } from '#/components/ui/Select'
 import { Switch } from '#/components/ui/Switch'
 import type {
@@ -28,18 +28,22 @@ export function ProfileFormFields({
           <Input
             label="Nome da loja"
             name="name"
+            maxLength={100}
             defaultValue={merchant.name}
             error={errors.name}
           />
           <Input
             label="Razão social"
             name="legalName"
+            maxLength={150}
             defaultValue={merchant.legalName}
             error={errors.legalName}
           />
           <Input
             label="CNPJ"
             name="document"
+            allow={INPUT_ALLOW.document}
+            maxLength={18}
             inputMode="numeric"
             defaultValue={merchant.document}
             error={errors.document}
@@ -47,6 +51,8 @@ export function ProfileFormFields({
           <Input
             label="Telefone"
             name="phone"
+            allow={INPUT_ALLOW.phone}
+            maxLength={20}
             type="tel"
             defaultValue={merchant.phone}
             error={errors.phone}
@@ -54,6 +60,7 @@ export function ProfileFormFields({
           <Input
             label="E-mail de contato"
             name="email"
+            maxLength={254}
             type="email"
             defaultValue={merchant.email}
             error={errors.email}
@@ -71,6 +78,7 @@ export function ProfileFormFields({
         <Input
           label="Nome exibido ao cliente"
           name="displayName"
+          maxLength={100}
           defaultValue={merchant.checkout.displayName}
           error={errors.displayName}
         />
@@ -92,6 +100,8 @@ export function ProfileFormFields({
           <Input
             label="CEP"
             name="postalCode"
+            allow={INPUT_ALLOW.postalCode}
+            maxLength={9}
             inputMode="numeric"
             defaultValue={merchant.address.postalCode}
             error={errors.postalCode}
@@ -99,12 +109,14 @@ export function ProfileFormFields({
           <Input
             label="Logradouro"
             name="street"
+            maxLength={200}
             defaultValue={merchant.address.street}
             error={errors.street}
           />
           <Input
             label="Complemento"
             name="complement"
+            maxLength={100}
             placeholder="Sala 402"
             defaultValue={merchant.address.complement}
           />
@@ -113,6 +125,7 @@ export function ProfileFormFields({
           <Input
             label="Cidade"
             name="city"
+            maxLength={100}
             defaultValue={merchant.address.city}
             error={errors.city}
           />

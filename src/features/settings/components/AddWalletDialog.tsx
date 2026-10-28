@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Button } from '#/components/ui/Button'
 import { FormError } from '#/components/ui/FormError'
-import { Input } from '#/components/ui/Input'
+import { INPUT_ALLOW, Input } from '#/components/ui/Input'
 import { Modal } from '#/components/ui/Modal'
 import { Select } from '#/components/ui/Select'
 import { NETWORKS, NETWORK_META } from '#/features/networks/networks'
@@ -64,6 +64,8 @@ export function AddWalletDialog({ open, onClose }: AddWalletDialogProps) {
         <Input
           label="Endereço"
           name="address"
+          allow={INPUT_ALLOW.walletAddress}
+          maxLength={90}
           placeholder="0x…"
           error={addressError}
           data-autofocus=""

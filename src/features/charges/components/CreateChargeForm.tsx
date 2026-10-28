@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react'
 import { Button } from '#/components/ui/Button'
 import { Card } from '#/components/ui/Card'
-import { Input } from '#/components/ui/Input'
+import { INPUT_ALLOW, Input } from '#/components/ui/Input'
 import { PillGroup } from '#/components/ui/PillGroup'
 import { Select } from '#/components/ui/Select'
 import { formatBRL, formatCrypto } from '#/lib/money'
@@ -78,6 +78,8 @@ export function CreateChargeForm({
           <Input
             label="Valor a cobrar"
             name="amount"
+            allow={INPUT_ALLOW.money}
+            maxLength={13}
             inputMode="decimal"
             placeholder="249,00"
             value={values.amount}

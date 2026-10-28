@@ -95,6 +95,8 @@ export function SecurityForm({
           form={SETTINGS_FORM_ID}
           label="IPs permitidos para a API"
           name="allowedIps"
+          allow={/[\d.,/\s]/}
+          maxLength={500}
           placeholder="201.17.44.8, 189.44.2.0/24 — vazio libera todos"
           defaultValue={settings.allowedIps}
           hint="Só vale para as chaves secretas. O checkout público não é afetado."

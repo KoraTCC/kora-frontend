@@ -1,5 +1,20 @@
 import { useId } from 'react'
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import type { ChangeEvent, ComponentPropsWithoutRef, ReactNode } from 'react'
+
+/** Characters each kind of field accepts — typing anything else is ignored. */
+export const INPUT_ALLOW = {
+  money: /[\d.,]/,
+  digits: /\d/,
+  phone: /[\d()+\-\s]/,
+  document: /[\d./-]/,
+  postalCode: /[\d-]/,
+  walletAddress: /[A-Za-z0-9]/,
+  reference: /[\w\-./#]/,
+} as const
+
+/** Fallbacks so no field is unbounded; pass `maxLength` for a tighter limit. */
+const DEFAULT_MAX_LENGTH = 255
+const EMAIL_MAX_LENGTH = 254
 
 type InputProps = ComponentPropsWithoutRef<'input'> & {
   label: string
@@ -11,6 +26,8 @@ type InputProps = ComponentPropsWithoutRef<'input'> & {
   hint?: string
   /** Keeps the label for screen readers only — search boxes, filter bars. */
   isLabelHidden?: boolean
+  /** Allowed characters, one at a time — see `INPUT_ALLOW`. */
+  allow?: RegExp
 }
 
 export function Input({
@@ -20,6 +37,9 @@ export function Input({
   error,
   hint,
   isLabelHidden = false,
+  allow,
+  maxLength,
+  onChange,
   id,
   className = '',
   ...props
@@ -29,6 +49,18 @@ export function Input({
   const errorId = `${inputId}-error`
   const helperText = error ?? hint
   const helperClasses = error ? 'text-danger text-xs' : 'text-dim text-[11px]'
+  // Filters typed and pasted text; works for controlled and uncontrolled fields.
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    if (allow) {
+      const input = event.currentTarget
+      const filtered = Array.from(input.value)
+        .filter((char) => allow.test(char))
+        .join('')
+      if (filtered !== input.value) input.value = filtered
+    }
+    onChange?.(event)
+  }
+
   const labelClasses = isLabelHidden
     ? 'sr-only'
     : 'text-muted text-xs font-semibold'
@@ -45,6 +77,11 @@ export function Input({
       <div className="border-line bg-surface focus-within:border-lime-line focus-within:ring-lime/12 flex items-center gap-2 rounded-[10px] border px-3.5 py-[13px] transition focus-within:ring-3">
         <input
           {...props}
+          maxLength={
+            maxLength ??
+            (props.type === 'email' ? EMAIL_MAX_LENGTH : DEFAULT_MAX_LENGTH)
+          }
+          onChange={handleChange}
           id={inputId}
           aria-invalid={Boolean(error)}
           aria-describedby={helperText ? errorId : undefined}

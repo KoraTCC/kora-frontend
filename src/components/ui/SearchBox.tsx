@@ -29,6 +29,7 @@ export function SearchBox({
         label={label}
         isLabelHidden
         name="q"
+        maxLength={100}
         type="search"
         defaultValue={defaultValue}
         placeholder={placeholder}

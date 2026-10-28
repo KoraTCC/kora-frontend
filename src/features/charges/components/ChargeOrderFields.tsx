@@ -1,5 +1,5 @@
 import { Card } from '#/components/ui/Card'
-import { Input } from '#/components/ui/Input'
+import { INPUT_ALLOW, Input } from '#/components/ui/Input'
 import { PillGroup } from '#/components/ui/PillGroup'
 import { Switch } from '#/components/ui/Switch'
 import { EXPIRATION_OPTIONS } from '../chargeOptions'
@@ -30,6 +30,8 @@ export function ChargeOrderFields({
         <Input
           label="Referência do pedido"
           name="reference"
+          allow={INPUT_ALLOW.reference}
+          maxLength={80}
           placeholder="#10483"
           value={values.reference}
           onChange={(event) => onFieldChange('reference', event.target.value)}
@@ -38,6 +40,7 @@ export function ChargeOrderFields({
         <Input
           label="E-mail do cliente (opcional)"
           name="customerEmail"
+          maxLength={254}
           type="email"
           placeholder="cliente@exemplo.com"
           value={values.customerEmail}
@@ -50,6 +53,7 @@ export function ChargeOrderFields({
       <Input
         label="Descrição (aparece no checkout)"
         name="description"
+        maxLength={120}
         placeholder="Camiseta Kora · tamanho M"
         value={values.description}
         onChange={(event) => onFieldChange('description', event.target.value)}
