@@ -57,11 +57,22 @@ export const userSchema = z.object({
   name: z.string(),
   email: z.string(),
   createdAt: z.string(),
+  twoFactorEnabled: z.boolean().default(false),
 })
 
 export const authResponseSchema = z.object({
   user: userSchema,
 })
+
+/** With 2FA on, the right password is not enough: the API asks for the code. */
+export const twoFactorRequiredSchema = z.object({
+  twoFactorRequired: z.literal(true),
+})
+
+export const loginResponseSchema = z.union([
+  authResponseSchema,
+  twoFactorRequiredSchema,
+])
 
 /** `204 No Content`: `apiRequest` reads the missing body as `null`. */
 export const noContentSchema = z.null()
@@ -89,6 +100,46 @@ export const twoFactorSchema = z.object({
       new RegExp(`^\\d{${TWO_FACTOR_CODE_LENGTH}}$`),
       `Digite os ${TWO_FACTOR_CODE_LENGTH} dígitos do código`,
     ),
+})
+
+export const twoFactorStatusSchema = z.object({
+  enabled: z.boolean(),
+  enabledAt: z.string().nullable(),
+  recoveryCodesLeft: z.number(),
+})
+
+export const twoFactorSetupSchema = z.object({
+  /** Base32 key, for typing into the app when the QR code can't be scanned. */
+  secret: z.string(),
+  /** What the QR code encodes — `otpauth://totp/...`. */
+  otpauthUri: z.string(),
+})
+
+/** Shown once: the API only keeps their hashes. */
+export const recoveryCodesSchema = z.object({
+  recoveryCodes: z.array(z.string()),
+})
+
+/** App code (6 digits) or recovery code — the API tells them apart. */
+export const twoFactorCredentialSchema = z
+  .string()
+  .trim()
+  .regex(
+    /^(\d{6}|[a-z2-9]{4}-?[a-z2-9]{4})$/i,
+    'Use o código do app ou um código de recuperação',
+  )
+
+export const disableTwoFactorFormSchema = z.object({
+  password: z.string().min(1, 'Informe a senha'),
+  code: twoFactorCredentialSchema,
+})
+
+/** One-time backup code shown when 2FA was turned on — `abcd-2345`. */
+export const recoveryCodeSchema = z.object({
+  code: z
+    .string()
+    .trim()
+    .regex(/^[a-z2-9]{4}-?[a-z2-9]{4}$/i, 'Use o formato xxxx-xxxx'),
 })
 
 export const acknowledgementSchema = z.object({

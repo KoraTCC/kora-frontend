@@ -8,11 +8,11 @@ import { ErrorState } from '#/components/ui/ErrorState'
 import { FormError } from '#/components/ui/FormError'
 import { Modal } from '#/components/ui/Modal'
 import { Skeleton } from '#/components/ui/Skeleton'
+import { useCurrentUser } from '#/features/auth/hooks/useCurrentUser'
 import { formatDayTime } from '#/lib/date'
 import { useAccessLog, useCloseAccount } from '../hooks/useSettingsQueries'
 
 const RECOMMENDATIONS = [
-  { id: '2fa', label: '2FA ativa na sua conta', isDone: true },
   {
     id: 'rotation',
     label: 'Chave secreta rotacionada nos últimos 90 dias',
@@ -27,6 +27,15 @@ const RECOMMENDATIONS = [
 ]
 
 export function SecurityAside() {
+  const user = useCurrentUser()
+  const recommendations = [
+    {
+      id: '2fa',
+      label: '2FA ativa na sua conta',
+      isDone: user.data?.twoFactorEnabled ?? false,
+    },
+    ...RECOMMENDATIONS,
+  ]
   const accessLog = useAccessLog()
   const closeAccount = useCloseAccount()
   const [isCloseOpen, setIsCloseOpen] = useState(false)
@@ -52,7 +61,7 @@ export function SecurityAside() {
         <AccessLogBody accessLog={accessLog} />
       </Card>
       <Card title="Recomendações">
-        <Checklist items={RECOMMENDATIONS} />
+        <Checklist items={recommendations} />
       </Card>
 
       <Modal

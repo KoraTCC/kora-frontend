@@ -29,7 +29,7 @@ function LoginPage() {
   )
 }
 
-/** Mounted only while open, so the resend cooldown starts with the dialog. */
+/** Mounted only while open: leaving it resets the code and the mode. */
 function TwoFactorStep() {
   const navigate = Route.useNavigate()
   const twoFactor = useTwoFactorForm()
@@ -42,15 +42,14 @@ function TwoFactorStep() {
     <TwoFactorDialog
       open
       onClose={handleClose}
+      mode={twoFactor.mode}
+      onToggleMode={twoFactor.toggleMode}
       code={twoFactor.code}
       onCodeChange={twoFactor.handleCodeChange}
       codeError={twoFactor.codeError}
       formError={twoFactor.formError}
       onSubmit={twoFactor.handleSubmit}
       isSubmitting={twoFactor.isSubmitting}
-      resendSecondsLeft={twoFactor.resendSecondsLeft}
-      onResend={twoFactor.handleResend}
-      isResending={twoFactor.isResending}
     />
   )
 }

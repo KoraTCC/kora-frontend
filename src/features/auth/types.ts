@@ -4,11 +4,15 @@ import type {
   authResponseSchema,
   emailVerificationSchema,
   forgotPasswordSchema,
+  loginResponseSchema,
   loginSchema,
+  recoveryCodesSchema,
   registerFormSchema,
   registerSchema,
   resetPasswordFormSchema,
   twoFactorSchema,
+  twoFactorSetupSchema,
+  twoFactorStatusSchema,
   userSchema,
 } from './schemas'
 
@@ -17,6 +21,7 @@ export type RegisterInput = z.infer<typeof registerSchema>
 export type RegisterFormValues = z.infer<typeof registerFormSchema>
 export type User = z.infer<typeof userSchema>
 export type AuthResponse = z.infer<typeof authResponseSchema>
+export type LoginResponse = z.infer<typeof loginResponseSchema>
 
 export type RegisterField = keyof RegisterFormValues
 export type RegisterFieldErrors = FieldErrors<RegisterField>
@@ -36,3 +41,7 @@ export type ResetPasswordFieldErrors = FieldErrors<ResetPasswordField>
 export type TwoFactorInput = z.infer<typeof twoFactorSchema>
 
 export type EmailVerification = z.infer<typeof emailVerificationSchema>
+
+export type TwoFactorStatus = z.infer<typeof twoFactorStatusSchema>
+export type TwoFactorSetup = z.infer<typeof twoFactorSetupSchema>
+export type RecoveryCodes = z.infer<typeof recoveryCodesSchema>

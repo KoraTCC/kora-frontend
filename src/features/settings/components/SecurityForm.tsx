@@ -10,6 +10,7 @@ import type { FormEvent } from 'react'
 import { SETTINGS_FORM_ID } from '../schemas'
 import type { SecuritySettings } from '../types'
 import { SessionsCard } from './SessionsCard'
+import { TwoFactorCard } from './TwoFactorCard'
 
 type SecurityFormProps = {
   settings: SecuritySettings
@@ -40,6 +41,8 @@ export function SecurityForm({
 }: SecurityFormProps) {
   return (
     <div className="flex flex-col gap-4">
+      <TwoFactorCard />
+
       <form
         id={SETTINGS_FORM_ID}
         onSubmit={onSubmit}
@@ -48,12 +51,6 @@ export function SecurityForm({
         className="flex flex-col gap-4"
       >
         <Card title="Acesso">
-          <Switch
-            name="twoFactorEnabled"
-            label="Verificação em duas etapas"
-            description="Aplicativo autenticador · configurado em 12/08."
-            defaultChecked={settings.twoFactorEnabled}
-          />
           <Switch
             name="requireTeamTwoFactor"
             label="Exigir 2FA de toda a equipe"

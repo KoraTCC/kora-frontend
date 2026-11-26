@@ -1,4 +1,4 @@
-import { ApiError, apiRequest } from '#/lib/http'
+import { apiRequest } from '#/lib/http'
 import { mockRequest } from '#/lib/mock'
 import { acknowledgementSchema, emailVerificationSchema } from '../schemas'
 import type {
@@ -9,17 +9,15 @@ import type {
 } from '../types'
 
 /*
- * Password reset is real. TODO(api): 2FA and e-mail verification are not in
- * kora-backend yet; the paths below are the planned ones. Swapping `mockRequest` for `apiRequest` (and dropping
- * `response`) is the whole migration — hooks and screens stay untouched.
+ * Password reset and 2FA are real. TODO(api): e-mail verification is not in
+ * kora-backend yet; its paths below are the planned ones. Swapping
+ * `mockRequest` for `apiRequest` (and dropping `response`) is the whole
+ * migration — hooks and screens stay untouched.
  */
 
 type Acknowledgement = { ok: true }
 
 const OK: Acknowledgement = { ok: true }
-
-/** Mock rule: this code is always rejected, to exercise the error state. */
-const REJECTED_TWO_FACTOR_CODE = '000000'
 
 export function requestPasswordReset(
   input: ForgotPasswordInput,
@@ -41,27 +39,18 @@ export function resetPassword(
   })
 }
 
-export async function verifyTwoFactor(
+/**
+ * Second login step. The API knows who is logging in from the short-lived
+ * challenge cookie set by `POST /auth/login`; `code` is the 6-digit app code
+ * or a recovery code. On success the API sets the session cookies.
+ */
+export function verifyTwoFactor(
   input: TwoFactorInput,
 ): Promise<Acknowledgement> {
-  const result = await mockRequest('/auth/2fa/verify', {
+  return apiRequest('/auth/2fa/verify', {
     method: 'POST',
     body: input,
     schema: acknowledgementSchema,
-    response: OK,
-  })
-  if (input.code === REJECTED_TWO_FACTOR_CODE) {
-    const message = 'Código inválido ou expirado.'
-    throw new ApiError(400, message, [{ path: 'code', message }])
-  }
-  return result
-}
-
-export function resendTwoFactorCode(): Promise<Acknowledgement> {
-  return mockRequest('/auth/2fa/resend', {
-    method: 'POST',
-    schema: acknowledgementSchema,
-    response: OK,
   })
 }
 
