@@ -21,7 +21,7 @@ const SCENE_COLORS = {
 type ColorStop = readonly [offset: number, hex: string]
 
 /** Graphite chrome with a lime reflection band, dark to light. */
-const CHROME_STOPS: ReadonlyArray<ColorStop> = [
+const DARK_CHROME_STOPS: ReadonlyArray<ColorStop> = [
   [0, '#0a0c0a'],
   [0.16, '#1c211c'],
   [0.3, '#4b534a'],
@@ -35,6 +35,21 @@ const CHROME_STOPS: ReadonlyArray<ColorStop> = [
   [1, SCENE_COLORS.limeShine],
 ]
 
+/** Silver chrome for a pale ground, lime picked up in the reflections. */
+const LIGHT_CHROME_STOPS: ReadonlyArray<ColorStop> = [
+  [0, '#3b423a'],
+  [0.14, '#6b7370'],
+  [0.28, '#a9b2a5'],
+  [0.4, '#e6ebe1'],
+  [0.46, '#ffffff'],
+  [0.53, '#c8d2c1'],
+  [0.63, '#8e968c'],
+  [0.74, '#d7e5c2'],
+  [0.86, '#b8d97a'],
+  [0.93, SCENE_COLORS.lime200],
+  [1, '#ffffff'],
+]
+
 const RAMP_SIZE = 256
 const RIBBON_SEGMENTS = 280
 
@@ -42,10 +57,22 @@ const RIBBON_SEGMENTS = 280
 const MARK_INNER_RATIO = 0.607
 const MARK_DOT_RATIO = 0.148
 
+/** Whether the scene sits on a dark or a light ground. */
+export type SceneTone = 'dark' | 'light'
+
 export type SceneFrame = {
   shape: RibbonShape
   coin: CoinState
   radius: number
+  tone: SceneTone
+}
+
+type ScenePalette = {
+  ramp: Array<string>
+  /** [outline, highlight] for each rim. */
+  backRim: readonly [string, string]
+  frontRim: readonly [string, string]
+  contactShadow: string
 }
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -79,7 +106,20 @@ export function buildColorRamp(
   return ramp
 }
 
-const CHROME_RAMP = buildColorRamp(CHROME_STOPS, RAMP_SIZE)
+const SCENE_PALETTES: Record<SceneTone, ScenePalette> = {
+  dark: {
+    ramp: buildColorRamp(DARK_CHROME_STOPS, RAMP_SIZE),
+    backRim: ['rgba(8, 9, 8, 0.9)', 'rgba(236, 242, 234, 0.45)'],
+    frontRim: ['#050605', 'rgba(242, 255, 214, 0.6)'],
+    contactShadow: 'rgba(0, 0, 0, 0.55)',
+  },
+  light: {
+    ramp: buildColorRamp(LIGHT_CHROME_STOPS, RAMP_SIZE),
+    backRim: ['rgba(46, 53, 46, 0.55)', 'rgba(255, 255, 255, 0.85)'],
+    frontRim: ['#2e352e', 'rgba(255, 255, 255, 0.9)'],
+    contactShadow: 'rgba(14, 17, 14, 0.28)',
+  },
+}
 
 /** Static film grain, painted once per resize on its own overlay canvas. */
 export function paintGrain(
@@ -101,14 +141,15 @@ export function paintGrain(
 
 export function paintScene(ctx: CanvasRenderingContext2D, frame: SceneFrame) {
   const { shape, coin, radius } = frame
+  const palette = SCENE_PALETTES[frame.tone]
   ctx.clearRect(0, 0, shape.width, shape.height)
 
   const edges = sampleRibbon(shape, RIBBON_SEGMENTS)
-  paintRibbonSurface(ctx, edges, shape.phase)
-  paintRibbonRims(ctx, edges)
+  paintRibbonSurface(ctx, edges, shape.phase, palette.ramp)
+  paintRibbonRims(ctx, edges, palette)
 
   const placement = coinPlacement(coin.x, shape, radius)
-  paintContactShadow(ctx, placement.contact, radius, placement.angle)
+  paintContactShadow(ctx, placement, radius, palette.contactShadow)
   paintCoin(ctx, {
     x: placement.center.x,
     y: placement.center.y,
@@ -122,6 +163,7 @@ function paintRibbonSurface(
   ctx: CanvasRenderingContext2D,
   edges: Array<RibbonEdge>,
   phase: number,
+  ramp: Array<string>,
 ) {
   ctx.lineWidth = 0.8
   for (let i = 0; i < edges.length - 1; i++) {
@@ -129,7 +171,7 @@ function paintRibbonSurface(
     const to = edges[i + 1]
     const slope = (to.frontY - from.frontY) / (to.frontX - from.frontX)
     const shade = chromeShade(slope, from.twist, from.frontX, phase)
-    const color = CHROME_RAMP[Math.floor(shade * RAMP_SIZE)]
+    const color = ramp[Math.floor(shade * RAMP_SIZE)]
 
     ctx.fillStyle = color
     ctx.strokeStyle = color
@@ -163,30 +205,34 @@ function strokeEdge(
 function paintRibbonRims(
   ctx: CanvasRenderingContext2D,
   edges: Array<RibbonEdge>,
+  palette: ScenePalette,
 ) {
+  const [backOutline, backHighlight] = palette.backRim
+  const [frontOutline, frontHighlight] = palette.frontRim
   ctx.lineJoin = 'round'
 
-  ctx.strokeStyle = 'rgba(8, 9, 8, 0.9)'
+  ctx.strokeStyle = backOutline
   ctx.lineWidth = 2
   strokeEdge(ctx, edges, 'back', 0)
-  ctx.strokeStyle = 'rgba(236, 242, 234, 0.45)'
+  ctx.strokeStyle = backHighlight
   ctx.lineWidth = 1
   strokeEdge(ctx, edges, 'back', -1)
 
-  ctx.strokeStyle = '#050605'
+  ctx.strokeStyle = frontOutline
   ctx.lineWidth = 4
   strokeEdge(ctx, edges, 'front', 0)
-  ctx.strokeStyle = 'rgba(242, 255, 214, 0.6)'
+  ctx.strokeStyle = frontHighlight
   ctx.lineWidth = 1.2
   strokeEdge(ctx, edges, 'front', -1.6)
 }
 
 function paintContactShadow(
   ctx: CanvasRenderingContext2D,
-  contact: { x: number; y: number },
+  placement: { contact: { x: number; y: number }; angle: number },
   radius: number,
-  angle: number,
+  color: string,
 ) {
+  const { contact, angle } = placement
   const shadow = ctx.createRadialGradient(
     contact.x,
     contact.y,
@@ -195,7 +241,7 @@ function paintContactShadow(
     contact.y,
     radius * 1.1,
   )
-  shadow.addColorStop(0, 'rgba(0, 0, 0, 0.55)')
+  shadow.addColorStop(0, color)
   shadow.addColorStop(1, 'rgba(0, 0, 0, 0)')
   ctx.fillStyle = shadow
   ctx.beginPath()

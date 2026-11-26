@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 import { buildColorRamp, paintGrain, paintScene } from './coinRibbonPaint'
 
-/** Records every call made on a 2D context without drawing anything. */
+/** Records every call and colour set on a 2D context without drawing anything. */
 function createRecordingContext() {
   const calls: Array<string> = []
+  const colors: Array<unknown> = []
   const gradient = { addColorStop: vi.fn() }
   const target: Record<string, unknown> = {
     createLinearGradient: () => gradient,
@@ -20,11 +21,12 @@ function createRecordingContext() {
       }
     },
     set(object, key: string, value) {
+      if (key === 'fillStyle' || key === 'strokeStyle') colors.push(value)
       object[key] = value
       return true
     },
   })
-  return { ctx: ctx as unknown as CanvasRenderingContext2D, calls }
+  return { ctx: ctx as unknown as CanvasRenderingContext2D, calls, colors }
 }
 
 describe('buildColorRamp', () => {
@@ -70,17 +72,30 @@ describe('paintGrain', () => {
 })
 
 describe('paintScene', () => {
+  const frame = {
+    shape: { width: 800, height: 600, phase: 1, amplitude: 1 },
+    coin: { x: 300, velocity: 200, roll: 1 },
+    radius: 60,
+  }
+
   it('draws the ribbon and the coin for a frame', () => {
     const { ctx, calls } = createRecordingContext()
 
-    paintScene(ctx, {
-      shape: { width: 800, height: 600, phase: 1, amplitude: 1 },
-      coin: { x: 300, velocity: 200, roll: 1 },
-      radius: 60,
-    })
+    paintScene(ctx, { ...frame, tone: 'dark' })
 
     expect(calls[0]).toBe('clearRect')
     expect(calls.filter((call) => call === 'fill').length).toBeGreaterThan(280)
     expect(calls).toContain('ellipse')
+  })
+
+  it('uses a different chrome on a light ground', () => {
+    const dark = createRecordingContext()
+    const light = createRecordingContext()
+
+    paintScene(dark.ctx, { ...frame, tone: 'dark' })
+    paintScene(light.ctx, { ...frame, tone: 'light' })
+
+    expect(light.calls).toEqual(dark.calls)
+    expect(light.colors).not.toEqual(dark.colors)
   })
 })

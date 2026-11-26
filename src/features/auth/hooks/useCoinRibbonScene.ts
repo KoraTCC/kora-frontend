@@ -4,6 +4,7 @@ import type { CanvasFrame, CanvasSize } from '#/hooks/useCanvasAnimation'
 import { coinRadius, enteringCoin, stepCoin } from '#/lib/coinRibbon'
 import type { CoinState } from '#/lib/coinRibbon'
 import { paintGrain, paintScene } from '#/lib/coinRibbonPaint'
+import type { SceneTone } from '#/lib/coinRibbonPaint'
 
 /** How fast the wave travels, in radians of phase per second. */
 const WAVE_SPEED = 0.35
@@ -11,7 +12,7 @@ const WAVE_SPEED = 0.35
 const REDUCED_MOTION_SCALE = 0.25
 
 /** Drives the login pitch animation: a Kora coin rolling on a chrome ribbon. */
-export function useCoinRibbonScene() {
+export function useCoinRibbonScene(tone: SceneTone) {
   const grainRef = useRef<HTMLCanvasElement>(null)
   const phaseRef = useRef(0)
   const coinRef = useRef<CoinState | null>(null)
@@ -45,7 +46,7 @@ export function useCoinRibbonScene() {
     )
     coinRef.current = coin
 
-    paintScene(ctx, { shape, coin, radius })
+    paintScene(ctx, { shape, coin, radius, tone })
   }
 
   const { containerRef, canvasRef } = useCanvasAnimation({
