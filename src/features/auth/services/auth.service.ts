@@ -1,6 +1,16 @@
 import { ApiError, apiRequest } from '#/lib/http'
-import { authResponseSchema, noContentSchema } from '../schemas'
-import type { AuthResponse, LoginInput, RegisterInput, User } from '../types'
+import {
+  authResponseSchema,
+  loginResponseSchema,
+  noContentSchema,
+} from '../schemas'
+import type {
+  AuthResponse,
+  LoginInput,
+  LoginResponse,
+  RegisterInput,
+  User,
+} from '../types'
 
 export function register(input: RegisterInput): Promise<AuthResponse> {
   return apiRequest('/auth/register', {
@@ -10,11 +20,12 @@ export function register(input: RegisterInput): Promise<AuthResponse> {
   })
 }
 
-export function login(input: LoginInput): Promise<AuthResponse> {
+/** `{ user }`, or `{ twoFactorRequired }` when the account has 2FA on. */
+export function login(input: LoginInput): Promise<LoginResponse> {
   return apiRequest('/auth/login', {
     method: 'POST',
     body: input,
-    schema: authResponseSchema,
+    schema: loginResponseSchema,
   })
 }
 

@@ -157,7 +157,6 @@ export function getSecuritySettings(): Promise<SecuritySettings> {
   return mockRequest('/settings/security', {
     schema: securitySettingsSchema,
     response: {
-      twoFactorEnabled: true,
       requireTeamTwoFactor: false,
       sessionTimeout: '12h',
       lockoutAttempts: '5',

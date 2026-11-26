@@ -15,7 +15,6 @@ import { SettingsTwoColumns } from './SettingsTwoColumns'
 type SecurityField = keyof SecuritySettingsValues
 
 const SECURITY_FIELDS: ReadonlyArray<SecurityField> = [
-  'twoFactorEnabled',
   'requireTeamTwoFactor',
   'sessionTimeout',
   'lockoutAttempts',
@@ -69,7 +68,6 @@ export function SecuritySettings() {
 
 function readSecurityForm(form: FormData) {
   return {
-    twoFactorEnabled: readCheckbox(form, 'twoFactorEnabled'),
     requireTeamTwoFactor: readCheckbox(form, 'requireTeamTwoFactor'),
     sessionTimeout: readText(form, 'sessionTimeout'),
     lockoutAttempts: readText(form, 'lockoutAttempts'),

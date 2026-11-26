@@ -7,8 +7,10 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: login,
-    onSuccess: ({ user }) => {
-      queryClient.setQueryData(AUTH_USER_QUERY_KEY, user)
+    onSuccess: (response) => {
+      // With 2FA there is no session yet: the user only exists after the code.
+      if ('user' in response)
+        queryClient.setQueryData(AUTH_USER_QUERY_KEY, response.user)
     },
   })
 }

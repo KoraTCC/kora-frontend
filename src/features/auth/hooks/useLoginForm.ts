@@ -34,7 +34,10 @@ export function useLoginForm() {
 
     setFieldErrors({})
     mutation.mutate(parsed.data, {
-      onSuccess: () => navigate({ to: '/' }),
+      onSuccess: (response) =>
+        'twoFactorRequired' in response
+          ? navigate({ to: '/auth', search: { step: 'two-factor' } })
+          : navigate({ to: '/' }),
       onError: (error) => {
         if (error instanceof ApiError)
           setFieldErrors(toFieldErrors(error.issues, LOGIN_FIELDS))

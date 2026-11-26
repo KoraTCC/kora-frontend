@@ -56,7 +56,6 @@ export const inviteFormSchema = z.object({
 })
 
 export const securitySettingsSchema = z.object({
-  twoFactorEnabled: z.boolean(),
   requireTeamTwoFactor: z.boolean(),
   sessionTimeout: z.enum(['1h', '12h', '7d']),
   lockoutAttempts: z.enum(['3', '5', '10']),
