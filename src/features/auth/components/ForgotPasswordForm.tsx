@@ -35,7 +35,7 @@ export function ForgotPasswordForm({
 
       <FormError message={formError} />
 
-      <Button type="submit" isBlock disabled={isSubmitting}>
+      <Button className='text-white' type="submit" isBlock disabled={isSubmitting}>
         {submitLabel}
       </Button>
 
