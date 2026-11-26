@@ -64,6 +64,12 @@
   --color-status-failed-bg: var(--status-failed-bg);
   --color-status-failed-soft: var(--status-failed-soft);
   --color-sidebar: var(--kora-sidebar);
+  --color-stage: var(--kora-stage-bg);
+  --color-stage-top: var(--kora-stage-bg-top);
+  --color-stage-ink: var(--kora-stage-ink);
+  --color-stage-ink-soft: var(--kora-stage-ink-soft);
+  --color-stage-accent: var(--kora-stage-accent);
+  --color-stage-faint: var(--kora-stage-faint);
 }
 
 /* ===========================================================================
@@ -103,6 +109,14 @@
   --kora-overlay: rgba(6, 8, 6, 0.72);
   --kora-disabled: #4b534a;
   --kora-sidebar: #0c0f0b;
+
+  /* palco da tela de login: sempre escuro, não muda no modo claro */
+  --kora-stage-bg: #080908;
+  --kora-stage-bg-top: #121612;
+  --kora-stage-ink: #ecf2ea;
+  --kora-stage-ink-soft: #c9d1c6;
+  --kora-stage-accent: #b8f24b;
+  --kora-stage-faint: #6b7370;
 
   /* status */
   --status-pending: #f2c14e;
