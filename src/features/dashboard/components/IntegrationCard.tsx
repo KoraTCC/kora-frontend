@@ -34,7 +34,7 @@ export function IntegrationCard() {
       title="Integração"
       tone="accent"
       action={
-        <span className="bg-lime text-on-lime rounded-full px-2 font-mono text-[10px] font-medium">
+        <span className="bg-lime-fill text-on-lime rounded-full px-2 font-mono text-[10px] font-medium">
           {progress}
         </span>
       }

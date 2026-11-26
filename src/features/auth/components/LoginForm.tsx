@@ -58,7 +58,7 @@ export function LoginForm({
 
       <FormError message={formError} />
 
-      <Button className='text-white' type="submit" isBlock disabled={isSubmitting}>
+      <Button type="submit" isBlock disabled={isSubmitting}>
         {submitLabel}
       </Button>
 

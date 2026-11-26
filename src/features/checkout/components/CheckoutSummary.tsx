@@ -55,7 +55,7 @@ export function CheckoutSummary({ checkout }: CheckoutSummaryProps) {
         <p className="text-ink-soft flex items-center gap-2 text-[13px]">
           <span
             aria-hidden
-            className="bg-lime text-on-lime flex size-4 items-center justify-center rounded-[4px]"
+            className="bg-lime-fill text-on-lime flex size-4 items-center justify-center rounded-[4px]"
           >
             <Check size={11} strokeWidth={3} />
           </span>

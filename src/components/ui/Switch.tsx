@@ -56,7 +56,7 @@ export function Switch({
         type="checkbox"
         role="switch"
         aria-describedby={description ? descriptionId : undefined}
-        className="bg-line-strong checked:bg-lime focus-visible:ring-lime/25 before:bg-muted checked:before:bg-on-lime relative h-[22px] w-10 flex-none cursor-pointer appearance-none rounded-full transition before:absolute before:top-[3px] before:left-[3px] before:size-4 before:rounded-full before:transition checked:before:translate-x-[18px] focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-45"
+        className="bg-line-strong checked:bg-lime-fill focus-visible:ring-lime/25 before:bg-muted checked:before:bg-on-lime relative h-[22px] w-10 flex-none cursor-pointer appearance-none rounded-full transition before:absolute before:top-[3px] before:left-[3px] before:size-4 before:rounded-full before:transition checked:before:translate-x-[18px] focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-45"
       />
     </div>
   )

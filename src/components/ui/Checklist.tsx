@@ -22,7 +22,7 @@ export function Checklist({ items }: ChecklistProps) {
             className={cn(
               'flex size-4 flex-none items-center justify-center rounded-full border',
               item.isDone
-                ? 'bg-lime border-lime text-on-lime'
+                ? 'bg-lime-fill border-lime-fill-line text-on-lime'
                 : 'border-lime-line',
             )}
           >

@@ -133,7 +133,7 @@ function buildSections(
 function CountBadge({ count, label }: { count: number; label: string }) {
   if (count === 0) return null
   return (
-    <span className="bg-lime text-on-lime rounded-full px-1.5 font-mono text-[10px] font-medium">
+    <span className="bg-lime-fill text-on-lime rounded-full px-1.5 font-mono text-[10px] font-medium">
       {count}
       <span className="sr-only"> {label}</span>
     </span>

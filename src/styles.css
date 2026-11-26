@@ -91,6 +91,9 @@
   --color-lime: var(--kora-lime-400);
   --color-lime-soft: var(--kora-lime-200);
   --color-lime-deep: var(--kora-lime-600);
+  --color-lime-fill: var(--kora-lime-fill);
+  --color-lime-fill-hover: var(--kora-lime-fill-hover);
+  --color-lime-fill-line: var(--kora-lime-fill-border);
   --color-on-lime: var(--kora-on-lime);
   --color-on-lime-soft: var(--kora-on-lime-soft);
   --color-on-lime-dim: var(--kora-on-lime-dim);
@@ -158,6 +161,10 @@
   --kora-lime-bg: #151c0e;
   --kora-lime-glow: rgba(184, 242, 75, 0.12);
   --kora-on-lime: #0a0c0a;
+  /* preenchimento sólido (botão, badge, switch): o lime da marca nos dois temas */
+  --kora-lime-fill: #b8f24b;
+  --kora-lime-fill-hover: #d6fa8e;
+  --kora-lime-fill-border: #b8f24b;
   --kora-on-lime-soft: #1f3308;
   --kora-on-lime-dim: #2a4310;
   --kora-panel: #0e110e;
@@ -256,6 +263,10 @@
   --kora-lime-border: #b8d97a;
   --kora-lime-bg: #eef7d9;
   --kora-lime-glow: rgba(184, 242, 75, 0.28);
+  /* no branco o lime vivo continua; só a borda e o hover escurecem um pouco */
+  --kora-lime-fill: #b8f24b;
+  --kora-lime-fill-hover: #a9e53a;
+  --kora-lime-fill-border: #9fd136;
   --kora-raised: #ffffff;
   --kora-overlay: rgba(14, 17, 14, 0.4);
   --kora-disabled: #a9b2a5;
