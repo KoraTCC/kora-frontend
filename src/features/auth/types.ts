@@ -17,6 +17,8 @@ import type {
 } from './schemas'
 
 export type LoginInput = z.infer<typeof loginSchema>
+/** Body of the captcha-protected routes: the API reads and drops the token. */
+export type WithCaptcha<T> = T & { turnstileToken?: string }
 export type RegisterInput = z.infer<typeof registerSchema>
 export type RegisterFormValues = z.infer<typeof registerFormSchema>
 export type User = z.infer<typeof userSchema>

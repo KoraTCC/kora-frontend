@@ -10,9 +10,12 @@ import type {
   LoginResponse,
   RegisterInput,
   User,
+  WithCaptcha,
 } from '../types'
 
-export function register(input: RegisterInput): Promise<AuthResponse> {
+export function register(
+  input: WithCaptcha<RegisterInput>,
+): Promise<AuthResponse> {
   return apiRequest('/auth/register', {
     method: 'POST',
     body: input,
@@ -21,7 +24,7 @@ export function register(input: RegisterInput): Promise<AuthResponse> {
 }
 
 /** `{ user }`, or `{ twoFactorRequired }` when the account has 2FA on. */
-export function login(input: LoginInput): Promise<LoginResponse> {
+export function login(input: WithCaptcha<LoginInput>): Promise<LoginResponse> {
   return apiRequest('/auth/login', {
     method: 'POST',
     body: input,

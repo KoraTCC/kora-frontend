@@ -6,6 +6,7 @@ import {
   toFieldErrors,
   zodIssuesToApiIssues,
 } from '#/lib/formErrors'
+import { useTurnstile } from '#/hooks/useTurnstile'
 import { ApiError } from '#/lib/http'
 import { registerFormSchema } from '../schemas'
 import type { RegisterField, RegisterFieldErrors } from '../types'
@@ -18,11 +19,14 @@ const REGISTER_FIELDS: ReadonlyArray<RegisterField> = [
   'confirmPassword',
   'acceptTerms',
 ]
+const CAPTCHA_REQUIRED = 'Confirme que você não é um robô.'
 
 export function useRegisterForm() {
   const navigate = useNavigate()
   const mutation = useRegister()
   const [fieldErrors, setFieldErrors] = useState<RegisterFieldErrors>({})
+  const [captchaError, setCaptchaError] = useState<string>()
+  const captcha = useTurnstile()
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -42,15 +46,24 @@ export function useRegisterForm() {
     }
 
     setFieldErrors({})
+    const turnstileToken = captcha.getToken()
+    if (captcha.isEnabled && !turnstileToken) {
+      setCaptchaError(CAPTCHA_REQUIRED)
+      return
+    }
+
+    setCaptchaError(undefined)
     const { name, email, password } = parsed.data
     mutation.mutate(
-      { name, email, password },
+      { name, email, password, turnstileToken },
       {
         onSuccess: () => navigate({ to: '/' }),
         onError: (error) => {
           if (error instanceof ApiError)
             setFieldErrors(toFieldErrors(error.issues, REGISTER_FIELDS))
         },
+        // Each token is single use, so every attempt needs a fresh challenge.
+        onSettled: () => captcha.reset(),
       },
     )
   }
@@ -58,7 +71,8 @@ export function useRegisterForm() {
   return {
     handleSubmit,
     fieldErrors,
-    formError: getFormError(mutation.error, REGISTER_FIELDS),
+    formError: captchaError ?? getFormError(mutation.error, REGISTER_FIELDS),
+    captcha,
     isSubmitting: mutation.isPending,
   }
 }

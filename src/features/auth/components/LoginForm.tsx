@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import type { FormEvent } from 'react'
+import type { FormEvent, ReactNode } from 'react'
 import { Button } from '#/components/ui/Button'
 import { Checkbox } from '#/components/ui/Checkbox'
 import { Divider } from '#/components/ui/Divider'
@@ -13,6 +13,8 @@ type LoginFormProps = {
   isSubmitting?: boolean
   fieldErrors?: LoginFieldErrors
   formError?: string
+  /** Anti-bot widget, shown right above the form error. */
+  captcha?: ReactNode
   onSignupClick?: () => void
 }
 
@@ -21,6 +23,7 @@ export function LoginForm({
   isSubmitting,
   fieldErrors = {},
   formError,
+  captcha,
   onSignupClick,
 }: LoginFormProps) {
   const submitLabel = isSubmitting ? 'Entrando…' : 'Entrar'
@@ -55,6 +58,8 @@ export function LoginForm({
       />
 
       <Checkbox label="Manter sessão" name="remember" defaultChecked />
+
+      {captcha}
 
       <FormError message={formError} />
 

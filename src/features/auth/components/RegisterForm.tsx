@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import type { FormEvent } from 'react'
+import type { FormEvent, ReactNode } from 'react'
 import { Button } from '#/components/ui/Button'
 import { Checkbox } from '#/components/ui/Checkbox'
 import { Input } from '#/components/ui/Input'
@@ -14,6 +14,8 @@ type RegisterFormProps = {
   isSubmitting?: boolean
   fieldErrors?: RegisterFieldErrors
   formError?: string
+  /** Anti-bot widget, shown right above the form error. */
+  captcha?: ReactNode
 }
 
 export function RegisterForm({
@@ -21,6 +23,7 @@ export function RegisterForm({
   isSubmitting,
   fieldErrors = {},
   formError,
+  captcha,
 }: RegisterFormProps) {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -89,6 +92,8 @@ export function RegisterForm({
         required
         error={fieldErrors.acceptTerms}
       />
+
+      {captcha}
 
       <FormError message={formError} />
 
