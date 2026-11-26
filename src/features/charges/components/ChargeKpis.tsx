@@ -17,15 +17,16 @@ export function ChargeKpis() {
   if (isError) return <ErrorState onRetry={() => void refetch()} />
 
   const confirmed = stats.counts.confirmed
+  const hasConfirmed = confirmed > 0
   const lost = `${stats.counts.expired} expiradas · ${stats.counts.failed} falharam`
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
       <StatCard
-        label="Recebido no período"
+        label="Total recebido"
         value={formatBRL(stats.receivedCents)}
-        hint={`${formatSignedPercent(stats.receivedDelta)} vs. semana passada`}
-        hintTone="positive"
+        hint={`${formatSignedPercent(stats.receivedDelta)} nos últimos 7 dias vs. 7 anteriores`}
+        hintTone={stats.receivedDelta < 0 ? 'danger' : 'positive'}
         tone="accent"
       />
       <StatCard
@@ -40,9 +41,9 @@ export function ChargeKpis() {
       />
       <StatCard
         label="Tempo até confirmar"
-        value={stats.medianConfirmMinutes}
-        unit="min"
-        hint="mediana · Sepolia e Amoy"
+        value={hasConfirmed ? stats.medianConfirmMinutes : '—'}
+        unit={hasConfirmed ? 'min' : undefined}
+        hint="mediana das cobranças confirmadas"
       />
     </div>
   )

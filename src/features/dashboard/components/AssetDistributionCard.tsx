@@ -36,6 +36,11 @@ export function AssetDistributionCard() {
       title="Distribuição por ativo"
       action={<span className="text-dim font-mono text-[10px]">7D</span>}
     >
+      {rows.length === 0 && (
+        <p className="text-muted text-xs">
+          Nenhum recebimento nos últimos 7 dias.
+        </p>
+      )}
       <ul className="flex flex-col gap-3">
         {rows.map((row) => (
           <li key={row.network} className="flex items-center gap-3">
