@@ -11,7 +11,6 @@ const SCENE_COLORS = {
   lime200: '#d6fa8e',
   lime400: '#b8f24b',
   limeBorder: '#4a6320',
-  limeDeep: '#3a4d18',
   limeShine: '#f2ffd6',
   limeFace: '#a8de3f',
   limeMid: '#9fd13a',
@@ -37,13 +36,13 @@ const DARK_CHROME_STOPS: ReadonlyArray<ColorStop> = [
 
 /** Silver chrome for a pale ground, lime picked up in the reflections. */
 const LIGHT_CHROME_STOPS: ReadonlyArray<ColorStop> = [
-  [0, '#3b423a'],
-  [0.14, '#6b7370'],
-  [0.28, '#a9b2a5'],
+  [0, '#7a8277'],
+  [0.14, '#959d92'],
+  [0.28, '#b7bfb3'],
   [0.4, '#e6ebe1'],
   [0.46, '#ffffff'],
   [0.53, '#c8d2c1'],
-  [0.63, '#8e968c'],
+  [0.63, '#a3ab9f'],
   [0.74, '#d7e5c2'],
   [0.86, '#b8d97a'],
   [0.93, SCENE_COLORS.lime200],
@@ -72,7 +71,7 @@ type ScenePalette = {
   /** [outline, highlight] for each rim. */
   backRim: readonly [string, string]
   frontRim: readonly [string, string]
-  contactShadow: string
+  frontRimWidth: number
 }
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -111,13 +110,13 @@ const SCENE_PALETTES: Record<SceneTone, ScenePalette> = {
     ramp: buildColorRamp(DARK_CHROME_STOPS, RAMP_SIZE),
     backRim: ['rgba(8, 9, 8, 0.9)', 'rgba(236, 242, 234, 0.45)'],
     frontRim: ['#050605', 'rgba(242, 255, 214, 0.6)'],
-    contactShadow: 'rgba(0, 0, 0, 0.55)',
+    frontRimWidth: 2.5,
   },
   light: {
     ramp: buildColorRamp(LIGHT_CHROME_STOPS, RAMP_SIZE),
-    backRim: ['rgba(46, 53, 46, 0.55)', 'rgba(255, 255, 255, 0.85)'],
-    frontRim: ['#2e352e', 'rgba(255, 255, 255, 0.9)'],
-    contactShadow: 'rgba(14, 17, 14, 0.28)',
+    backRim: ['rgba(107, 115, 112, 0.45)', 'rgba(255, 255, 255, 0.85)'],
+    frontRim: ['#a9b2a5', 'rgba(255, 255, 255, 0.9)'],
+    frontRimWidth: 1.5,
   },
 }
 
@@ -149,7 +148,6 @@ export function paintScene(ctx: CanvasRenderingContext2D, frame: SceneFrame) {
   paintRibbonRims(ctx, edges, palette)
 
   const placement = coinPlacement(coin.x, shape, radius)
-  paintContactShadow(ctx, placement, radius, palette.contactShadow)
   paintCoin(ctx, {
     x: placement.center.x,
     y: placement.center.y,
@@ -219,42 +217,11 @@ function paintRibbonRims(
   strokeEdge(ctx, edges, 'back', -1)
 
   ctx.strokeStyle = frontOutline
-  ctx.lineWidth = 4
+  ctx.lineWidth = palette.frontRimWidth
   strokeEdge(ctx, edges, 'front', 0)
   ctx.strokeStyle = frontHighlight
   ctx.lineWidth = 1.2
   strokeEdge(ctx, edges, 'front', -1.6)
-}
-
-function paintContactShadow(
-  ctx: CanvasRenderingContext2D,
-  placement: { contact: { x: number; y: number }; angle: number },
-  radius: number,
-  color: string,
-) {
-  const { contact, angle } = placement
-  const shadow = ctx.createRadialGradient(
-    contact.x,
-    contact.y,
-    0,
-    contact.x,
-    contact.y,
-    radius * 1.1,
-  )
-  shadow.addColorStop(0, color)
-  shadow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-  ctx.fillStyle = shadow
-  ctx.beginPath()
-  ctx.ellipse(
-    contact.x,
-    contact.y,
-    radius * 1.1,
-    radius * 0.35,
-    angle,
-    0,
-    Math.PI * 2,
-  )
-  ctx.fill()
 }
 
 type CoinPose = {
@@ -286,25 +253,27 @@ function paintCoin(ctx: CanvasRenderingContext2D, pose: CoinPose) {
   ctx.restore()
 }
 
+/**
+ * The coin's thickness: a short metallic band behind the face, lit from the
+ * top so it reads as the rim of the coin rather than a shadow.
+ */
 function paintCoinEdge(
   ctx: CanvasRenderingContext2D,
   radius: number,
   rx: number,
 ) {
-  const depth = radius * 0.2
-  for (let layer = 10; layer >= 1; layer--) {
-    const k = layer / 10
-    ctx.fillStyle =
-      layer % 3 === 0 ? SCENE_COLORS.limeDeep : SCENE_COLORS.limeBorder
+  const depth = radius * 0.12
+  const band = ctx.createLinearGradient(0, -radius, 0, radius)
+  band.addColorStop(0, SCENE_COLORS.lime200)
+  band.addColorStop(0.5, SCENE_COLORS.limeMid)
+  band.addColorStop(1, SCENE_COLORS.limeShade)
+  ctx.fillStyle = band
+  for (let layer = 6; layer >= 1; layer--) {
+    const k = layer / 6
     ctx.beginPath()
     ctx.ellipse(-depth * k, depth * 0.12 * k, rx, radius, 0, 0, Math.PI * 2)
     ctx.fill()
   }
-  ctx.strokeStyle = 'rgba(214, 250, 142, 0.35)'
-  ctx.lineWidth = 1
-  ctx.beginPath()
-  ctx.ellipse(-depth, depth * 0.12, rx, radius, 0, Math.PI * 0.5, Math.PI * 1.5)
-  ctx.stroke()
 }
 
 function paintCoinFace(
