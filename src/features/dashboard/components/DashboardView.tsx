@@ -1,5 +1,6 @@
 import type { DashboardRange } from '../types'
 import { AssetDistributionCard } from './AssetDistributionCard'
+import { BalanceCard } from './BalanceCard'
 import { DashboardKpis } from './DashboardKpis'
 import { IntegrationCard } from './IntegrationCard'
 import { RecentChargesCard } from './RecentChargesCard'
@@ -14,6 +15,7 @@ type DashboardViewProps = {
 export function DashboardView({ range, onRangeChange }: DashboardViewProps) {
   return (
     <>
+      <BalanceCard />
       <DashboardKpis />
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_330px]">
         <div className="stagger flex min-w-0 flex-col gap-4">

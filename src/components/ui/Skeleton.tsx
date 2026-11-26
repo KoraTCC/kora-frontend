@@ -31,10 +31,12 @@ export function SkeletonBox({ className }: SkeletonBoxProps) {
     <span
       aria-hidden
       className={cn(
-        'bg-surface-2 block animate-pulse rounded-[6px] motion-reduce:animate-none',
+        'bg-line-soft relative block overflow-hidden rounded-[6px]',
         className,
       )}
-    />
+    >
+      <span className="animate-shimmer absolute inset-0 bg-linear-to-r from-transparent via-(--kora-shimmer) to-transparent motion-reduce:hidden" />
+    </span>
   )
 }
 

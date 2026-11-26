@@ -1,3 +1,4 @@
+import { AnimatedNumber } from '#/components/ui/AnimatedNumber'
 import { Card } from '#/components/ui/Card'
 import { ErrorState } from '#/components/ui/ErrorState'
 import { PillGroup } from '#/components/ui/PillGroup'
@@ -51,7 +52,7 @@ function VolumeBody({ range }: { range: DashboardRange }) {
       <div className="flex flex-col gap-1">
         <p className="flex flex-wrap items-baseline gap-2">
           <span className="font-display text-ink text-[28px] font-bold tracking-tight sm:text-[34px]">
-            {formatBRL(volume.totalCents)}
+            <AnimatedNumber value={volume.totalCents} format={formatBRL} />
           </span>
           <span className="text-lime font-mono text-[11px]">
             {formatSignedPercent(volume.delta)}

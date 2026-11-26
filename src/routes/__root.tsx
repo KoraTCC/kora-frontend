@@ -8,7 +8,9 @@ import type { QueryClient } from '@tanstack/react-query'
 import { queryClient } from '#/lib/queryClient'
 import appCss from '../styles.css?url'
 
-const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getItem('theme');var mode=(stored==='light'||stored==='dark'||stored==='auto')?stored:'auto';var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);if(mode==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',mode)}root.style.colorScheme=resolved;}catch(e){}})();`
+// Runs before paint so there is no flash. Light by default, like the login
+// screen; `localStorage.theme` (see #/lib/theme) switches it to dark.
+const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getItem('theme');var mode=stored==='dark'?'dark':'light';var root=document.documentElement;root.setAttribute('data-theme',mode);root.style.colorScheme=mode;}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`
 
 export type RouterContext = {
   queryClient: QueryClient
@@ -27,7 +29,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       {
         title: 'Kora',
       },
-      { name: 'theme-color', content: '#0e110e' },
+      { name: 'theme-color', content: '#f4f7f1' },
     ],
     links: [
       {

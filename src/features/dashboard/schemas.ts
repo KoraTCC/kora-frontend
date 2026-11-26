@@ -9,6 +9,12 @@ export const dashboardSearchSchema = z.object({
 })
 
 export const dashboardOverviewSchema = z.object({
+  balance: z.object({
+    /** Settled in the merchant's wallets, in cents. */
+    availableCents: z.number(),
+    /** Received since midnight, in cents. */
+    todayCents: z.number(),
+  }),
   volume: z.object({
     totalCents: z.number(),
     delta: z.number(),

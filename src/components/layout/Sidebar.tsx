@@ -5,6 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { cn } from '#/lib/cn'
 import { useSidebarCollapse } from './AppShell'
+import { KoraMark } from './KoraMark'
 
 export type SidebarItem = {
   label: string
@@ -26,7 +27,8 @@ export type SidebarSection = {
 type SidebarProps = {
   /** Shown next to the brand — e.g. an "ADMIN" tag. */
   brandTag?: ReactNode
-  account: ReactNode
+  /** Who is signed in, pinned to the bottom — see `SidebarProfile`. */
+  profile: ReactNode
   sections: ReadonlyArray<SidebarSection>
   footerItems: ReadonlyArray<SidebarItem>
   onNavigate?: () => void
@@ -41,7 +43,7 @@ const ACTIVE_PROPS = {
 
 export function Sidebar({
   brandTag,
-  account,
+  profile,
   sections,
   footerItems,
   onNavigate,
@@ -62,9 +64,17 @@ export function Sidebar({
           isCollapsed ? 'flex-col' : 'px-1.5',
         )}
       >
-        <p className="font-display text-ink text-[17px] font-bold tracking-tight">
-          {isCollapsed ? 'K' : 'Kora'}
-        </p>
+        <div className="flex items-center gap-2">
+          <KoraMark className="h-[26px] w-[23px]" />
+          <p
+            className={cn(
+              'font-display text-ink text-[18px] font-bold tracking-tight',
+              isCollapsed && 'sr-only',
+            )}
+          >
+            Kora
+          </p>
+        </div>
         {isCollapsed ? null : brandTag}
         {collapse ? (
           <button
@@ -86,8 +96,6 @@ export function Sidebar({
           </button>
         ) : null}
       </div>
-
-      {isCollapsed ? null : account}
 
       <nav aria-label="Principal" className="flex flex-1 flex-col gap-5">
         {sections.map((section) => (
@@ -125,6 +133,8 @@ export function Sidebar({
           </li>
         ))}
       </ul>
+
+      {profile}
     </div>
   )
 }

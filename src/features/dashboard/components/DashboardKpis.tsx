@@ -1,3 +1,4 @@
+import { AnimatedNumber } from '#/components/ui/AnimatedNumber'
 import { ErrorState } from '#/components/ui/ErrorState'
 import { SkeletonStats } from '#/components/ui/Skeleton'
 import { StatCard } from '#/components/ui/StatCard'
@@ -20,13 +21,13 @@ export function DashboardKpis() {
       <StatCard
         dot="pending"
         label="Pendentes"
-        value={stats.counts.pending}
+        value={<AnimatedNumber value={stats.counts.pending} />}
         hint={`${formatBRL(stats.pendingAmountCents)} na janela`}
       />
       <StatCard
         dot="confirmed"
         label="Confirmadas"
-        value={stats.counts.confirmed}
+        value={<AnimatedNumber value={stats.counts.confirmed} />}
         hint={`${formatSignedPercent(stats.confirmedDelta)} vs. semana passada`}
         hintTone="positive"
         tone="accent"
@@ -34,13 +35,13 @@ export function DashboardKpis() {
       <StatCard
         dot="expired"
         label="Expiradas"
-        value={stats.counts.expired}
+        value={<AnimatedNumber value={stats.counts.expired} />}
         hint={`${formatPercent(expiredShare)} do total`}
       />
       <StatCard
         dot="partial"
         label="Parciais"
-        value={stats.counts.partial}
+        value={<AnimatedNumber value={stats.counts.partial} />}
         hint="Precisam de revisão"
         hintTone="warning"
         tone="warning"
