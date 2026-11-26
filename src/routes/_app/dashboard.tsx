@@ -5,6 +5,7 @@ import { DashboardView } from '#/features/dashboard/components/DashboardView'
 import { dashboardSearchSchema } from '#/features/dashboard/schemas'
 import type { DashboardRange } from '#/features/dashboard/types'
 import { getGreeting } from '#/features/dashboard/greeting'
+import { formatLongDay } from '#/lib/date'
 
 export const Route = createFileRoute('/_app/dashboard')({
   validateSearch: dashboardSearchSchema,
@@ -16,16 +17,19 @@ function DashboardPage() {
   const { user } = Route.useRouteContext()
   const navigate = Route.useNavigate()
 
+  const greeting = getGreeting(user.name)
+  const today = formatLongDay(new Date())
+
   function handleRangeChange(nextRange: DashboardRange) {
     void navigate({ search: { range: nextRange }, replace: true })
   }
 
   return (
     <Page
-      title="Dashboard"
-      subtitle={`${getGreeting(user.name)} Aqui está o resumo de hoje.`}
+      title={greeting}
+      subtitle={`Resumo da sua loja · ${today}`}
       actions={
-        <Link to="/charges/new" className={buttonClasses({ size: 'sm' })}>
+        <Link to="/charges/new" className={buttonClasses()}>
           + Nova cobrança
         </Link>
       }
