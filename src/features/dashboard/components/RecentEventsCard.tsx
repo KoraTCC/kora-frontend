@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { Card } from '#/components/ui/Card'
 import { ErrorState } from '#/components/ui/ErrorState'
 import { LiveTag } from '#/components/ui/LiveTag'
@@ -24,6 +25,9 @@ export function RecentEventsCard() {
         isError={isError}
         onRetry={() => void refetch()}
       />
+      <Link to="/logs" className="text-lime mt-auto text-xs font-semibold">
+        Ver logs →
+      </Link>
     </Card>
   )
 }
@@ -47,21 +51,33 @@ function RecentEventsBody({
     return <p className="text-muted text-xs">Nenhum evento ainda.</p>
 
   return (
-    <ul className="flex flex-col gap-3.5">
+    <ol className="flex flex-col">
       {events.map((event) => (
-        <li key={event.id} className="flex gap-2.5">
-          <span
-            aria-hidden
-            className={`mt-1.5 size-1.5 flex-none rounded-full ${DOT_CLASSES[event.tone]}`}
-          />
-          <div className="flex min-w-0 flex-col gap-0.5">
-            <p className="text-ink text-xs">{event.title}</p>
-            <p className="text-dim font-mono text-[10px]">
-              {event.detail} · {formatRelative(event.at)}
-            </p>
-          </div>
-        </li>
+        <EventItem key={event.id} event={event} />
       ))}
-    </ul>
+    </ol>
+  )
+}
+
+/** One step of the timeline: dot + rail, title, detail and when. */
+function EventItem({ event }: { event: DashboardEvent }) {
+  return (
+    <li className="group flex gap-3 pb-3.5 last:pb-0">
+      <span aria-hidden className="flex flex-col items-center pt-1.5">
+        <span
+          className={`ring-surface size-2 flex-none rounded-full ring-3 ${DOT_CLASSES[event.tone]}`}
+        />
+        <span className="bg-line-soft mt-1.5 w-px flex-1 group-last:hidden" />
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <p className="text-ink text-[13px] font-semibold">{event.title}</p>
+        <p className="text-muted truncate font-mono text-[11px]">
+          {event.detail}
+        </p>
+      </div>
+      <span className="text-muted text-xs whitespace-nowrap">
+        {formatRelative(event.at)}
+      </span>
+    </li>
   )
 }
