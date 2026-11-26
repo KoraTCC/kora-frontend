@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Captcha } from '#/components/ui/Captcha'
 import { AuthHeading } from '#/features/auth/components/AuthHeading'
 import { RegisterForm } from '#/features/auth/components/RegisterForm'
 import { useRegisterForm } from '#/features/auth/hooks/useRegisterForm'
@@ -8,7 +9,7 @@ export const Route = createFileRoute('/_auth/register')({
 })
 
 function RegisterPage() {
-  const { handleSubmit, fieldErrors, formError, isSubmitting } =
+  const { handleSubmit, fieldErrors, formError, isSubmitting, captcha } =
     useRegisterForm()
 
   return (
@@ -22,6 +23,13 @@ function RegisterPage() {
         isSubmitting={isSubmitting}
         fieldErrors={fieldErrors}
         formError={formError}
+        captcha={
+          <Captcha
+            containerRef={captcha.containerRef}
+            isEnabled={captcha.isEnabled}
+            hasLoadError={captcha.hasLoadError}
+          />
+        }
       />
     </>
   )

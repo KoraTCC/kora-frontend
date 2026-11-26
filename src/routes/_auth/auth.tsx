@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Captcha } from '#/components/ui/Captcha'
 import { AuthHeading } from '#/features/auth/components/AuthHeading'
 import { LoginForm } from '#/features/auth/components/LoginForm'
 import { TwoFactorDialog } from '#/features/auth/components/TwoFactorDialog'
@@ -13,7 +14,8 @@ export const Route = createFileRoute('/_auth/auth')({
 
 function LoginPage() {
   const { step } = Route.useSearch()
-  const { handleSubmit, fieldErrors, formError, isSubmitting } = useLoginForm()
+  const { handleSubmit, fieldErrors, formError, isSubmitting, captcha } =
+    useLoginForm()
 
   return (
     <>
@@ -23,6 +25,13 @@ function LoginPage() {
         isSubmitting={isSubmitting}
         fieldErrors={fieldErrors}
         formError={formError}
+        captcha={
+          <Captcha
+            containerRef={captcha.containerRef}
+            isEnabled={captcha.isEnabled}
+            hasLoadError={captcha.hasLoadError}
+          />
+        }
       />
       {step === 'two-factor' ? <TwoFactorStep /> : null}
     </>

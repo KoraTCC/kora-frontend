@@ -6,17 +6,21 @@ import {
   toFieldErrors,
   zodIssuesToApiIssues,
 } from '#/lib/formErrors'
+import { useTurnstile } from '#/hooks/useTurnstile'
 import { ApiError } from '#/lib/http'
 import { loginSchema } from '../schemas'
 import type { LoginField, LoginFieldErrors } from '../types'
 import { useLogin } from './useLogin'
 
 const LOGIN_FIELDS: ReadonlyArray<LoginField> = ['email', 'password']
+const CAPTCHA_REQUIRED = 'Confirme que você não é um robô.'
 
 export function useLoginForm() {
   const navigate = useNavigate()
   const mutation = useLogin()
   const [fieldErrors, setFieldErrors] = useState<LoginFieldErrors>({})
+  const [captchaError, setCaptchaError] = useState<string>()
+  const captcha = useTurnstile()
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -33,22 +37,35 @@ export function useLoginForm() {
     }
 
     setFieldErrors({})
-    mutation.mutate(parsed.data, {
-      onSuccess: (response) =>
-        'twoFactorRequired' in response
-          ? navigate({ to: '/auth', search: { step: 'two-factor' } })
-          : navigate({ to: '/' }),
-      onError: (error) => {
-        if (error instanceof ApiError)
-          setFieldErrors(toFieldErrors(error.issues, LOGIN_FIELDS))
+    const turnstileToken = captcha.getToken()
+    if (captcha.isEnabled && !turnstileToken) {
+      setCaptchaError(CAPTCHA_REQUIRED)
+      return
+    }
+
+    setCaptchaError(undefined)
+    mutation.mutate(
+      { ...parsed.data, turnstileToken },
+      {
+        onSuccess: (response) =>
+          'twoFactorRequired' in response
+            ? navigate({ to: '/auth', search: { step: 'two-factor' } })
+            : navigate({ to: '/' }),
+        onError: (error) => {
+          if (error instanceof ApiError)
+            setFieldErrors(toFieldErrors(error.issues, LOGIN_FIELDS))
+        },
+        // Each token is single use, so every attempt needs a fresh challenge.
+        onSettled: () => captcha.reset(),
       },
-    })
+    )
   }
 
   return {
     handleSubmit,
     fieldErrors,
-    formError: getFormError(mutation.error, LOGIN_FIELDS),
+    formError: captchaError ?? getFormError(mutation.error, LOGIN_FIELDS),
+    captcha,
     isSubmitting: mutation.isPending,
   }
 }
