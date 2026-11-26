@@ -8,7 +8,7 @@ type AvatarProps = {
 }
 
 const TONE_CLASSES = {
-  lime: 'bg-lime text-on-lime',
+  lime: 'bg-lime-fill text-on-lime',
   neutral: 'bg-surface-2 text-muted border-line-strong border',
 } as const
 
