@@ -17,7 +17,7 @@ const BASE_CLASSES =
   'inline-flex items-center justify-center gap-2 rounded-[10px] border transition focus-visible:ring-3 focus-visible:ring-lime/25 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-45'
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: 'bg-lime text-on-lime border-lime font-bold hover:bg-lime-soft',
+  primary: 'bg-lime-fill text-on-lime border-lime-fill-line font-bold hover:bg-lime-fill-hover',
   secondary:
     'bg-surface-2 text-ink border-line-strong font-semibold hover:border-muted',
   ghost:

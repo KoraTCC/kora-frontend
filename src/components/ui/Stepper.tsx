@@ -30,7 +30,7 @@ export function Stepper({ label, steps, current }: StepperProps) {
             className={cn(
               'flex size-5 items-center justify-center rounded-full font-mono text-[10px]',
               item.isDone || item.isCurrent
-                ? 'bg-lime text-on-lime'
+                ? 'bg-lime-fill text-on-lime'
                 : 'bg-surface-2 border-line-strong text-dim border',
             )}
           >
