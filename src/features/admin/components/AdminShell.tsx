@@ -13,7 +13,11 @@ import { Sidebar } from '#/components/layout/Sidebar'
 import type { SidebarItem, SidebarSection } from '#/components/layout/Sidebar'
 import { useLogout } from '#/features/auth/hooks/useLogout'
 import { useMonitoring } from '../hooks/useAdmin'
-import { OperatorCard } from './OperatorCard'
+import { SidebarProfile } from '#/components/layout/SidebarProfile'
+import { ThemeToggle } from '#/components/layout/ThemeToggle'
+import { IconButton } from '#/components/ui/IconButton'
+import { useCurrentUser } from '#/features/auth/hooks/useCurrentUser'
+import { getInitials } from '#/features/auth/initials'
 
 type AdminShellProps = {
   children: ReactNode
@@ -23,13 +27,14 @@ type AdminShellProps = {
 export function AdminShell({ children }: AdminShellProps) {
   const { data: monitoring } = useMonitoring()
   const { handleLogout } = useLogout()
+  const { data: user } = useCurrentUser()
+  const initials = user ? getInitials(user.name) : '··'
   const hasDegradedService = Boolean(
     monitoring?.services.some((service) => service.status === 'degraded'),
   )
   const sections = buildSections(hasDegradedService)
   const footerItems: Array<SidebarItem> = [
     { label: 'Voltar ao lojista', icon: ArrowLeft, to: '/dashboard' },
-    { label: 'Sair', icon: LogOut, onClick: handleLogout },
   ]
 
   return (
@@ -41,7 +46,24 @@ export function AdminShell({ children }: AdminShellProps) {
               Admin
             </span>
           }
-          account={<OperatorCard />}
+          profile={
+            <SidebarProfile
+              name={user?.name}
+              detail="Operador"
+              initials={initials}
+              actions={
+                <>
+                  <ThemeToggle />
+                  <IconButton
+                    label="Sair"
+                    title="Sair"
+                    icon={<LogOut size={15} aria-hidden />}
+                    onClick={handleLogout}
+                  />
+                </>
+              }
+            />
+          }
           sections={sections}
           footerItems={footerItems}
           onNavigate={onNavigate}

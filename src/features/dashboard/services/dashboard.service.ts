@@ -5,6 +5,18 @@ import type { DashboardOverview, DashboardRange } from '../types'
 // TODO(api): kora-backend has no dashboard endpoint yet; see src/lib/mock.ts.
 
 const MINUTE_MS = 60_000
+const DAY_MS = 24 * 60 * MINUTE_MS
+
+const BALANCE_BASE_CENTS = 18_734_120
+/** Mock pace: about R$ 0,35 per second, so the balance visibly grows live. */
+const BALANCE_CENTS_PER_SECOND = 35
+
+/** Received since local midnight, growing with the clock. */
+function receivedTodayCents(now: number): number {
+  const offsetMs = new Date(now).getTimezoneOffset() * MINUTE_MS
+  const msSinceMidnight = (now - offsetMs) % DAY_MS
+  return Math.floor(msSinceMidnight / 1000) * BALANCE_CENTS_PER_SECOND
+}
 
 const VOLUME_BY_RANGE: Record<
   DashboardRange,
@@ -46,12 +58,17 @@ export function getDashboardOverview(
   range: DashboardRange,
 ): Promise<DashboardOverview> {
   const now = Date.now()
+  const todayCents = receivedTodayCents(now)
   const minutesAgo = (minutes: number) =>
     new Date(now - minutes * MINUTE_MS).toISOString()
 
   return mockRequest(`/dashboard?range=${range}`, {
     schema: dashboardOverviewSchema,
     response: {
+      balance: {
+        availableCents: BALANCE_BASE_CENTS + todayCents,
+        todayCents,
+      },
       volume: {
         ...VOLUME_BY_RANGE[range],
         breakdown: '≈ 0,6412 ETH · 1.284 USDT',

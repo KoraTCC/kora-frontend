@@ -13,6 +13,9 @@ import {
 import type { ReactNode } from 'react'
 import { AppShell } from '#/components/layout/AppShell'
 import { Sidebar } from '#/components/layout/Sidebar'
+import { SidebarProfile } from '#/components/layout/SidebarProfile'
+import { ThemeToggle } from '#/components/layout/ThemeToggle'
+import { IconButton } from '#/components/ui/IconButton'
 import type { SidebarSection, SidebarItem } from '#/components/layout/Sidebar'
 import { Avatar } from '#/components/ui/Avatar'
 import { useCurrentUser } from '#/features/auth/hooks/useCurrentUser'
@@ -23,7 +26,6 @@ import { useChargeStats } from '#/features/charges/hooks/useCharges'
 import { useWebhookEndpoints } from '#/features/webhooks/hooks/useWebhooks'
 import { useMerchant } from '../hooks/useMerchant'
 import { EnvironmentPill } from './EnvironmentPill'
-import { MerchantAccountCard } from './MerchantAccountCard'
 
 type MerchantShellProps = {
   children: ReactNode
@@ -47,7 +49,6 @@ export function MerchantShell({ children }: MerchantShellProps) {
     { label: 'Configurações', icon: Settings2, to: '/settings' },
     { label: 'Documentação', icon: BookOpen, to: '/docs' },
     { label: 'Painel administrativo', icon: ShieldCheck, to: '/admin' },
-    { label: 'Sair', icon: LogOut, onClick: handleLogout },
   ]
   const initials = user ? getInitials(user.name) : '··'
 
@@ -59,7 +60,24 @@ export function MerchantShell({ children }: MerchantShellProps) {
     <AppShell
       renderSidebar={(onNavigate) => (
         <Sidebar
-          account={<MerchantAccountCard />}
+          profile={
+            <SidebarProfile
+              name={user?.name}
+              detail={user?.email}
+              initials={initials}
+              actions={
+                <>
+                  <ThemeToggle />
+                  <IconButton
+                    label="Sair"
+                    title="Sair"
+                    icon={<LogOut size={15} aria-hidden />}
+                    onClick={handleLogout}
+                  />
+                </>
+              }
+            />
+          }
           sections={sections}
           footerItems={footerItems}
           onNavigate={onNavigate}

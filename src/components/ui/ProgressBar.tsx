@@ -40,7 +40,10 @@ export function ProgressBar({
       )}
     >
       <div
-        className={cn('h-full rounded-full transition-all', TONE_CLASSES[tone])}
+        className={cn(
+          'animate-grow-x h-full origin-left rounded-full transition-all duration-700 motion-reduce:animate-none',
+          TONE_CLASSES[tone],
+        )}
         style={{ width: `${percent}%` }}
       />
     </div>

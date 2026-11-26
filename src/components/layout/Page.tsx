@@ -1,6 +1,9 @@
 import { Menu } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { useIsFetching } from '@tanstack/react-query'
+import { useRouterState } from '@tanstack/react-router'
 import { IconButton } from '#/components/ui/IconButton'
+import { LoadingBar } from '#/components/ui/LoadingBar'
 import { useAppShell } from './AppShell'
 
 type PageProps = {
@@ -14,6 +17,11 @@ type PageProps = {
 /** Top bar + content area of a page inside the app shell. */
 export function Page({ title, subtitle, actions, children }: PageProps) {
   const { openNavigation, topbarStart, topbarEnd } = useAppShell()
+  const fetchingCount = useIsFetching()
+  const isRoutePending = useRouterState({
+    select: (state) => state.status === 'pending',
+  })
+  const isLoading = fetchingCount > 0 || isRoutePending
 
   return (
     <>
@@ -42,6 +50,10 @@ export function Page({ title, subtitle, actions, children }: PageProps) {
         <div className="flex flex-wrap items-center gap-2 lg:flex-nowrap lg:gap-3">
           {actions}
           <div className="hidden items-center gap-3 lg:flex">{topbarEnd}</div>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0">
+          <LoadingBar isActive={isLoading} label="Atualizando dados" />
         </div>
       </header>
 
