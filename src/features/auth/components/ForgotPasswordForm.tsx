@@ -20,8 +20,6 @@ export function ForgotPasswordForm({
   formError,
 }: ForgotPasswordFormProps) {
   const submitLabel = isSubmitting ? 'Enviando…' : 'Enviar link de recuperação'
-  const notice =
-    'Por segurança, respondemos igual para e-mails cadastrados ou não.'
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-[22px]" noValidate>
@@ -40,10 +38,6 @@ export function ForgotPasswordForm({
       <Button type="submit" isBlock disabled={isSubmitting}>
         {submitLabel}
       </Button>
-
-      <div aria-live="polite">
-        <Callout>{notice}</Callout>
-      </div>
 
       <p className="text-muted text-center text-[13px]">
         Lembrou a senha?{' '}
