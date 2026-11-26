@@ -32,7 +32,7 @@ export function LoginForm({
         type="email"
         name="email"
         autoComplete="email"
-        placeholder="contato@lojaexemplo.com"
+        placeholder="nome@empresa.com"
         required
         error={fieldErrors.email}
       />
@@ -40,6 +40,7 @@ export function LoginForm({
       <PasswordInput
         label="Senha"
         name="password"
+        placeholder="Sua senha"
         autoComplete="current-password"
         required
         error={fieldErrors.password}
