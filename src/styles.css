@@ -274,6 +274,24 @@ pre {
   font-family: var(--font-mono);
 }
 
+/*
+ * Autofill: browsers paint their own background on saved e-mails/passwords.
+ * The inset shadow repaints the input with the field surface, and the long
+ * transition keeps Chrome's colour from ever showing.
+ */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--kora-text);
+  -webkit-box-shadow: 0 0 0 1000px var(--kora-surface) inset;
+  caret-color: var(--kora-text);
+  transition: background-color 9999s ease-out 0s;
+}
+
+input:autofill {
+  box-shadow: 0 0 0 1000px var(--kora-surface) inset;
+}
+
 /* ===========================================================================
    Identidade Kora
    =========================================================================== */

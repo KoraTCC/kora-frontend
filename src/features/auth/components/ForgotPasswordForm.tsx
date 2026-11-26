@@ -30,7 +30,7 @@ export function ForgotPasswordForm({
         type="email"
         name="email"
         autoComplete="email"
-        placeholder="contato@lojaexemplo.com"
+        placeholder="nome@empresa.com"
         required
         error={fieldErrors.email}
       />
