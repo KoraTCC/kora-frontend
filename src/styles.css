@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import 'tailwindcss';
 
-@theme {
+@theme inline {
   --animate-fade-up: fade-up 380ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 
   @keyframes fade-up {
@@ -110,7 +110,7 @@
   --kora-disabled: #4b534a;
   --kora-sidebar: #0c0f0b;
 
-  /* palco da tela de login: sempre escuro, não muda no modo claro */
+  /* palco da tela de login (escuro; .kora-light troca para o claro) */
   --kora-stage-bg: #080908;
   --kora-stage-bg-top: #121612;
   --kora-stage-ink: #ecf2ea;
@@ -170,8 +170,13 @@
   color-scheme: dark;
 }
 
-/* modo claro derivado (o Kora é dark-only; isto mantém o ThemeToggle utilizável) */
-:root[data-theme='light'] {
+/*
+ * modo claro derivado (o Kora é dark-only; isto mantém o ThemeToggle utilizável).
+ * `.kora-light` aplica o mesmo modo claro só num trecho da página (a tela de
+ * login é sempre clara) — funciona porque o @theme é inline.
+ */
+:root[data-theme='light'],
+.kora-light {
   --kora-canvas: #f4f7f1;
   --kora-bg: #ffffff;
   --kora-surface: #fbfdf8;
@@ -200,6 +205,7 @@
   --status-failed-bg: #fbe4e2;
   --status-failed-soft: #7a1f1a;
   --kora-sidebar: #eef2ea;
+  --kora-panel: #ffffff;
 
   --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
   --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);
@@ -207,6 +213,16 @@
   --header-bg: rgba(251, 253, 248, 0.88);
 
   color-scheme: light;
+}
+
+/* palco da tela de login no modo claro: fita prateada sobre fundo claro */
+.kora-light {
+  --kora-stage-bg: #eef2ea;
+  --kora-stage-bg-top: #ffffff;
+  --kora-stage-ink: #0e110e;
+  --kora-stage-ink-soft: #2e352e;
+  --kora-stage-accent: #4a6320;
+  --kora-stage-faint: #6b7370;
 }
 
 @media (prefers-color-scheme: light) {
@@ -239,6 +255,7 @@
     --status-failed-bg: #fbe4e2;
     --status-failed-soft: #7a1f1a;
     --kora-sidebar: #eef2ea;
+    --kora-panel: #ffffff;
 
     --elev-1: 0 8px 24px rgba(14, 17, 14, 0.1);
     --elev-2: 0 18px 44px rgba(14, 17, 14, 0.14);

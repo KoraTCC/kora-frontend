@@ -1,7 +1,10 @@
 import { cn } from '#/lib/cn'
+import type { SceneTone } from '#/lib/coinRibbonPaint'
 import { useCoinRibbonScene } from '../hooks/useCoinRibbonScene'
 
 type CoinRibbonSceneProps = {
+  /** Match the ground the scene sits on. */
+  tone?: SceneTone
   className?: string
 }
 
@@ -9,8 +12,11 @@ type CoinRibbonSceneProps = {
  * Decorative animation for the auth pitch panel. Fills the nearest
  * positioned ancestor — the parent decides the size.
  */
-export function CoinRibbonScene({ className }: CoinRibbonSceneProps) {
-  const { containerRef, canvasRef, grainRef } = useCoinRibbonScene()
+export function CoinRibbonScene({
+  tone = 'dark',
+  className,
+}: CoinRibbonSceneProps) {
+  const { containerRef, canvasRef, grainRef } = useCoinRibbonScene(tone)
 
   return (
     <div
