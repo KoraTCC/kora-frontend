@@ -17,3 +17,16 @@ export function resolveThemeMode(stored: unknown): ThemeMode {
 export function oppositeThemeMode(mode: ThemeMode): ThemeMode {
   return mode === 'light' ? 'dark' : 'light'
 }
+
+/**
+ * Radius that lets a circle centred on (x, y) cover the whole viewport —
+ * the distance to the farthest corner. Used by the theme reveal animation.
+ */
+export function revealRadius(
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+): number {
+  return Math.hypot(Math.max(x, width - x), Math.max(y, height - y))
+}

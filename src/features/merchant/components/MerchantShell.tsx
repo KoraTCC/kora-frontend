@@ -17,7 +17,6 @@ import { SidebarProfile } from '#/components/layout/SidebarProfile'
 import { ThemeToggle } from '#/components/layout/ThemeToggle'
 import { IconButton } from '#/components/ui/IconButton'
 import type { SidebarSection, SidebarItem } from '#/components/layout/Sidebar'
-import { Avatar } from '#/components/ui/Avatar'
 import { useCurrentUser } from '#/features/auth/hooks/useCurrentUser'
 import { useLogout } from '#/features/auth/hooks/useLogout'
 import { getInitials } from '#/features/auth/initials'
@@ -60,6 +59,11 @@ export function MerchantShell({ children }: MerchantShellProps) {
     <AppShell
       renderSidebar={(onNavigate) => (
         <Sidebar
+          brandTag={
+            merchant ? (
+              <EnvironmentPill environment={merchant.environment} />
+            ) : null
+          }
           profile={
             <SidebarProfile
               name={user?.name}
@@ -85,14 +89,6 @@ export function MerchantShell({ children }: MerchantShellProps) {
       )}
       topbarStart={
         <SearchBox label="Buscar cobranças" onSearch={handleSearch} />
-      }
-      topbarEnd={
-        <>
-          {merchant ? (
-            <EnvironmentPill environment={merchant.environment} />
-          ) : null}
-          <Avatar initials={initials} label={user?.name ?? 'Usuário'} />
-        </>
       }
     >
       {children}

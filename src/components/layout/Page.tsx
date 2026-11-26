@@ -9,12 +9,19 @@ import { useAppShell } from './AppShell'
 type PageProps = {
   title: string
   subtitle?: ReactNode
-  /** Page-level buttons in the top bar. */
+  /** Page-level buttons, next to the search. */
   actions?: ReactNode
   children: ReactNode
 }
 
-/** Top bar + content area of a page inside the app shell. */
+/** Same max width for the header and the content, so they line up. */
+const COLUMN_CLASSES = 'mx-auto w-full max-w-[1240px]'
+
+/**
+ * Page header + content inside the app shell. The header sits on the page
+ * background (no bar): title and subtitle on the left, search and the page
+ * actions on the right.
+ */
 export function Page({ title, subtitle, actions, children }: PageProps) {
   const { openNavigation, topbarStart, topbarEnd } = useAppShell()
   const fetchingCount = useIsFetching()
@@ -25,31 +32,38 @@ export function Page({ title, subtitle, actions, children }: PageProps) {
 
   return (
     <>
-      <header className="border-line-soft bg-bg/95 sticky top-0 z-10 flex flex-col gap-3 border-b px-4 py-3 backdrop-blur sm:px-6 lg:min-h-[66px] lg:flex-row lg:items-center lg:justify-between lg:gap-5 lg:px-[26px] lg:py-2.5">
-        <div className="flex min-w-0 flex-1 items-center gap-3 lg:gap-5">
-          <IconButton
-            label="Abrir menu"
-            icon={<Menu size={16} aria-hidden />}
-            onClick={openNavigation}
-            className="lg:hidden"
-          />
-          <div className="min-w-0 flex-1 xl:flex-none">
-            <h1 className="font-display truncate text-[17px] font-bold tracking-tight">
-              {title}
-            </h1>
-            {subtitle ? (
-              <p className="text-muted truncate text-[11px]">{subtitle}</p>
-            ) : null}
+      <header className="bg-canvas/90 sticky top-0 z-10 px-4 pt-4 pb-3 backdrop-blur sm:px-6 lg:px-8 lg:pt-7 lg:pb-4">
+        <div
+          className={`${COLUMN_CLASSES} flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6`}
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            <IconButton
+              label="Abrir menu"
+              icon={<Menu size={16} aria-hidden />}
+              onClick={openNavigation}
+              className="lg:hidden"
+            />
+            <div className="flex min-w-0 flex-col gap-1">
+              <h1 className="font-display text-ink truncate text-xl font-semibold tracking-tight sm:text-2xl lg:text-[26px]">
+                {title}
+              </h1>
+              {subtitle ? (
+                <p className="text-muted truncate text-[13px] sm:text-sm">
+                  {subtitle}
+                </p>
+              ) : null}
+            </div>
           </div>
-          <div className="hidden min-w-0 flex-1 xl:block xl:max-w-[340px]">
-            {topbarStart}
-          </div>
-          <div className="flex items-center gap-3 lg:hidden">{topbarEnd}</div>
-        </div>
 
-        <div className="flex flex-wrap items-center gap-2 lg:flex-nowrap lg:gap-3">
-          {actions}
-          <div className="hidden items-center gap-3 lg:flex">{topbarEnd}</div>
+          <div className="flex flex-wrap items-center gap-2.5 lg:flex-nowrap">
+            {topbarStart ? (
+              <div className="w-full sm:w-[300px] sm:flex-none">
+                {topbarStart}
+              </div>
+            ) : null}
+            {actions}
+            {topbarEnd}
+          </div>
         </div>
 
         <div className="absolute inset-x-0 bottom-0">
@@ -57,7 +71,9 @@ export function Page({ title, subtitle, actions, children }: PageProps) {
         </div>
       </header>
 
-      <main className="stagger flex flex-col gap-4 p-4 sm:p-6 lg:p-[26px]">
+      <main
+        className={`${COLUMN_CLASSES} stagger flex flex-col gap-4 px-4 pt-2 pb-10 sm:px-6 lg:px-8`}
+      >
         {children}
       </main>
     </>

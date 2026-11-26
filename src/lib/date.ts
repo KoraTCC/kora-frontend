@@ -16,6 +16,11 @@ const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
   minute: '2-digit',
   second: '2-digit',
 })
+const longDayFormatter = new Intl.DateTimeFormat(LOCALE, {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+})
 const dateFormatter = new Intl.DateTimeFormat(LOCALE, {
   day: '2-digit',
   month: '2-digit',
@@ -51,4 +56,9 @@ export function formatTime(iso: string): string {
 /** `12/08/2025`. */
 export function formatDate(iso: string): string {
   return dateFormatter.format(new Date(iso))
+}
+
+/** `quinta, 28 de agosto` — the weekday without the `-feira`. */
+export function formatLongDay(date: Date): string {
+  return longDayFormatter.format(date).replace('-feira', '')
 }

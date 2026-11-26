@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatAge, formatRelative } from './date'
+import { formatAge, formatLongDay, formatRelative } from './date'
 
 const NOW = new Date('2025-08-28T14:00:00Z').getTime()
 const ago = (ms: number) => new Date(NOW - ms).toISOString()
@@ -21,5 +21,15 @@ describe('formatRelative', () => {
   it('prefixes "há" except for "agora"', () => {
     expect(formatRelative(ago(2 * 60_000), NOW)).toBe('há 2 min')
     expect(formatRelative(ago(1_000), NOW)).toBe('agora')
+  })
+})
+
+describe('formatLongDay', () => {
+  it('spells the weekday without "-feira", then day and month', () => {
+    expect(formatLongDay(new Date(2025, 7, 28))).toBe('quinta, 28 de agosto')
+  })
+
+  it('keeps weekend names as they are', () => {
+    expect(formatLongDay(new Date(2025, 7, 30))).toBe('sábado, 30 de agosto')
   })
 })
