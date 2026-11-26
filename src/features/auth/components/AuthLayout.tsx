@@ -11,9 +11,11 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <main className="bg-canvas text-ink flex min-h-screen w-full flex-col lg:flex-row">
       <section className="bg-panel border-line-soft flex min-h-screen w-full flex-none flex-col justify-between gap-10 px-6 py-8 sm:p-12 lg:w-[452px] lg:border-r">
-        <div className="flex items-center gap-2.5">
-          <KoraMark />
-          <p className="font-display text-xl font-bold tracking-tight">Kora</p>
+        <div className="flex items-center gap-2.5 lg:gap-3 2xl:gap-3.5">
+          <KoraMark className="lg:h-10 lg:w-[35px] 2xl:h-12 2xl:w-[42px]" />
+          <p className="font-display text-xl font-bold tracking-tight lg:text-[26px] 2xl:text-[32px]">
+            Kora
+          </p>
         </div>
 
         <div className="mx-auto flex w-full max-w-100 flex-col gap-[22px]">
