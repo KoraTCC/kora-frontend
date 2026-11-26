@@ -1,58 +1,25 @@
 import { Link } from '@tanstack/react-router'
-import { useState } from 'react'
 import { Card } from '#/components/ui/Card'
 import { EmptyState } from '#/components/ui/EmptyState'
 import { ErrorState } from '#/components/ui/ErrorState'
-import { Select } from '#/components/ui/Select'
 import { SkeletonRows } from '#/components/ui/Skeleton'
-import { CHARGE_STATUS_META } from '#/features/charges/chargeStatus'
 import { ChargesTable } from '#/features/charges/components/ChargesTable'
 import { useChargeList } from '#/features/charges/hooks/useCharges'
-import { CHARGE_STATUSES, chargeStatusSchema } from '#/features/charges/schemas'
-import type { ChargeStatus } from '#/features/charges/types'
 
 const RECENT_LIMIT = 5
 
-const STATUS_OPTIONS = [
-  { value: '', label: 'Status' },
-  ...CHARGE_STATUSES.map((status) => ({
-    value: status,
-    label: CHARGE_STATUS_META[status].plural,
-  })),
-]
-
+/** The latest charges; filtering lives on the charges page. */
 export function RecentChargesCard() {
-  const [status, setStatus] = useState<ChargeStatus>()
-  const query = useChargeList({ status, page: 1, pageSize: RECENT_LIMIT })
-
-  function handleStatusChange(value: string) {
-    const parsed = chargeStatusSchema.safeParse(value)
-    setStatus(parsed.success ? parsed.data : undefined)
-  }
+  const query = useChargeList({ page: 1, pageSize: RECENT_LIMIT })
 
   return (
     <Card
       title="Cobranças recentes"
       isFlush
       action={
-        <div className="flex items-center gap-3">
-          <Select
-            label="Filtrar por status"
-            isLabelHidden
-            size="sm"
-            options={STATUS_OPTIONS}
-            value={status ?? ''}
-            onChange={(event) => handleStatusChange(event.target.value)}
-            className="w-36"
-          />
-          <Link
-            to="/charges"
-            search={{ status }}
-            className="text-lime text-xs font-semibold"
-          >
-            Ver todas
-          </Link>
-        </div>
+        <Link to="/charges" className="text-lime text-xs font-semibold">
+          Ver todas →
+        </Link>
       }
     >
       <RecentChargesBody query={query} />
@@ -78,7 +45,12 @@ function RecentChargesBody({
       </div>
     )
   if (!query.data.items.length)
-    return <EmptyState title="Nenhuma cobrança com este status" />
+    return (
+      <EmptyState
+        title="Nenhuma cobrança ainda"
+        description="As cobranças criadas pela API ou pelo painel aparecem aqui."
+      />
+    )
 
   return <ChargesTable charges={query.data.items} variant="compact" />
 }

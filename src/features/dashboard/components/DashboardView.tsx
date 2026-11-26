@@ -1,10 +1,10 @@
 import type { DashboardRange } from '../types'
 import { AssetDistributionCard } from './AssetDistributionCard'
-import { BalanceCard } from './BalanceCard'
-import { DashboardKpis } from './DashboardKpis'
-import { IntegrationCard } from './IntegrationCard'
+import { KpiStrip } from './KpiStrip'
 import { RecentChargesCard } from './RecentChargesCard'
 import { RecentEventsCard } from './RecentEventsCard'
+import { SetupStrip } from './SetupStrip'
+import { StatusBreakdownCard } from './StatusBreakdownCard'
 import { VolumeCard } from './VolumeCard'
 
 type DashboardViewProps = {
@@ -12,21 +12,28 @@ type DashboardViewProps = {
   onRangeChange: (range: DashboardRange) => void
 }
 
+const ROW_CLASSES =
+  'grid grid-cols-1 items-stretch gap-4 xl:grid-cols-[minmax(0,1fr)_340px]'
+
+/**
+ * Setup strip → KPI strip → (volume | status + assets) → (charges | events).
+ * Each row pairs a wide card with a side column of the same height.
+ */
 export function DashboardView({ range, onRangeChange }: DashboardViewProps) {
   return (
     <>
-      <BalanceCard />
-      <DashboardKpis />
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_330px]">
-        <div className="stagger flex min-w-0 flex-col gap-4">
-          <VolumeCard range={range} onRangeChange={onRangeChange} />
-          <RecentChargesCard />
-        </div>
-        <div className="stagger flex min-w-0 flex-col gap-4">
-          <IntegrationCard />
+      <SetupStrip />
+      <KpiStrip />
+      <div className={ROW_CLASSES}>
+        <VolumeCard range={range} onRangeChange={onRangeChange} />
+        <div className="flex min-w-0 flex-col gap-4">
+          <StatusBreakdownCard />
           <AssetDistributionCard />
-          <RecentEventsCard />
         </div>
+      </div>
+      <div className={ROW_CLASSES}>
+        <RecentChargesCard />
+        <RecentEventsCard />
       </div>
     </>
   )
