@@ -13,15 +13,17 @@ type DashboardViewProps = {
 }
 
 const ROW_CLASSES =
-  'grid grid-cols-1 items-stretch gap-4 xl:grid-cols-[minmax(0,1fr)_340px]'
+  'grid grid-cols-1 items-stretch gap-4 @4xl:grid-cols-[minmax(0,1fr)_320px]'
 
 /**
  * Setup strip → KPI strip → (volume | status + assets) → (charges | events).
- * Each row pairs a wide card with a side column of the same height.
+ * Each row pairs a wide card with a side column of the same height. The
+ * wrapper is a size container, so breakpoints follow the space left by the
+ * sidebar instead of the viewport.
  */
 export function DashboardView({ range, onRangeChange }: DashboardViewProps) {
   return (
-    <>
+    <div className="@container flex flex-col gap-4">
       <SetupStrip />
       <KpiStrip />
       <div className={ROW_CLASSES}>
@@ -35,6 +37,6 @@ export function DashboardView({ range, onRangeChange }: DashboardViewProps) {
         <RecentChargesCard />
         <RecentEventsCard />
       </div>
-    </>
+    </div>
   )
 }

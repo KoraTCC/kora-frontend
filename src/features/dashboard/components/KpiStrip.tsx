@@ -10,9 +10,12 @@ import { formatBRL, formatSignedPercent } from '#/lib/money'
 import { useDashboardOverview } from '../hooks/useDashboardOverview'
 
 const STRIP_CLASSES =
-  'bg-line-soft border-line grid grid-cols-1 gap-px overflow-hidden rounded-[14px] border sm:grid-cols-2 xl:grid-cols-4'
+  'bg-line-soft border-line grid grid-cols-1 gap-px overflow-hidden rounded-[14px] border @lg:grid-cols-2 @4xl:grid-cols-4'
 
-/** The four numbers that matter at a glance, in one strip. */
+/**
+ * The four numbers that matter at a glance, in one strip. Columns follow the
+ * dashboard's width (container queries), not the viewport.
+ */
 export function KpiStrip() {
   const overview = useDashboardOverview('7d')
   const stats = useChargeStats()
