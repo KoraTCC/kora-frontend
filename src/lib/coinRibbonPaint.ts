@@ -34,16 +34,16 @@ const DARK_CHROME_STOPS: ReadonlyArray<ColorStop> = [
   [1, SCENE_COLORS.limeShine],
 ]
 
-/** Silver chrome for a pale ground, lime picked up in the reflections. */
+/** Pale silver chrome for a light ground, lime picked up in the reflections. */
 const LIGHT_CHROME_STOPS: ReadonlyArray<ColorStop> = [
-  [0, '#7a8277'],
-  [0.14, '#959d92'],
-  [0.28, '#b7bfb3'],
-  [0.4, '#e6ebe1'],
+  [0, '#c3cbbd'],
+  [0.14, '#d5dccf'],
+  [0.28, '#e6ebe1'],
+  [0.4, '#f4f7f1'],
   [0.46, '#ffffff'],
-  [0.53, '#c8d2c1'],
-  [0.63, '#a3ab9f'],
-  [0.74, '#d7e5c2'],
+  [0.53, '#eef2ea'],
+  [0.63, '#dde4d5'],
+  [0.74, '#e2efcc'],
   [0.86, '#b8d97a'],
   [0.93, SCENE_COLORS.lime200],
   [1, '#ffffff'],
