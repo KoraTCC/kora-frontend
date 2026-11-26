@@ -3,6 +3,7 @@ import { Check, X } from 'lucide-react'
 import { buttonClasses } from '#/components/ui/Button'
 import { IconButton } from '#/components/ui/IconButton'
 import { useStoredFlag } from '#/hooks/useStoredFlag'
+import { cn } from '#/lib/cn'
 import { useDashboardOverview } from '../hooks/useDashboardOverview'
 import { getSetupProgress } from '../setupProgress'
 import type { SetupStep } from '../setupProgress'
@@ -40,40 +41,47 @@ export function SetupStrip() {
   if (progress.isComplete || !progress.nextStep) return null
 
   return (
+    // Sized by its own width, not the viewport: the sidebar takes a varying
+    // share of the screen, so `lg:` alone squeezed the text into a column.
     <section
       aria-label="Configuração da conta"
-      className="bg-surface border-line flex flex-col gap-4 rounded-[14px] border p-4 lg:flex-row lg:items-center lg:gap-6 lg:py-3.5 lg:pr-3.5 lg:pl-5"
+      className="@container bg-surface border-line rounded-[14px] border p-4 sm:px-5"
     >
-      <div className="flex min-w-0 flex-1 items-center gap-3.5">
-        <ProgressRing done={progress.doneCount} total={progress.total} />
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <p className="text-ink text-sm font-bold">
-            Falta pouco para receber pagamentos reais
-          </p>
-          <p className="text-muted text-[13px]">
-            Próximo passo: {progress.nextStep.label.toLowerCase()}.
-          </p>
+      <div className="grid grid-cols-1 items-center gap-x-6 gap-y-3.5 @xl:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="flex min-w-0 items-center gap-3.5">
+          <ProgressRing done={progress.doneCount} total={progress.total} />
+          <div className="flex min-w-0 flex-col gap-0.5">
+            <p className="text-ink text-sm font-bold">
+              Falta pouco para receber pagamentos reais
+            </p>
+            <p className="text-muted text-[13px]">
+              Próximo passo: {progress.nextStep.label.toLowerCase()}.
+            </p>
+          </div>
         </div>
-      </div>
 
-      <ol className="flex flex-wrap gap-1.5">
-        {data.integration.map((step) => (
-          <StepChip key={step.id} step={step} />
-        ))}
-      </ol>
+        <ol className="order-2 flex flex-wrap gap-1.5 @xl:order-3 @xl:col-span-2">
+          {data.integration.map((step) => (
+            <StepChip key={step.id} step={step} />
+          ))}
+        </ol>
 
-      <div className="flex items-center gap-1.5">
-        <Link
-          to={routeForStep(progress.nextStep.id)}
-          className={buttonClasses({ size: 'sm', variant: 'secondary' })}
-        >
-          Continuar configuração
-        </Link>
-        <IconButton
-          label="Ocultar configuração"
-          icon={<X size={16} aria-hidden />}
-          onClick={hide}
-        />
+        <div className="order-3 flex items-center gap-1.5 @xl:order-2">
+          <Link
+            to={routeForStep(progress.nextStep.id)}
+            className={cn(
+              buttonClasses({ size: 'sm', variant: 'secondary' }),
+              'flex-1 whitespace-nowrap @xl:flex-none',
+            )}
+          >
+            Continuar configuração
+          </Link>
+          <IconButton
+            label="Ocultar configuração"
+            icon={<X size={16} aria-hidden />}
+            onClick={hide}
+          />
+        </div>
       </div>
     </section>
   )

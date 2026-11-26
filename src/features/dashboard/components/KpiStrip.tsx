@@ -10,9 +10,12 @@ import { formatBRL, formatSignedPercent } from '#/lib/money'
 import { useDashboardOverview } from '../hooks/useDashboardOverview'
 
 const STRIP_CLASSES =
-  'bg-line-soft border-line grid grid-cols-1 gap-px overflow-hidden rounded-[14px] border sm:grid-cols-2 xl:grid-cols-4'
+  'bg-line-soft border-line grid grid-cols-1 gap-px overflow-hidden rounded-[14px] border @lg:grid-cols-2 @4xl:grid-cols-4'
 
-/** The four numbers that matter at a glance, in one strip. */
+/**
+ * The four numbers that matter at a glance, in one strip. Columns follow the
+ * dashboard's width (container queries), not the viewport.
+ */
 export function KpiStrip() {
   const overview = useDashboardOverview('7d')
   const stats = useChargeStats()
@@ -32,11 +35,6 @@ export function KpiStrip() {
 
   const { balance, volume } = overview.data
   const { counts, pendingAmountCents } = stats.data
-  const partialLabel =
-    counts.partial === 1
-      ? '1 pagamento parcial'
-      : `${counts.partial} pagamentos parciais`
-
   return (
     <section aria-label="Indicadores" className={STRIP_CLASSES}>
       <KpiCell
@@ -79,17 +77,29 @@ export function KpiStrip() {
       <KpiCell
         label="Precisam de revisão"
         value={<AnimatedNumber value={counts.partial} />}
-        hint={
-          <Link
-            to="/charges"
-            search={{ status: 'partial' }}
-            className="font-semibold"
-          >
-            {partialLabel} →
-          </Link>
-        }
+        hint={<ReviewHint partialCount={counts.partial} />}
       />
     </section>
+  )
+}
+
+/** Link to the partial payments, or a calm note when there is nothing to do. */
+function ReviewHint({ partialCount }: { partialCount: number }) {
+  if (partialCount === 0) return <>Nada para revisar</>
+
+  const label =
+    partialCount === 1
+      ? '1 pagamento parcial'
+      : `${partialCount} pagamentos parciais`
+
+  return (
+    <Link
+      to="/charges"
+      search={{ status: 'partial' }}
+      className="font-semibold"
+    >
+      {label} →
+    </Link>
   )
 }
 
